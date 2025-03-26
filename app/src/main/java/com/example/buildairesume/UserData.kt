@@ -35,6 +35,8 @@ abstract class UserData : RoomDatabase() {
 
     companion object {
         @Volatile
+
+        
         private var instance: UserData? = null
 
         fun getInstance(context: Context): UserData {
