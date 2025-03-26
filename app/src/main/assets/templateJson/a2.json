@@ -1,0 +1,92 @@
+{
+  "templateName": "a2",
+  "nameAtTop": true,
+  "contactAtTop": false,
+  "leftRatio": "1f",
+  "rightRatio": "2f",
+  "sectionLeftOrder": [
+    "summary",
+    "experience",
+    "projects"
+  ],
+  "sectionRightOrder": [
+    "contact",
+    "education",
+    "certifications",
+    "skills",
+    "achievements"
+  ],
+  "page": {
+    "imageBackground": false,
+    "background": "#FFFFFF",
+    "borderRadius": 10,
+    "padding": 20,
+    "imageBackground": false,
+    "verticalLine": false,
+    "footer": false,
+    "sectionLeftTopMargin": 0
+  },
+  "name": {
+    "font": "Poppins-Bold.ttf",
+    "size": 12,
+    "alignment": "center",
+    "color": "#6F4B8F",
+    "marginBottom": 1,
+    "marginTop": 1,
+    "background": "#EEEEEE",
+    "backgroundColor": false,
+    "line": false
+  },
+  "subtitle": {
+    "font": "Poppins-Medium.ttf",
+    "size": 12,
+    "alignment": "center",
+    "color": "#666666",
+    "marginBottom": 0.1
+  },
+  "contact": {
+    "separator": " | ",
+    "background": "#EDE4F5",
+    "borderRadius": 8,
+    "paddingVertical": 5,
+    "paddingHorizontal": 10,
+    "alignment": "center",
+    "font": "Poppins-Regular.ttf",
+    "size": 10,
+    "color": "#333333"
+  },
+  "headings": {
+    "font": "Poppins-SemiBold.ttf",
+    "size": 16,
+    "color": "#FFFFFF",
+    "backgroundColor": true,
+    "background": "#6F4B8F",
+    "backgroundFullLine": true,
+    "allCaps": true,
+    "paddingHorizontal": 6,
+    "borderRadius": 5
+  },
+  "text": {
+    "font": "Poppins-Regular.ttf",
+    "size": 14,
+    "spacing": 0.8,
+    "verticalMargin": 0.005,
+    "color": "#333333"
+  },
+  "skills": {
+    "font": "Poppins-Medium.ttf",
+    "size": 10,
+    "alignment": "center",
+    "color": "#6F4B8F",
+    "background": "#EDE4F5",
+    "borderRadius": 10,
+    "paddingVertical": 5,
+    "paddingHorizontal": 10,
+    "spacing": 5
+  },
+  "line": {
+    "line": true,
+    "width": 0.5,
+    "color": "#D3D3D3"
+  }
+}

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- _____________________________________________________Button Styles__________________________________________________-->
+
+    <style name="Button.Style" parent="ThemeOverlay.Material3.Button">
+
+    </style>
+
+    <style name="CardItemEditButton" parent="ThemeOverlay.Material3.Button">
+
+    </style>
+
+    <style name="CardItemRemoveButton" parent="ThemeOverlay.Material3.Button">
+
+    </style>
+
+    <style name="CardItemAddButton" parent="ThemeOverlay.Material3.Button">
+
+    </style>
+
+    <style name="CardItemCancelButton" parent="ThemeOverlay.Material3.Button">
+
+    </style>
+
+    <!-- _____________________________________________________Text Styles__________________________________________________-->
+
+    <style name="CardTitle" parent="Widget.AppCompat.TextView">
+
+    </style>
+
+    <style name="CardItemHeading" parent="Widget.AppCompat.TextView">
+
+    </style>
+
+    <style name="CardItemSubheading" parent="Widget.AppCompat.TextView">
+
+    </style>
+
+    <style name="CardItemText" parent="Widget.AppCompat.TextView">
+
+    </style>
+
+    <style name="CardOutputEditText" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="android:textSize">12sp</item>
+
+    </style>
+
+    <!-- TextInput Fields -->
+    <style name="CardTextInput" parent="ThemeOverlay.Material3.AutoCompleteTextView.FilledBox">
+
+    </style>
+
+    <style name="CardAddItemEditText" parent="ThemeOverlay.Material3.TextInputEditText.FilledBox">
+
+    </style>
+
+    <style name="CardAddItemEditSpinner" parent="Widget.AppCompat.AutoCompleteTextView">
+
+    </style>
+
+    <!-- _____________________________________________________Backgrounds__________________________________________________ -->
+
+    <style name="Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">42dp</item>
+
+    </style>
+
+    <!-- _____________________________________________________Dark Theme Support__________________________________________________ -->
+
+    <style name="CardTitle.Dark" parent="CardTitle">
+
+    </style>
+
+    <style name="CardItemHeading.Dark" parent="CardItemHeading">
+
+    </style>
+
+    <style name="CardItemSubheading.Dark" parent="CardItemSubheading">
+
+    </style>
+
+    <style name="CardItemText.Dark" parent="CardItemText">
+
+    </style>
+
+    <style name="CardTextInput.Dark" parent="CardTextInput">
+
+    </style>
+
+    <style name="Card.Dark" parent="Card">
+
+    </style>
+
+
+
+</resources>

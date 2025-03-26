@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_personalInfo"
+        android:icon="@drawable/icon_profile"
+        android:title="Profile"
+        android:itemBackground="@drawable/side_button"/>
+
+    <item
+        android:id="@+id/nav_skills"
+        android:icon="@drawable/icon_skills"
+        android:title="Skills" />
+
+    <item
+        android:id="@+id/nav_links"
+        android:icon="@drawable/icon_links"
+        android:title="Links" />
+
+    <item
+        android:id="@+id/nav_experience"
+        android:icon="@drawable/icon_experience"
+        android:title="Experience" />
+
+    <item
+        android:id="@+id/nav_projects"
+        android:icon="@drawable/icon_projects"
+        android:title="Projects" />
+
+    <item
+        android:id="@+id/nav_certification"
+        android:icon="@drawable/icon_certification"
+        android:title="Certification" />
+
+    <item
+        android:id="@+id/nav_education"
+        android:icon="@drawable/icon_education"
+        android:title="Education" />
+
+</menu>

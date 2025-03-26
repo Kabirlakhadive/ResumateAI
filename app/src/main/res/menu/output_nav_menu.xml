@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_objective_output"
+        android:icon="@drawable/icon_profile"
+        android:title="Objective" />
+
+    <item
+        android:id="@+id/nav_projects_output"
+        android:icon="@drawable/icon_skills"
+        android:title="Projects" />
+
+    <item
+        android:id="@+id/nav_experience_output"
+        android:icon="@drawable/icon_links"
+        android:title="Experience" />
+
+</menu>

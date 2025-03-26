@@ -1,0 +1,7 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.BuildAiResume.Dark" parent="Base.Theme.BuildAiResume">
+
+        <item name="iconColor">#FFFFFF</item>
+    </style>
+</resources>

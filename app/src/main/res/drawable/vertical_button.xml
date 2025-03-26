@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="100dp"
+    android:viewportWidth="200"
+    android:viewportHeight="100">
+
+    <!-- Trapezoid Shape with Adjustable Sides -->
+    <path
+        android:fillColor="#2196F3"
+        android:strokeColor="#000000"
+        android:strokeWidth="4"
+        android:pathData="M50,0 L150,0 L180,100 L20,100 Z" />
+</vector>
+
+

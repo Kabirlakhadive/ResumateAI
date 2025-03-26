@@ -1,0 +1,12 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.BuildAiResume" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="iconColor">#000000</item>>
+
+    </style>
+
+    <style name="Theme.BuildAiResume" parent="Base.Theme.BuildAiResume" />
+
+
+</resources>
