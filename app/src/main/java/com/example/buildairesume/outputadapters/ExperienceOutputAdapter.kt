@@ -99,7 +99,8 @@ class ExperienceOutputAdapter(
 
         private fun modelCall(experience: Experience, binding: ItemExperienceOutputBinding) {
             val apiKey = BuildConfig.GEMINI_API_KEY
-            val generativeModel = GenerativeModel("gemini-2.0-flash", apiKey)
+            val model = BuildConfig.GEMINI_MODEL
+            val generativeModel = GenerativeModel(model, apiKey)
             val numOfLines = if (itemCount > 2) "1" else "1-2"
 
             Log.d("PDFGeneration", "Item count: $itemCount")

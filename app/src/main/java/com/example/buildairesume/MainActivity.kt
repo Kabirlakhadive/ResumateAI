@@ -1,5 +1,6 @@
 package com.example.buildairesume
 
+import android.animation.ValueAnimator
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -7,9 +8,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -64,16 +68,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupActivity() {
         val welcomeMessages = listOf(
-            "Hi there! I'm ResuMate, ready to guide you through the resume-building process. Tap on 'Edit Resume Information' to get started with AI assistance.",
-            "Welcome! I'm ResuMate, your AI-powered resume assistant. Let's build your personalized resume—tap on 'Edit Resume Information' to begin!",
-            "Hello! I'm ResuMate, here to make resume creation simple. Tap 'Edit Resume Information' to start crafting your perfect resume with AI.",
-            "Hey! I'm ResuMate, your AI resume helper. Let's get started—tap on 'Edit Resume Information' and begin building your resume!",
-            "Greetings! I'm ResuMate, your AI assistant for resumes. Tap 'Edit Resume Information' to create a professional resume effortlessly.",
-            "Welcome! ResuMate here, ready to assist you in building a great resume. Just tap 'Edit Resume Information' to begin!",
-            "Hi! I'm ResuMate, and I'm here to simplify your resume-building journey. Tap on 'Edit Resume Information' to get started!",
-            "Hello there! ResuMate at your service. Let's create an amazing resume together—tap 'Edit Resume Information' to begin.",
-            "Hey! Need a resume? I'm ResuMate, your AI-powered assistant. Tap 'Edit Resume Information' to start building yours today!",
-            "Welcome to ResuMate! I'm here to help you craft a standout resume. Tap on 'Edit Resume Information' to begin the process."
+            "Hi there! I'm ResuMate, ready to guide you through the resume-building process. Tap on 'Edit Resume Information' to get started with AI assistance. Need help? Tap on me anytime!",
+            "Welcome! I'm ResuMate, your AI-powered resume assistant. Let's build your personalized resume—tap on 'Edit Resume Information' to begin! If you're stuck, tap on my icon for a hint.",
+            "Hello! I'm ResuMate, here to make resume creation simple. Tap 'Edit Resume Information' to start crafting your perfect resume with AI. Lost? Just tap on me!",
+            "Hey! I'm ResuMate, your AI resume helper. Let's get started—tap on 'Edit Resume Information' and begin building your resume! If you need guidance, tap my icon anytime.",
+            "Greetings! I'm ResuMate, your AI assistant for resumes. Tap 'Edit Resume Information' to create a professional resume effortlessly. Need a hint? Just tap on my icon!",
+            "Welcome! ResuMate here, ready to assist you in building a great resume. Just tap 'Edit Resume Information' to begin! If you ever feel lost, tap on me for help.",
+            "Hi! I'm ResuMate, and I'm here to simplify your resume-building journey. Tap on 'Edit Resume Information' to get started! Not sure what to do next? Just tap my icon.",
+            "Hello there! ResuMate at your service. Let's create an amazing resume together—tap 'Edit Resume Information' to begin. Stuck? Tap on me for a helpful hint!",
+            "Hey! Need a resume? I'm ResuMate, your AI-powered assistant. Tap 'Edit Resume Information' to start building yours today! If you need a nudge, just tap my icon.",
+            "Welcome to ResuMate! I'm here to help you craft a standout resume. Tap on 'Edit Resume Information' to begin the process. If you're ever unsure, tap on me for guidance!"
         )
         val welcomeBackMessages = listOf(
             "Welcome back! Here’s the resume you created earlier.",
@@ -109,6 +113,7 @@ class MainActivity : AppCompatActivity() {
             binding.btnDownload.visibility = View.GONE
             binding.btnShare.visibility = View.GONE
             binding.welcomeText.height = 600
+            binding.btnChangeTemplate.visibility = View.GONE
             Log.d("MainActivity", "Starting typewriter effect")
             startTypewriterEffect(textView, welcomeText, delayMillis)
         } else {
@@ -116,13 +121,12 @@ class MainActivity : AppCompatActivity() {
             binding.welcomeText.textSize = 16F
             binding.btnDownload.visibility = View.VISIBLE
             binding.btnShare.visibility = View.VISIBLE
-
+            binding.btnChangeTemplate.visibility = View.VISIBLE
             if (intent?.getBooleanExtra("fromTemplateActivity", false) == true) {
                 startTypewriterEffect(textView, afterGenerationText, delayMillis)
             } else {
                 startTypewriterEffect(textView, welcomeBackText, delayMillis)
             }
-
             loadPdfInPdfViewer()
         }
     }
@@ -135,6 +139,8 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+
 
 
     private fun startTypewriterEffect(textView: TextView, fullText: String, delayMillis: Long = 50) {
@@ -168,22 +174,57 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
+    private var isPdfLoaded = false // Track if the PDF is already loaded
+
     private fun loadPdfInPdfViewer() {
         val file = File(filesDir, "resume.pdf")
-        if (file.exists()) {
-            binding.pdfView.postDelayed({
+
+        if (isPdfLoaded) {
+            // If PDF is already loaded, don't show animation again
+            Log.d("MainActivity", "PDF already loaded, skipping animation")
+            return
+        }
+
+        // Show and start the animation
+        binding.loadingAnim.apply {
+            visibility = View.VISIBLE
+            setMinFrame(0)
+            setMaxFrame(30)
+            speed = 2f
+
+            val animator = ValueAnimator.ofFloat(0f, 1f).apply {
+                duration = 600
+                interpolator = LinearInterpolator()
+                repeatMode = ValueAnimator.REVERSE
+                repeatCount = ValueAnimator.INFINITE
+                addUpdateListener { animation ->
+                    progress = animation.animatedValue as Float
+                }
+                start()
+            }
+
+            // Stop animation after 3 seconds, then load the PDF
+            Handler(Looper.getMainLooper()).postDelayed({
+                animator.cancel()
+                visibility = View.GONE
+
                 if (file.exists()) {
                     binding.pdfView.fromFile(file)
                         .enableDoubletap(true)
                         .defaultPage(0)
                         .load()
+
+                    isPdfLoaded = true // Mark PDF as loaded
                 } else {
                     Log.e("MainActivity", "PDF file not found!")
-                    Toast.makeText(this, "No resume found!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "No resume found!", Toast.LENGTH_SHORT).show()
                 }
-            }, 3000)
+            }, 3000) // Animation runs for 3 seconds before showing the PDF
         }
     }
+
+
 
 
     private fun loadUserData() {

@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/nav_objective_output"
-        android:icon="@drawable/icon_profile"
+        android:icon="@drawable/icon_objective"
         android:title="Objective" />
 
     <item
         android:id="@+id/nav_projects_output"
-        android:icon="@drawable/icon_skills"
+        android:icon="@drawable/icon_projects"
         android:title="Projects" />
 
     <item
         android:id="@+id/nav_experience_output"
-        android:icon="@drawable/icon_links"
+        android:icon="@drawable/icon_experience"
         android:title="Experience" />
 
 </menu>

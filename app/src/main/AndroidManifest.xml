@@ -62,5 +62,10 @@
         <meta-data
             android:name="com.example.buildairesume.GEMINI_API_KEY"
             android:value="${GEMINI_API_KEY}" />
+
+        <meta-data
+            android:name="com.example.buildairesume.GEMINI_MODEL"
+            android:value="${GEMINI_MODEL}"/>
+        
     </application>
 </manifest>

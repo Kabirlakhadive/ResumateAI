@@ -15,6 +15,8 @@ import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.core.animation.doOnEnd
 import androidx.lifecycle.lifecycleScope
 import com.example.buildairesume.dao.ExperienceDao
 import com.example.buildairesume.dao.ProjectDao
@@ -140,7 +142,9 @@ class OutputActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
+        binding.lottieAnimCard.setOnClickListener{
+            showChat()
+        }
         binding.fabNext.setOnClickListener {
             scrollToNextCard()
         }
@@ -195,6 +199,31 @@ class OutputActivity : AppCompatActivity() {
 
     }
 
+    private fun showChat() {
+        val chatCard = binding.formActivityChatCard
+
+        chatCard.apply {
+
+            alpha = 0f // Start from invisible
+            animate()
+                .alpha(1f) // Fade in
+                .setDuration(200) // Smooth fade-in over 200ms
+                .start()
+        }
+
+        lifecycleScope.launch {
+            delay(4000) // Wait for 4 seconds before fading out
+
+            withContext(Dispatchers.Main) {
+                chatCard.animate()
+                    .alpha(0f) // Fade out
+                    .setDuration(400) // Smooth fade-out over 400ms
+                    .start()
+            }
+        }
+    }
+
+
     private var typewriterJob: Job? = null
 
     private fun startTypewriterEffect(
@@ -202,30 +231,55 @@ class OutputActivity : AppCompatActivity() {
         fullText: String,
         delayMillis: Long = 50
     ) {
-        // Cancel any ongoing typing animation before starting a new one
         typewriterJob?.cancel()
+        textView.text = "" // Clear text initially
 
-        textView.text = "" // Clear the text initially
+        val chatCard = binding.formActivityChatCard
+        chatCard.alpha = 1f // Ensure it's fully visible at the start
+
         var currentIndex = 0
-
         binding.lottieAnim.speed = 2F
-
 
         typewriterJob = lifecycleScope.launch {
             while (currentIndex < fullText.length) {
-                val nextStep =
-                    if (Random.nextBoolean()) 1 else Random.nextInt(2, 5) // Type letters or words
-                val endIndex =
-                    (currentIndex + nextStep).coerceAtMost(fullText.length) // Ensure we don’t exceed text length
+                val nextStep = if (Random.nextBoolean()) 1 else Random.nextInt(2, 5)
+                val endIndex = (currentIndex + nextStep).coerceAtMost(fullText.length)
 
                 textView.text = fullText.substring(0, endIndex)
                 currentIndex = endIndex
 
-                delay(delayMillis + Random.nextLong(10, 50)) // Vary typing speed slightly
+                delay(delayMillis + Random.nextLong(10, 50))
             }
             binding.lottieAnim.speed = 0.5F
+
+            // Wait 2 seconds before fading out
+            delay(4000)
+
+            withContext(Dispatchers.Main) {
+                chatCard.animate()
+                    .alpha(0f)
+                    .setDuration(500) // Smooth fade-out
+                    .start()
+            }
         }
     }
+
+    // Function to collapse the chat card smoothly
+    private fun collapseChatCard() {
+        val chatCard = binding.formActivityChatCard
+        val collapseAnim = ValueAnimator.ofInt(chatCard.width, 0).apply {
+            duration = 500
+            addUpdateListener { animation ->
+                val value = animation.animatedValue as Int
+                val params = chatCard.layoutParams
+                params.width = value
+                chatCard.layoutParams = params
+            }
+        }
+        collapseAnim.start()
+    }
+
+
 
     private suspend fun callAIWithRetry(
         prompt: String,
@@ -233,8 +287,9 @@ class OutputActivity : AppCompatActivity() {
     ): String {
 
         val apiKey = BuildConfig.GEMINI_API_KEY
+        val model = BuildConfig.GEMINI_MODEL
         val generativeModel =
-            GenerativeModel("gemini-2.0-flash", apiKey)
+            GenerativeModel(model, apiKey)
         var outputText = "AI generation failed. Check internet connection."
 
         return withContext(Dispatchers.IO) {

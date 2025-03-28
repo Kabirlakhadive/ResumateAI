@@ -2,7 +2,6 @@ package com.example.buildairesume
 
 import android.R
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -12,8 +11,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -101,6 +98,11 @@ class FormActivity : AppCompatActivity() {
         startTypewriterEffect(chatText, welcomeTextList.random(), 50)
 
         setupNavigationRail()
+
+        binding.lottieAnimCard.setOnClickListener{
+            showChat()
+        }
+
         setupSpinner()
 
         binding.mainScrollView?.setOnTouchListener { _, event ->
@@ -120,6 +122,31 @@ class FormActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun showChat() {
+        val chatCard = binding.formActivityChatCard
+
+        chatCard.apply {
+
+            alpha = 0f // Start from invisible
+            animate()
+                .alpha(1f) // Fade in
+                .setDuration(200) // Smooth fade-in over 200ms
+                .start()
+        }
+
+        lifecycleScope.launch {
+            delay(4000) // Wait for 4 seconds before fading out
+
+            withContext(Dispatchers.Main) {
+                chatCard.animate()
+                    .alpha(0f) // Fade out
+                    .setDuration(400) // Smooth fade-out over 400ms
+                    .start()
+            }
+        }
+    }
+
 
     private fun getSectionText(index: Int): String {
         val messages = when (index) {
@@ -196,29 +223,38 @@ class FormActivity : AppCompatActivity() {
     private fun startTypewriterEffect(
         textView: TextView,
         fullText: String,
-        delayMillis: Long = 30
+        delayMillis: Long = 50
     ) {
-        // Cancel any ongoing typing animation before starting a new one
         typewriterJob?.cancel()
+        textView.text = "" // Clear text initially
 
-        textView.text = "" // Clear the text initially
+        val chatCard = binding.formActivityChatCard
+        chatCard.alpha = 1f // Ensure it's fully visible at the start
+
         var currentIndex = 0
-
         binding.lottieAnim.speed = 2F
 
         typewriterJob = lifecycleScope.launch {
             while (currentIndex < fullText.length) {
-                val nextStep =
-                    if (Random.nextBoolean()) 1 else Random.nextInt(2, 5) // Type letters or words
-                val endIndex =
-                    (currentIndex + nextStep).coerceAtMost(fullText.length) // Ensure we don’t exceed text length
+                val nextStep = if (Random.nextBoolean()) 1 else Random.nextInt(2, 5)
+                val endIndex = (currentIndex + nextStep).coerceAtMost(fullText.length)
 
                 textView.text = fullText.substring(0, endIndex)
                 currentIndex = endIndex
 
-                delay(delayMillis + Random.nextLong(10, 50)) // Vary typing speed slightly
+                delay(delayMillis + Random.nextLong(10, 50))
             }
             binding.lottieAnim.speed = 0.5F
+
+            // Wait 2 seconds before fading out
+            delay(4000)
+
+            withContext(Dispatchers.Main) {
+                chatCard.animate()
+                    .alpha(0f)
+                    .setDuration(500) // Smooth fade-out
+                    .start()
+            }
         }
     }
 
