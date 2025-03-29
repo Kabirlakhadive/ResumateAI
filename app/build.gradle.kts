@@ -92,6 +92,12 @@ dependencies {
 
     implementation("androidx.room:room-runtime:$room_version")
 
+    implementation ("androidx.drawerlayout:drawerlayout:1.2.0")
+    implementation ("com.google.android.material:material:1.11.0")
+
+
+    implementation("androidx.core:core-splashscreen:1.0.0")
+
     // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
     // See Add the KSP plugin to your project
     ksp("androidx.room:room-compiler:$room_version")
