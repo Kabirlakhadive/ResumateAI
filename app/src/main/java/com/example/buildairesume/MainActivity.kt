@@ -54,6 +54,33 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val drawer_layout = binding.drawerLayout
+        val menu_button = binding.btnMenu
+        val navigation_view = binding.navigationView
+
+        menu_button.setOnClickListener {
+            drawer_layout.openDrawer(navigation_view)
+        }
+
+        navigation_view.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_about -> {
+                    // Handle home navigation
+                    true}
+                R.id.nav_github ->{
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Kabirlakhadive/ResumateAI/tree/main"))
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_feedback ->{
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLScK2NCsX4Ih4tBI7NHyzUf-AqzFyAr3nbK05IIydbwCoCJwYA/viewform?usp=header"))
+                    startActivity(intent)
+                    true
+                }
+                else -> {false}
+            }
+        }
+
         database = UserData.getInstance(this)
         loadUserData()
         setupClickListeners()

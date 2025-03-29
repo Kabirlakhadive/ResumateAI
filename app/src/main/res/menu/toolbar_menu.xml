@@ -3,10 +3,19 @@
     <item
         android:id="@+id/nav_about"
         android:title="About Me"
+        android:icon="@drawable/icon_profile"
+
         />
     <item
         android:id="@+id/nav_github"
         android:title="Github"
+        android:icon="@drawable/icon_github"
         />
+    <item
+        android:id="@+id/nav_feedback"
+        android:title="Feedback"
+        android:icon="@drawable/icon_feedback"
+        />
+
 
 </menu>

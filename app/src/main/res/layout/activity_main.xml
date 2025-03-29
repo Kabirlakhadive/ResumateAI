@@ -26,10 +26,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
+            android:id="@+id/btn_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="none"
+            android:background="@drawable/small_button"
             android:padding="8dp"
             android:src="@drawable/icon_menu"
             app:layout_constraintEnd_toEndOf="parent"
@@ -189,4 +190,11 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Navigation Drawer (Side Menu) -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        app:menu="@menu/toolbar_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>
