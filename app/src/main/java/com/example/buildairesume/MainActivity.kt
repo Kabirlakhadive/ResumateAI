@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun doesFileExists(context: Context): Boolean {
+    private fun doesFileExists(context: Context): Boolean {
         val fileName = "resume.pdf"
         val file = File(context.filesDir, fileName) // Internal storage
         return file.exists()
@@ -211,6 +211,9 @@ class MainActivity : AppCompatActivity() {
             // If PDF is already loaded, don't show animation again
             Log.d("MainActivity", "PDF already loaded, skipping animation")
             return
+        }
+        else if(!doesFileExists(this)){
+
         }
 
         // Show and start the animation
@@ -244,6 +247,8 @@ class MainActivity : AppCompatActivity() {
 
                     isPdfLoaded = true // Mark PDF as loaded
                 } else {
+                    animator.cancel()
+                    visibility = View.GONE
                     Log.e("MainActivity", "PDF file not found!")
                     Toast.makeText(this@MainActivity, "No resume found!", Toast.LENGTH_SHORT).show()
                 }
