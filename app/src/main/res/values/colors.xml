@@ -24,17 +24,17 @@
 
     <!-- Primary Color (Core branding color) -->
     <!-- Material Blue 700 -->
-    <color name="colorPrimary">#FF1976D2</color>
+    <color name="colorPrimary">#90CAF9</color>
     <!-- Material Blue 900 (Darker shade for status bars, etc.) -->
-    <color name="colorPrimaryVariant">#FF0D47A1</color>
+    <color name="colorPrimaryVariant">#4FC3F7</color>
     <!-- White text/icons provide good contrast on Primary -->
     <color name="colorOnPrimary">#FFFFFFFF</color>
 
     <!-- Secondary Color (Accent color for FABs, sliders, highlights) -->
     <!-- Material Blue A200 -->
-    <color name="colorSecondary">#FF448AFF</color>
+    <color name="colorSecondary">#BBDEFB</color>
     <!-- Material Blue A700 (Darker shade, rarely used directly in UI) -->
-    <color name="colorSecondaryVariant">#FF2962FF</color>
+    <color name="colorSecondaryVariant">#448AFF</color>
     <!-- Black text/icons provide much better contrast (9.8:1) on Secondary (#448AFF) than White (2.1:1) -->
     <color name="colorOnSecondary">#FF000000</color> <!-- CHANGED FROM WHITE FOR ACCESSIBILITY -->
 

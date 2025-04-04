@@ -31,9 +31,9 @@
 
     <!-- Secondary Color (Accent color, lighter for dark theme) -->
     <!-- Material Blue A100 -->
-    <color name="colorSecondary">#FF82B1FF</color>
+    <color name="colorSecondary">#FF90CAF9</color>
     <!-- Secondary Variant (Often same as Secondary in dark theme) -->
-    <color name="colorSecondaryVariant">#FF82B1FF</color>
+    <color name="colorSecondaryVariant">#FF42A5F5</color>
     <!-- Black text provides good contrast (12.86:1) on Secondary -->
     <color name="colorOnSecondary">#FF000000</color>
 
