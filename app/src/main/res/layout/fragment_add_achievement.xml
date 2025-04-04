@@ -10,12 +10,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="New Achievement"
-        android:textSize="32sp" />
+        style="@style/AddCardTitle"
+         />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        >
 
 
         <com.google.android.material.textfield.TextInputEditText
@@ -30,7 +31,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+
         android:hint="Achievement Description">
 
 
@@ -58,17 +59,26 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnAdd"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add"
-        style="@style/CardItemAddButton" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        style="@style/CardItemCancelButton" />
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:layout_marginStart="4dp" />
+
+    </LinearLayout>
 </LinearLayout>

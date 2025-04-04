@@ -6,16 +6,16 @@
     android:padding="16dp">
 
     <TextView
+        style="@style/AddCardTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add New Experience"
-        style="@style/CardTitle" />
+        android:text="Add New Experience" />
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/CardAddItemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Company Name"
-        style="@style/CardAddItemEditText">
+        android:hint="Company Name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etCompanyName"
@@ -24,38 +24,38 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/CardAddItemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Start Date"
-        style="@style/CardAddItemEditText">
+        android:hint="Start Date">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_start_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:drawableEnd="@drawable/icon_menu_calendar" />
+            android:drawableEnd="@drawable/icon_menu_calendar"
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/CardAddItemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="End Date"
-        style="@style/CardAddItemEditText">
+        android:hint="End Date">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_end_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:drawableEnd="@drawable/icon_menu_calendar" />
+            android:drawableEnd="@drawable/icon_menu_calendar"
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/CardAddItemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Position"
-        style="@style/CardAddItemEditText">
+        android:hint="Position">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_position"
@@ -64,10 +64,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/CardAddItemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Describe your experience"
-        style="@style/CardAddItemEditText">
+        android:hint="Describe your experience">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_description"
@@ -77,18 +77,28 @@
             android:minLines="2" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnAdd"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add"
-        style="@style/CardItemAddButton" />
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        style="@style/CardItemRemoveButton" />
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:layout_marginStart="4dp" />
+
+    </LinearLayout>
 
 </LinearLayout>

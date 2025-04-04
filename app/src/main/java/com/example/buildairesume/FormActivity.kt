@@ -82,6 +82,7 @@ class FormActivity : AppCompatActivity() {
             }
         }
 
+
         binding.fabNext.setOnClickListener {
             Log.d("kabir", "FAB Next Button pressed")
             scrollToNextCard()

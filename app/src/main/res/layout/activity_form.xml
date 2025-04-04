@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="start"
-        android:background="?attr/colorSurface"
+        android:background="@color/colorBackground"
         app:layout_constraintBottom_toTopOf="@id/btn_submit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -96,7 +96,7 @@
             <!--- Personal Information -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_personal_information"
-                style="@style/Card"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
@@ -115,14 +115,15 @@
                         android:layout_margin="10dp"
                         android:paddingBottom="16dp"
                         android:text="Personal Information"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        style="@style/CardTitle"/>
 
                     <!-- Name Input -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        app:boxStrokeColor="@color/black">
+                        >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_name"
@@ -137,7 +138,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        app:boxStrokeColor="@color/black">
+                        >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_email"
@@ -152,7 +153,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        app:boxStrokeColor="@color/black">
+                        >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_phone"
@@ -167,7 +168,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        app:boxStrokeColor="@color/black">
+                        >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_address"
@@ -183,7 +184,7 @@
                         android:layout_height="62dp"
                         android:layout_margin="10dp"
                         android:hint="Select Job Profile (Optional)"
-                        app:boxStrokeColor="@color/black">
+                        >
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
                             android:id="@+id/spinner_job_profile"
@@ -199,7 +200,7 @@
             <!--- Skills -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_skills"
-                style="@style/Card"
+
                 android:layout_width="match_parent"
                 android:layout_height="650dp"
                 android:layout_marginVertical="10dp"
@@ -250,7 +251,7 @@
             <!--- Links -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_links"
-                style="@style/Card"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
@@ -277,7 +278,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        app:boxStrokeColor="@color/black">
+                        >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_linkedin"
@@ -291,7 +292,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        app:boxStrokeColor="@color/black">
+
+                        >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_github"
@@ -305,7 +307,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        app:boxStrokeColor="@color/black">
+                        >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_website"
@@ -321,7 +323,7 @@
             <!--- Experience -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_experience"
-                style="@style/Card"
+
                 android:layout_width="match_parent"
                 android:layout_height="635dp"
                 android:layout_marginVertical="10dp"
@@ -369,7 +371,7 @@
             <!--- Projects -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_projects"
-                style="@style/Card"
+
                 android:layout_width="match_parent"
                 android:layout_height="635dp"
                 android:layout_marginVertical="10dp"
@@ -416,7 +418,7 @@
             <!--- Achievements -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_certifications"
-                style="@style/Card"
+
                 android:layout_width="match_parent"
                 android:layout_height="635dp"
                 android:layout_marginVertical="10dp"
@@ -502,7 +504,7 @@
             <!--- Education -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_education"
-                style="@style/Card"
+
                 android:layout_width="match_parent"
                 android:layout_height="635dp"
                 android:layout_marginVertical="10dp"
@@ -561,10 +563,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-
+        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/icon_next"
         app:layout_constraintBottom_toTopOf="@id/chat_constraint_view"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Fab.Circle"
+        />
 
     <Button
         android:id="@+id/btn_submit"

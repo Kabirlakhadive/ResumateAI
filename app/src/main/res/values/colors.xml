@@ -7,4 +7,61 @@
     <color name="blue">#1565C0</color> <!-- Deep Blue -->
     <color name="gray">#E0E0E0</color> <!-- Soft Gray -->
 
+    <!-- Custom Colors -->
+    <color name="medium_grey">#FFAAAAAA</color> <!-- Mid-tone gray -->
+    <color name="dark_grey">#FF666666</color>   <!-- Darker gray -->
+
+    <!-- Unused Base Colors (Definitions kept for reference if needed elsewhere) -->
+    <color name="base_red">#FF0000</color>
+    <color name="base_deep_blue">#1565C0</color>
+
+    <!-- ======================================== -->
+    <!-- Light Theme Palette - BLUE BASED         -->
+    <!-- ======================================== -->
+    <!-- References: Material Design 3 Colors (using similar concepts for M2) -->
+    <!-- https://m3.material.io/styles/color/the-color-system/color-roles -->
+    <!-- Using Material Design 2 naming conventions -->
+
+    <!-- Primary Color (Core branding color) -->
+    <!-- Material Blue 700 -->
+    <color name="colorPrimary">#FF1976D2</color>
+    <!-- Material Blue 900 (Darker shade for status bars, etc.) -->
+    <color name="colorPrimaryVariant">#FF0D47A1</color>
+    <!-- White text/icons provide good contrast on Primary -->
+    <color name="colorOnPrimary">#FFFFFFFF</color>
+
+    <!-- Secondary Color (Accent color for FABs, sliders, highlights) -->
+    <!-- Material Blue A200 -->
+    <color name="colorSecondary">#FF448AFF</color>
+    <!-- Material Blue A700 (Darker shade, rarely used directly in UI) -->
+    <color name="colorSecondaryVariant">#FF2962FF</color>
+    <!-- Black text/icons provide much better contrast (9.8:1) on Secondary (#448AFF) than White (2.1:1) -->
+    <color name="colorOnSecondary">#FF000000</color> <!-- CHANGED FROM WHITE FOR ACCESSIBILITY -->
+
+    <!-- Background & Surface Colors (Neutral surfaces) -->
+    <!-- Standard White background -->
+    <color name="colorBackground">#FFFFFFFF</color>
+    <!-- Black text/icons on Background -->
+    <color name="colorOnBackground">#FF000000</color>
+
+    <!-- Standard White surfaces (Cards, Sheets, Menus) -->
+    <color name="colorSurface">#FEFEFE</color>
+    <!-- Black text/icons on Surfaces -->
+    <color name="colorOnSurface">#FF000000</color>
+    <!-- Color for surfaces that need slight visual separation from the background -->
+    <color name="colorSurfaceVariant">#FFEFEFEF</color> <!-- Using Very Light Gray (gray_100) -->
+    <!-- Text/icon color for less prominent elements on surfaces -->
+    <color name="colorOnSurfaceVariant">#FF666666</color> <!-- Using Dark Gray (gray_700) -->
+
+
+    <!-- Error Color (For indicating errors in components like TextFields) -->
+    <!-- Standard Material Error Red (Material Red 700) - Provides clear indication -->
+    <color name="colorError">#D32F2F</color> <!-- CHANGED TO STANDARD RED -->
+    <!-- White text/icons provide good contrast on Error Red -->
+    <color name="colorOnError">#FFFFFFFF</color>
+
+    <!-- Additional Neutral Colors (Optional but useful) -->
+    <!-- Subtle color for outlines, dividers -->
+    <color name="colorOutline">#FFE0E0E0</color> <!-- Using Light Gray (gray_300) -->
+
 </resources>

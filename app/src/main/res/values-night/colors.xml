@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Basic Colors (Definitions remain the same, usage changes) -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#FF0000</color>
+    <color name="blue">#1565C0</color> <!-- Deep Blue -->
+    <color name="gray">#E0E0E0</color> <!-- Soft Gray -->
+
+    <!-- Custom Colors (May need adjustment based on usage in dark theme) -->
+
+
+    <color name="base_red">#FF0000</color>
+    <color name="base_deep_blue">#1565C0</color>
+
+    <!-- ======================================== -->
+    <!-- Dark Theme Palette - BLUE BASED          -->
+    <!-- ======================================== -->
+    <!-- References: Material Design Colors (using similar concepts for M2) -->
+    <!-- Dark themes use lighter, less saturated colors for Primary/Secondary -->
+    <!-- On-colors are typically Black for light primaries/secondaries -->
+
+    <!-- Primary Color (Core branding color, lighter for dark theme) -->
+    <!-- Material Blue 200 -->
+    <color name="colorPrimary">#FF90CAF9</color>
+    <!-- Primary Variant (Often the light theme primary or a similar mid-tone) -->
+    <!-- Material Blue 400 (Original) - Could also use Light Theme Primary (#1976D2) -->
+    <color name="colorPrimaryVariant">#FF42A5F5</color>
+    <!-- Black text provides good contrast (11.88:1) on Primary -->
+    <color name="colorOnPrimary">#FF000000</color>
+
+    <!-- Secondary Color (Accent color, lighter for dark theme) -->
+    <!-- Material Blue A100 -->
+    <color name="colorSecondary">#FF82B1FF</color>
+    <!-- Secondary Variant (Often same as Secondary in dark theme) -->
+    <color name="colorSecondaryVariant">#FF82B1FF</color>
+    <!-- Black text provides good contrast (12.86:1) on Secondary -->
+    <color name="colorOnSecondary">#FF000000</color>
+
+    <!-- Background & Surface Colors (Standard Material Dark) -->
+    <!-- Standard Dark Background -->
+    <color name="colorBackground">#FF121212</color> <!-- gray_1000 -->
+    <!-- White text/icons on Background -->
+    <color name="colorOnBackground">#FFFFFFFF</color>
+
+    <!-- Slightly lighter dark surface (Cards, Sheets, Menus) -->
+    <!-- Standard Material approach uses overlays; #1E1E1E is common approximation -->
+    <color name="colorSurface">#FF1E1E1E</color> <!-- Between gray_900 and gray_1000 -->
+    <!-- White text/icons on Surfaces. -->
+    <!-- Note: Consider using ~87% white (#E0FFFFFF) for less eye strain on large text blocks -->
+    <color name="colorOnSurface">#FFFFFFFF</color>
+    <!-- Color for surfaces needing slight visual separation (e.g., slightly lighter gray or overlay) -->
+    <color name="colorSurfaceVariant">#FF343434</color> <!-- Using gray_800 -->
+    <!-- Text/icon color for less prominent elements (medium-emphasis white) -->
+    <color name="colorOnSurfaceVariant">#B3FFFFFF</color> <!-- 70% White -->
+
+    <!-- Error Color (Standard dark theme error color - Light Red/Pink) -->
+    <!-- Material Default Dark Error: #CF6679 -->
+    <color name="colorError">#FFCF6679</color> <!-- CHANGED TO STANDARD DARK ERROR RED -->
+    <!-- Black text provides better contrast (5.05:1) than white (4.15:1) on #CF6679 -->
+    <color name="colorOnError">#FF000000</color> <!-- KEPT BLACK for better contrast -->
+
+    <!-- Additional Neutral Colors (Optional but useful for dark themes) -->
+    <!-- Subtle color for outlines, dividers (often low-opacity white) -->
+    <color name="colorOutline">#1FFFFFFF</color> <!-- 12% White -->
+
+
+</resources>

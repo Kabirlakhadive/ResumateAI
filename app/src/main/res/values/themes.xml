@@ -1,8 +1,48 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.BuildAiResume" parent="Theme.Material3.DayNight.NoActionBar">
 
+
         <item name="iconColor">#000000</item>>
+
+
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.OutlinedBox.Rounded</item>
+
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- Darker variant of the primary brand color. -->
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <!-- Text color for elements displayed on top of the primary color. -->
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <!-- Darker variant of the secondary brand color. -->
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <!-- Text color for elements displayed on top of the secondary color. -->
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/colorBackground</item>
+        <!-- You can uncomment and customize the status bar color if needed -->
+
+        <!-- Background color for the app -->
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <!-- Text color for elements displayed on top of the background color. -->
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+
+        <!-- Surface color for components like cards, sheets, and menus. -->
+        <item name="colorSurface">@color/colorSurface</item>
+        <!-- Text color for elements displayed on top of the surface color. -->
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+
+        <!-- Error color for indicating errors in components like TextFields. -->
+        <item name="colorError">@color/colorError</item>
+        <!-- Text color for elements displayed on top of the error color. -->
+        <item name="colorOnError">@color/colorOnError</item>
+
+        <item name="colorSecondaryContainer">@color/colorSecondary</item>
 
     </style>
 

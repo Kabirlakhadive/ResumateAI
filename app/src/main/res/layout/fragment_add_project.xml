@@ -2,20 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
+        style="@style/AddCardTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add New Project"
-        style="@style/CardTitle" />
+        android:text="Add New Project" />
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/CardAddItemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Project Title"
-        style="@style/CardAddItemEditText">
+        android:hint="Project Title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etTitle"
@@ -24,10 +24,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/CardAddItemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Description"
-        style="@style/CardAddItemEditText">
+        android:hint="Description">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etDescription"
@@ -36,10 +36,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/CardAddItemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tech Stack"
-        style="@style/CardAddItemEditText">
+        android:hint="Tech Stack">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etTechStack"
@@ -47,18 +47,28 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnAdd"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add"
-        style="@style/CardItemAddButton" />
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        style="@style/CardItemCancelButton" />
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:layout_marginStart="4dp" />
+
+    </LinearLayout>
 
 </LinearLayout>

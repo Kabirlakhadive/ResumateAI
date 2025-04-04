@@ -201,61 +201,81 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private var isPdfLoaded = false // Track if the PDF is already loaded
 
     private fun loadPdfInPdfViewer() {
         val file = File(filesDir, "resume.pdf")
 
         if (isPdfLoaded) {
-            // If PDF is already loaded, don't show animation again
-            Log.d("MainActivity", "PDF already loaded, skipping animation")
+            // If PDF is already loaded, don't show animation or reload
+            Log.d("MainActivity", "PDF already loaded, skipping animation and load.")
             return
         }
-        else if(!doesFileExists(this)){
 
-        }
+        // *** Check if the file exists BEFORE starting the animation ***
+        if (file.exists()) {
+            // File exists: Show animation, then load PDF
+            Log.d("MainActivity", "PDF file found. Starting loading animation.")
 
-        // Show and start the animation
-        binding.loadingAnim.apply {
-            visibility = View.VISIBLE
-            setMinFrame(0)
-            setMaxFrame(30)
-            speed = 2f
+            binding.loadingAnim.apply {
+                visibility = View.VISIBLE
+                setMinFrame(0)
+                setMaxFrame(30)
+                speed = 2f
 
-            val animator = ValueAnimator.ofFloat(0f, 1f).apply {
-                duration = 600
-                interpolator = LinearInterpolator()
-                repeatMode = ValueAnimator.REVERSE
-                repeatCount = ValueAnimator.INFINITE
-                addUpdateListener { animation ->
-                    progress = animation.animatedValue as Float
+                // Use playAnimation() for Lottie for continuous looping if desired,
+                // or manage with ValueAnimator as you did. Sticking to your ValueAnimator approach:
+                val animator = ValueAnimator.ofFloat(0f, 1f).apply {
+                    duration = 600 // Duration of one loop cycle
+                    interpolator = LinearInterpolator()
+                    repeatMode = ValueAnimator.REVERSE
+                    repeatCount = ValueAnimator.INFINITE
+                    addUpdateListener { animation ->
+                        progress = animation.animatedValue as Float
+                    }
+                    start()
                 }
-                start()
-            }
 
-            // Stop animation after 3 seconds, then load the PDF
-            Handler(Looper.getMainLooper()).postDelayed({
-                animator.cancel()
-                visibility = View.GONE
+                // Assign the animator to the view's tag so we can easily cancel it later
+                tag = animator // Store animator reference
 
-                if (file.exists()) {
+                // Stop animation after 3 seconds, then load the PDF
+                Handler(Looper.getMainLooper()).postDelayed({
+                    // Retrieve the animator from the tag and cancel it
+                    (tag as? ValueAnimator)?.cancel()
+                    visibility = View.GONE // Hide the animation view
+
+                    // Load the PDF (we already confirmed file exists)
                     binding.pdfView.fromFile(file)
                         .enableDoubletap(true)
                         .defaultPage(0)
+                        // Optional: Add callbacks for load completion or errors
+                        .onLoad { pages ->
+                            Log.d("MainActivity", "PDF loaded successfully. Pages: $pages")
+                            isPdfLoaded = true // Mark PDF as loaded AFTER successful load
+                        }
+                        .onError { throwable ->
+                            Log.e("MainActivity", "Error loading PDF", throwable)
+                            Toast.makeText(this@MainActivity, "Error loading resume.", Toast.LENGTH_SHORT).show()
+                            isPdfLoaded = false // Ensure flag is false on error
+                        }
                         .load()
 
-                    isPdfLoaded = true // Mark PDF as loaded
-                } else {
-                    animator.cancel()
-                    visibility = View.GONE
-                    Log.e("MainActivity", "PDF file not found!")
-                    Toast.makeText(this@MainActivity, "No resume found!", Toast.LENGTH_SHORT).show()
-                }
-            }, 3000) // Animation runs for 3 seconds before showing the PDF
+                    Log.d("MainActivity", "PDF loading initiated.")
+
+                }, 3000) // Animation runs for 3 seconds before showing the PDF
+            }
+        } else {
+            // File does NOT exist: Show error message, do not start animation
+            Log.e("MainActivity", "PDF file not found! Cannot load.")
+
+            // Ensure animation view is hidden
+            binding.loadingAnim.visibility = View.GONE
+            // Ensure PDF view is also cleared/hidden if necessary
+            // binding.pdfView.recycle() // If it holds a previous pdf
+            // binding.pdfView.visibility = View.GONE // Or hide it
         }
     }
-
 
 
 
@@ -292,7 +312,7 @@ class MainActivity : AppCompatActivity() {
         val sourceFile = File(context.filesDir, "resume.pdf")
 
         if (!sourceFile.exists()) {
-            Toast.makeText(context, "Resume file not found!", Toast.LENGTH_SHORT).show()
+
             return
         }
 
@@ -345,7 +365,6 @@ class MainActivity : AppCompatActivity() {
         val file = File(context.filesDir, "resume.pdf")
         Log.d("MainActivityy", "File path: ${file.absolutePath}")
         if (!file.exists()) {
-            Toast.makeText(context, "Resume file not found!", Toast.LENGTH_SHORT).show()
             return
         }
         Log.d("MainActivityy", "File exists: ${file.exists()}")
