@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private var userProfile: UserProfile? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
@@ -167,9 +169,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-
     private fun startTypewriterEffect(textView: TextView, fullText: String, delayMillis: Long = 50) {
         textView.text = "" // Clear the text initially
         var currentIndex = 0
@@ -192,7 +191,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
 
     private fun doesFileExists(context: Context): Boolean {
         val fileName = "resume.pdf"

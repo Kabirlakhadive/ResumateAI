@@ -16,9 +16,7 @@
         app:layout_constraintBottom_toTopOf="@id/btn_submit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/input_nav_menu"
-
-        />
+        app:menu="@menu/input_nav_menu" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_constraint_view"

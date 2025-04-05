@@ -25,6 +25,7 @@
     "bottomMargin" : 30,
     "leftMargin": 30
   },
+  "dateFormat": "MMM yyyy",
   "objective": {
     "heading": true
   },
@@ -33,12 +34,11 @@
     "size": 32,
     "alignment": "left",
     "color": "#000000",
-    "marginBottom": 0.05,
-    "marginTop": 0.05,
+    "marginBottom": 5,
+    "marginTop": 5,
     "background": "#FFFFFF",
     "line": false
   },
-  "dateFormat": "MMM yyyy",
   "contact": {
     "separator": "  |  ",
     "backgroundColor": true,
@@ -48,7 +48,6 @@
     "paddingHorizontal": 0,
     "alignment": "left",
     "font": "FunnelDisplay-Regular.ttf",
-    "size": 12,
     "color": "#000000"
   },
   "headings": {

@@ -106,40 +106,65 @@ class OutputActivity : AppCompatActivity() {
                 }
             }
         }
+
         binding.btnSave.setOnClickListener {
+            // Show loading/progress indicator
+            binding.progressBarSaving.visibility = View.VISIBLE // Add a ProgressBar with id progressBarSaving to your layout
+            binding.btnSave.isEnabled = false // Disable button during save
+
             val updatedProjects = projectAdapter.getUpdatedProjects()
             val updatedExperiences = experienceAdapter.getUpdatedExperiences()
+            // Get the potentially edited objective text
+            val updatedObjective = binding.etObjective.text.toString() // <-- Get updated objective
 
-            lifecycleScope.launch(Dispatchers.IO) {
+            lifecycleScope.launch { // Launch a coroutine
+                var success = false
                 try {
-                    projectDao.updateProjects(updatedProjects)
-                    experienceDao.updateExperiences(updatedExperiences)
+                    // Perform database operations on IO thread
+                    withContext(Dispatchers.IO) {
+                        projectDao.updateProjects(updatedProjects)
+                        experienceDao.updateExperiences(updatedExperiences)
 
-                    withContext(Dispatchers.Main) {
+                        // Also save the updated objective back to UserProfile
+                        val currentUserProfile = userProfileDao.getUser() // Fetch current profile
+                        currentUserProfile?.let { profile ->
+                            profile.objective = updatedObjective // Update the objective field
+                            userProfileDao.insertOrUpdate(profile) // Save the updated profile
+                        }
+                        success = true // Mark as successful
+                    }
+
+                    // After IO operations, switch back to Main thread for UI updates and navigation
+                    if (success) {
                         Toast.makeText(
                             this@OutputActivity,
                             "Changes saved successfully!",
                             Toast.LENGTH_SHORT
                         ).show()
-
-                        // Refresh adapters to reflect changes
-                        projectAdapter.notifyDataSetChanged()
-                        experienceAdapter.notifyDataSetChanged()
-                    }
-                } catch (e: Exception) {
-                    Log.e("Database Update", "Error updating projects/experiences", e)
-                    withContext(Dispatchers.Main) {
+                        // Start TemplateActivity AFTER saving is complete
+                        val intent = Intent(this@OutputActivity, TemplateActivity::class.java)
+                        startActivity(intent)
+                    } else {
                         Toast.makeText(
                             this@OutputActivity,
                             "Failed to save changes!",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+
+                } catch (e: Exception) {
+                    Log.e("Database Update", "Error updating projects/experiences/objective", e)
+                    Toast.makeText(
+                        this@OutputActivity,
+                        "Failed to save changes!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } finally {
+                    // Ensure UI updates happen on the Main thread
+                    binding.progressBarSaving.visibility = View.GONE // Hide loading
+                    binding.btnSave.isEnabled = true // Re-enable button
                 }
             }
-
-            val intent = Intent(this, TemplateActivity::class.java)
-            startActivity(intent)
         }
 
         binding.lottieAnimCard.setOnClickListener{

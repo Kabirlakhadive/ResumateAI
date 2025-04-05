@@ -267,88 +267,169 @@ class FormActivity : AppCompatActivity() {
 
     private fun scrollToNextCard() {
         Log.d("kabir", "scrollToNextCard called")
-        val scrollView = binding.mainScrollView
-        val container = binding.mainLinearLayout
+        val scrollView = binding.mainScrollView ?: return // Exit if scrollview is null
+        val container = binding.mainLinearLayout ?: return // Exit if container is null
         val childCount = container.childCount
 
         Log.d("kabir", "Child count: $childCount")
+        if (childCount <= 1) return // Nothing to scroll to
+
         var currentCardIndex = -1
+        val scrollY = scrollView.scrollY
+        val viewHeight = scrollView.height
 
-        // Find the card that is currently snapped at the top
+        // --- Find the card currently most prominent ---
+        // Find the card whose top edge is closest to the top of the viewport,
+        // but prioritize cards currently within the top half of the screen.
+        var minTopDistance = Int.MAX_VALUE
         for (i in 0 until childCount) {
-            Log.d("kabir", "Checking card index: $i")
             val cardView = container.getChildAt(i)
-            Log.d("kabir", "Card top: ${cardView.top}, ScrollY: ${scrollView.scrollY}")
+            val cardTop = cardView.top
+            val distance = abs(scrollY - cardTop)
 
-            if (Math.abs(scrollView.scrollY - cardView.top) < scrollView.height / 2.8) {
-                currentCardIndex = i
-                break
+            // Check if the card top is within roughly the top 60% of the viewport
+            // This is a bit more generous than before to find the "current" card
+            // even if not perfectly snapped.
+            if (cardTop >= scrollY - viewHeight * 0.1 && cardTop < scrollY + viewHeight * 0.6) {
+                if (distance < minTopDistance) {
+                    minTopDistance = distance
+                    currentCardIndex = i
+                }
             }
         }
 
-        Log.d("kabir", "Current card index: $currentCardIndex")
+        // Fallback: If no card was found in the preferred zone, find the one whose
+        // top is strictly closest to the current scrollY.
+        if (currentCardIndex == -1) {
+            for (i in 0 until childCount) {
+                val cardView = container.getChildAt(i)
+                val distance = abs(scrollY - cardView.top)
+                if (distance < minTopDistance) {
+                    minTopDistance = distance
+                    currentCardIndex = i
+                }
+            }
+        }
+
+        Log.d("kabir", "Determined current card index: $currentCardIndex")
 
         // Scroll to the next card if it exists
-        if (currentCardIndex in 0 until childCount - 1) {
+        if (currentCardIndex != -1 && currentCardIndex < childCount - 1) {
             val nextCardIndex = currentCardIndex + 1
-            val nextCard = container.getChildAt(nextCardIndex)
+            val nextCard = container.getChildAt(nextCardIndex) ?: return // Safety check
 
-            // 🔹 Smooth scroll and update NavigationRail AFTER animation finishes
+            // Smooth scroll and update NavigationRail/Chat AFTER animation finishes
             scrollView.post {
-                scrollView.smoothScrollTo(0, nextCard.top - 20)
+                // Using a fixed offset for a little padding above the card
+                val targetScrollY = nextCard.top - 20 // Adjust '20' as needed (DP preferably)
+                scrollView.smoothScrollTo(0, targetScrollY)
 
+                // Delay updates until the smooth scroll likely settles
                 scrollView.postDelayed({
-                    updateNavigationRailSelection(nextCardIndex) // Update after scrolling
-
-                    // 🔹 Update and animate the chat text based on the new section
+                    updateNavigationRailSelection(nextCardIndex) // Update NavRail
                     val sectionText = getSectionText(nextCardIndex)
-                    startTypewriterEffect(chatText, sectionText)
+                    startTypewriterEffect(chatText, sectionText) // Update Chat
 
-                }, 300) // Adjust delay based on smoothScrollTo speed
+                    // Check FAB visibility *after* potentially scrolling
+                    binding.fabNext.visibility =
+                        if (nextCardIndex == childCount - 1) View.GONE else View.VISIBLE
+
+                }, 350) // Increased delay slightly
             }
+        } else {
+            // If already at the last card (or couldn't find current), ensure FAB is hidden
+            binding.fabNext.visibility = View.GONE
         }
-
-        // Hide FAB if we reach the last card
-        binding.fabNext.visibility =
-            if (currentCardIndex == childCount - 2) View.GONE else View.VISIBLE
     }
 
+    /**
+     * Snaps the scroll view to the nearest card section if the scroll settles close enough to it.
+     * Allows some free scrolling between cards.
+     */
     private fun snapToNearestCard() {
-        val scrollView = binding.mainScrollView
-        val container = binding.mainLinearLayout
-        val childCount = container!!.childCount
+        val scrollView = binding.mainScrollView ?: return
+        val container = binding.mainLinearLayout ?: return
+        val childCount = container.childCount
+        if (childCount == 0) return
+
+        val scrollY = scrollView.scrollY
+        val viewHeight = scrollView.height
 
         var nearestCard: View? = null
         var minDistance = Int.MAX_VALUE
         var nearestIndex = -1
 
+        // Find the card whose top is numerically closest to the current scroll position
         for (i in 0 until childCount) {
             val cardView = container.getChildAt(i)
             val cardTop = cardView.top
-            val distance = scrollView!!.scrollY - cardTop  // Difference from scroll position
+            val distance = abs(scrollY - cardTop)
 
-            // Adjust snapping logic for both up & down
-            if (Math.abs(distance) < minDistance && Math.abs(distance) < scrollView.height / 1.2) {
-                minDistance = Math.abs(distance)
+            if (distance < minDistance) {
+                minDistance = distance
                 nearestCard = cardView
                 nearestIndex = i
             }
         }
 
-        nearestCard?.let {
-            scrollView?.post {
-                scrollView.smoothScrollTo(0, it.top - 20)
-            }
-            updateNavigationRailSelection(nearestIndex)
+        // --- Apply Less Aggressive Snapping Threshold ---
+        // Only snap if the scroll position ended relatively close to a card's top.
+        // Example: Snap if within 20% of the screen height. Adjust threshold as needed.
+        val snapThreshold = viewHeight / 3.5 // Stricter threshold
 
-            // Update FAB visibility when snapping
+        if (nearestCard != null && minDistance < snapThreshold) {
+            Log.d("snap", "Snapping to card $nearestIndex, distance $minDistance < threshold $snapThreshold")
+            val targetScrollY = nearestCard.top - 20 // Same fixed offset
+
+            // Post the smooth scroll to allow the touch event handling to complete
+            scrollView.post {
+                if (scrollView.scrollY != targetScrollY) { // Avoid scrolling if already there
+                    scrollView.smoothScrollTo(0, targetScrollY)
+                }
+            }
+
+            // Update NavRail selection and chat *even if we snapped*
+            updateNavigationRailSelection(nearestIndex)
+            val sectionText = getSectionText(nearestIndex)
+            // Update chat immediately when snapping feels more natural
+            startTypewriterEffect(chatText, sectionText)
+
+        } else {
+            Log.d("snap", "No snap triggered, distance $minDistance >= threshold $snapThreshold")
+            // No snap - user scrolled somewhere in between cards.
+            // We still might need to update the NavRail based on which card is *most* visible.
+            // Let's find the card whose center is closest to the viewport center.
+            var bestVisibleIndex = -1
+            var minCenterDistance = Int.MAX_VALUE
+            val viewportCenter = scrollY + viewHeight / 2
+            for (i in 0 until childCount) {
+                val cardView = container.getChildAt(i)
+                val cardCenter = cardView.top + cardView.height / 2
+                val centerDistance = abs(viewportCenter - cardCenter)
+                if(centerDistance < minCenterDistance) {
+                    minCenterDistance = centerDistance
+                    bestVisibleIndex = i
+                }
+            }
+            if(bestVisibleIndex != -1) {
+                updateNavigationRailSelection(bestVisibleIndex)
+                // Optionally, update chat based on the most visible card even without snapping
+                // val sectionText = getSectionText(bestVisibleIndex)
+                // startTypewriterEffect(chatText, sectionText)
+            }
+            // Use nearestIndex for FAB logic even if not snapping
+            nearestIndex = bestVisibleIndex
+        }
+
+        // Update FAB visibility based on the final determined index (snapped or most visible)
+        if(nearestIndex != -1) {
             val isLastCard = nearestIndex == childCount - 1
             binding.fabNext.visibility = if (isLastCard) View.GONE else View.VISIBLE
-
-            // 🔹 Update and animate the header text based on the section
-            val sectionText = getSectionText(nearestIndex)
-            startTypewriterEffect(chatText, sectionText)
+        } else if (childCount > 0) {
+            // Fallback if no index determined (should be rare with >0 children)
+            binding.fabNext.visibility = View.VISIBLE
         }
+
     }
 
     private fun updateNavigationRailSelection(index: Int) {
@@ -415,23 +496,44 @@ class FormActivity : AppCompatActivity() {
     }
 
     private fun skillsAdapter() {
-
-
+        val editTextSkills = binding.etSkills // Reference to your AutoCompleteTextView for skills
         val adapter = ArrayAdapter(this, R.layout.simple_dropdown_item_1line, skillsList)
-        binding.etSkills.setAdapter(adapter)
-        binding.etSkills.threshold = 1 // Show suggestions after 1 character
+
+        editTextSkills.setAdapter(adapter)
+        editTextSkills.threshold = 1 // Show suggestions after 1 character
+
+        // --- Calculate and set dropdown height for skills ---
+        // 1. Get screen height in pixels
+        val displayMetrics = resources.displayMetrics
+        val screenHeight = displayMetrics.heightPixels
+
+        // 2. Calculate desired height (using the same 35%)
+        val desiredPercentage = 0.35f // 35%
+        val calculatedHeight = (screenHeight * desiredPercentage).toInt()
+
+        // 3. Set the dropdown height for the skills AutoCompleteTextView
+        editTextSkills.dropDownHeight = calculatedHeight
+        // --- End of height setting ---
 
         // Handle item selection
-        binding.etSkills.setOnItemClickListener { _, _, position, _ ->
+        editTextSkills.setOnItemClickListener { _, _, position, _ ->
             val selectedSkill = adapter.getItem(position) ?: return@setOnItemClickListener
 
             if (!selectedSkills.contains(selectedSkill)) {
-                selectedSkills.add(selectedSkill) // Add to list
-                addChip(selectedSkill) // Create a chip
+                selectedSkills.add(selectedSkill) // Add to internal list
+                addChip(selectedSkill) // Create a visual chip
             }
 
-            binding.etSkills.text.clear() // Clear input after selection
+            editTextSkills.text.clear() // Clear input field after selection
+            // Consider clearing focus as well if the keyboard persists
+            // editTextSkills.clearFocus()
+            // InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            // imm.hideSoftInputFromWindow(editTextSkills.getWindowToken(), 0);
         }
+
+        // Optional: Add focus/click listeners if you want the dropdown to appear proactively
+        // editTextSkills.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) editTextSkills.showDropDown() }
+        // editTextSkills.setOnClickListener { editTextSkills.showDropDown() }
     }
 
     private fun addChip(skill: String) {
@@ -566,22 +668,44 @@ class FormActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setupSpinner() {
-        val spinner = binding.spinnerJobProfile
+        val spinner = binding.spinnerJobProfile // This is your AutoCompleteTextView
         val adapter =
             ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, JobList.jobList)
 
         spinner.setAdapter(adapter)
+
+        // --- Calculate and set dropdown height ---
+        // 1. Get screen height in pixels
+        val displayMetrics = resources.displayMetrics // Get display metrics from context
+        val screenHeight = displayMetrics.heightPixels
+
+        // 2. Calculate desired height (e.g., 35% of screen height)
+        //    Use a value between 0.30 and 0.40 as requested
+        val desiredPercentage = 0.35f // 35%
+        val calculatedHeight = (screenHeight * desiredPercentage).toInt()
+
+        // 3. Set the dropdown height for the AutoCompleteTextView
+        spinner.dropDownHeight = calculatedHeight // Property access works, or spinner.setDropDownHeight(calculatedHeight)
+        // --- End of height setting ---
+
+        // Show dropdown on focus
         spinner.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) spinner.showDropDown()
+            if (hasFocus) {
+                spinner.showDropDown()
+            }
         }
+        // Show dropdown on click (redundant with focus listener but harmless)
         spinner.setOnClickListener {
             spinner.showDropDown()
         }
+
+        // Handle item selection
         spinner.setOnItemClickListener { parent, _, position, _ ->
             val selectedJob = parent.getItemAtPosition(position).toString()
             Toast.makeText(this, "Selected: $selectedJob", Toast.LENGTH_SHORT).show()
+            // Optional: you might want to clear focus after selection
+            // spinner.clearFocus()
         }
     }
 
@@ -645,7 +769,6 @@ class FormActivity : AppCompatActivity() {
             )
         }
     }
-
 
     private fun setupAdapters() {
         achievementAdapter = AchievementAdapter(mutableListOf(), onEdit = { achievement, position ->
