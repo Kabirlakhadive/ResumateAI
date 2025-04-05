@@ -341,7 +341,7 @@ class FormActivity : AppCompatActivity() {
             }
             updateNavigationRailSelection(nearestIndex)
 
-            // 🔹 Update FAB visibility when snapping
+            // Update FAB visibility when snapping
             val isLastCard = nearestIndex == childCount - 1
             binding.fabNext.visibility = if (isLastCard) View.GONE else View.VISIBLE
 

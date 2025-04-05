@@ -1,39 +1,71 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.BuildAiResume.Dark" parent="Base.Theme.BuildAiResume">
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.OutlinedBox.Rounded</item>
+
+        <!-- ================================================== -->
+        <!-- DARK THEME COLORS (Using Indigo Muted - USER HIERARCHY P > PV > S > SV) -->
+        <!-- References colors defined in res/values/colors.xml -->
+        <!-- ================================================== -->
+
+
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <!-- Darker variant of the primary brand color. -->
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorPrimary">@color/colorPrimary</item> <!-- Indigo 700 (#303F9F) -->
+        <!-- Variant of the primary brand color. -->
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item> <!-- Indigo 400 (#5C6BC0) -->
         <!-- Text color for elements displayed on top of the primary color. -->
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item> <!-- White (#FFFFFFFF) -->
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <!-- Darker variant of the secondary brand color. -->
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary</item> <!-- Indigo 300 (#7986CB) -->
+        <!-- Variant of the secondary brand color. -->
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item> <!-- Indigo 200 (#9FA8DA) -->
         <!-- Text color for elements displayed on top of the secondary color. -->
-        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item> <!-- White (#FFFFFFFF) -->
 
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/colorBackground</item>
-        <!-- You can uncomment and customize the status bar color if needed -->
+        <!-- Using background for potentially edge-to-edge look.colorPrimaryVariant is also common for M2 -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/colorBackground</item> <!-- Slightly cool off-white (#F8F9FA) -->
+        <!-- Customize navigation bar color if desired -->
+        <!-- <item name="android:navigationBarColor" tools:targetApi="l">?attr/colorSurface</item> -->
 
         <!-- Background color for the app -->
-        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:colorBackground">@color/colorBackground</item> <!-- Slightly cool off-white (#F8F9FA) -->
+        <!-- Color role used for the background of the application -->
         <!-- Text color for elements displayed on top of the background color. -->
-        <item name="colorOnBackground">@color/colorOnBackground</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item> <!-- Near Black (#1A1B1F) -->
 
         <!-- Surface color for components like cards, sheets, and menus. -->
-        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorSurface">@color/colorSurface</item> <!-- Pure white (#FFFFFFFF) -->
         <!-- Text color for elements displayed on top of the surface color. -->
-        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item> <!-- Near Black (#1A1B1F) -->
+
+        <!-- Surface Variant color (subtler backgrounds/outlines) -->
+        <item name="colorSurfaceVariant">@color/colorSurfaceVariant</item> <!-- Very Light Indigo (#E8EAF6) -->
+        <item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant</item> <!-- Blue Grey 700 (#455A64) -->
+
+        <!-- Outline color (borders, dividers) -->
+        <item name="colorOutline">@color/colorOutline</item> <!-- Grey 400 (#BDBDBD) -->
 
         <!-- Error color for indicating errors in components like TextFields. -->
-        <item name="colorError">@color/colorError</item>
+        <item name="colorError">@color/colorError</item> <!-- Material Red 700 (#D32F2F) -->
         <!-- Text color for elements displayed on top of the error color. -->
-        <item name="colorOnError">@color/colorOnError</item>
-        <item name="iconColor">#FFFFFF</item>
+        <item name="colorOnError">@color/colorOnError</item> <!-- White (#FFFFFFFF) -->
+
+        <!-- Container colors (M3 concept, mapping as per your snippet) -->
+        <!-- This might not be standard M2, often needs M3 parent/components -->
+        <item name="colorSecondaryContainer">@color/colorSecondary</item> <!-- Maps to Indigo 300 (#7986CB) -->
+        <!-- Text/icon color on Secondary Container. Need to ensure contrast. -->
+        <!-- Since colorSecondaryContainer = colorSecondary, OnSecondaryContainer could be OnSecondary -->
+        <item name="colorOnSecondaryContainer">@color/colorOnSecondary</item> <!-- White (#FFFFFFFF) -->
+        <!-- Other container colors might be needed if using M3 components -->
+        <!-- <item name="colorPrimaryContainer">...</item> -->
+        <!-- <item name="colorOnPrimaryContainer">...</item> -->
+        <!-- <item name="colorErrorContainer">...</item> -->
+        <!-- <item name="colorOnErrorContainer">...</item> -->
+
+        <!-- Add other theme attributes as needed -->
+        <!-- <item name="android:windowLightStatusBar" tools:targetApi="m">true</item> -->
     </style>
 
     <style name="Theme.BuildAiResume" parent="Base.Theme.BuildAiResume" />

@@ -8,61 +8,72 @@
     <color name="gray">#E0E0E0</color> <!-- Soft Gray -->
 
     <!-- Custom Colors (May need adjustment based on usage in dark theme) -->
-
+    <!-- NOTE: Keep medium_grey and dark_grey if used specifically elsewhere, -->
+    <!-- but core dark theme uses Background/Surface -->
+    <color name="medium_grey">#FFAAAAAA</color>
+    <color name="dark_grey">#FF666666</color>
 
     <color name="base_red">#FF0000</color>
     <color name="base_deep_blue">#1565C0</color>
 
     <!-- ======================================== -->
-    <!-- Dark Theme Palette - BLUE BASED          -->
+    <!-- Dark Theme Palette - INDIGO BASED       -->
+    <!-- Inspired by the Light Theme Indigo      -->
     <!-- ======================================== -->
     <!-- References: Material Design Colors (using similar concepts for M2) -->
     <!-- Dark themes use lighter, less saturated colors for Primary/Secondary -->
-    <!-- On-colors are typically Black for light primaries/secondaries -->
+    <!-- On-colors are typically Black/Dark for light primaries/secondaries -->
 
-    <!-- Primary Color (Core branding color, lighter for dark theme) -->
-    <!-- Material Blue 200 -->
-    <color name="colorPrimary">#FF90CAF9</color>
-    <!-- Primary Variant (Often the light theme primary or a similar mid-tone) -->
-    <!-- Material Blue 400 (Original) - Could also use Light Theme Primary (#1976D2) -->
-    <color name="colorPrimaryVariant">#FF42A5F5</color>
-    <!-- Black text provides good contrast (11.88:1) on Primary -->
+    <!-- Primary Color (Core branding color, lighter for dark theme - Indigo 200) -->
+    <!-- This was colorSecondaryVariant in the light theme, now suitable as primary -->
+    <color name="colorPrimary">#9FA8DA</color>
+    <!-- Primary Variant (Often a slightly darker shade than primary, but still light - Indigo 300) -->
+    <!-- This was colorSecondary in the light theme -->
+    <color name="colorPrimaryVariant">#7986CB</color>
+    <!-- Black text provides good contrast on the light Indigo primary -->
     <color name="colorOnPrimary">#FF000000</color>
 
-    <!-- Secondary Color (Accent color, lighter for dark theme) -->
-    <!-- Material Blue A100 -->
-    <color name="colorSecondary">#FF90CAF9</color>
-    <!-- Secondary Variant (Often same as Secondary in dark theme) -->
-    <color name="colorSecondaryVariant">#FF42A5F5</color>
-    <!-- Black text provides good contrast (12.86:1) on Secondary -->
+    <!-- Secondary Color (Accent color, light - often same/similar to Primary in Dark) -->
+    <!-- Using Indigo 200 again for consistency, or could use Indigo 100 #C5CAE9 -->
+    <color name="colorSecondary">#9FA8DA</color> <!-- Same as Primary -->
+    <!-- Secondary Variant (Often same as Primary Variant or Secondary in dark theme) -->
+    <color name="colorSecondaryVariant">#7986CB</color> <!-- Same as Primary Variant -->
+    <!-- Black text provides good contrast on the light Indigo secondary -->
     <color name="colorOnSecondary">#FF000000</color>
 
     <!-- Background & Surface Colors (Standard Material Dark) -->
     <!-- Standard Dark Background -->
-    <color name="colorBackground">#FF121212</color> <!-- gray_1000 -->
+    <color name="colorBackground">#FF121212</color> <!-- Standard dark grey -->
     <!-- White text/icons on Background -->
-    <color name="colorOnBackground">#FFFFFFFF</color>
+    <color name="colorOnBackground">#EAEAF1</color> <!-- Slightly off-white for less harshness -->
 
     <!-- Slightly lighter dark surface (Cards, Sheets, Menus) -->
-    <!-- Standard Material approach uses overlays; #1E1E1E is common approximation -->
-    <color name="colorSurface">#FF1E1E1E</color> <!-- Between gray_900 and gray_1000 -->
-    <!-- White text/icons on Surfaces. -->
-    <!-- Note: Consider using ~87% white (#E0FFFFFF) for less eye strain on large text blocks -->
-    <color name="colorOnSurface">#FFFFFFFF</color>
-    <!-- Color for surfaces needing slight visual separation (e.g., slightly lighter gray or overlay) -->
-    <color name="colorSurfaceVariant">#FF343434</color> <!-- Using gray_800 -->
-    <!-- Text/icon color for less prominent elements (medium-emphasis white) -->
-    <color name="colorOnSurfaceVariant">#B3FFFFFF</color> <!-- 70% White -->
+    <!-- Standard Material approach uses overlays; #1E1E1E is common -->
+    <color name="colorSurface">#FF1E1E1E</color> <!-- Slightly lighter than background -->
+    <!-- White text/icons on Surfaces. Using the same off-white as OnBackground -->
+    <color name="colorOnSurface">#EAEAF1</color>
+
+    <!-- Color for surfaces needing slight visual separation (e.g., darker/lighter gray) -->
+    <!-- Using a slightly lighter gray than surface for subtle contrast -->
+    <color name="colorSurfaceVariant">#FF2C2C32</color> <!-- Subtly different dark surface -->
+    <!-- Text/icon color for less prominent elements (medium-emphasis white/off-white) -->
+    <color name="colorOnSurfaceVariant">#CACAE1</color> <!-- Muted off-white (corresponds somewhat to indigo tint) -->
 
     <!-- Error Color (Standard dark theme error color - Light Red/Pink) -->
     <!-- Material Default Dark Error: #CF6679 -->
-    <color name="colorError">#FFCF6679</color> <!-- CHANGED TO STANDARD DARK ERROR RED -->
+    <color name="colorError">#FFCF6679</color>
     <!-- Black text provides better contrast (5.05:1) than white (4.15:1) on #CF6679 -->
-    <color name="colorOnError">#FF000000</color> <!-- KEPT BLACK for better contrast -->
+    <color name="colorOnError">#FF000000</color>
 
     <!-- Additional Neutral Colors (Optional but useful for dark themes) -->
     <!-- Subtle color for outlines, dividers (often low-opacity white) -->
-    <color name="colorOutline">#1FFFFFFF</color> <!-- 12% White -->
+    <color name="colorOutline">#40CACAE1</color> <!-- ~25% Opacity of OnSurfaceVariant -->
 
+
+    <!-- Example Basic/Named Colors (Re-use if needed, kept from Light Theme for reference) -->
+    <color name="red_error">#CF6679</color> <!-- Using dark theme error color now -->
+    <color name="grey_light">#BDBDBD</color> <!-- Less relevant in dark usually -->
+    <color name="grey_medium">#757575</color> <!-- Less relevant in dark usually -->
+    <color name="grey_dark">#424242</color> <!-- More useful as a variant surface/component potentially -->
 
 </resources>
