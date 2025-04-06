@@ -3,6 +3,7 @@ package com.example.buildairesume.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Upsert
 import com.example.buildairesume.models.Project
 
 @Dao
@@ -15,6 +16,12 @@ interface ProjectDao : BaseDao<Project> {
 
     @Update
     fun updateProject(project: Project)
+
+    @Upsert // Replaces @Insert and @Update for this use case
+    suspend fun upsertProject(project: Project) // Upsert single
+
+    @Upsert
+    suspend fun upsertProjects(projects: List<Project>) // Upsert list
 
     @Update
     suspend fun updateProjects(projects: List<Project>)

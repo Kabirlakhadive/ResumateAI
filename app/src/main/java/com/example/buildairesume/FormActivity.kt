@@ -574,15 +574,17 @@ class FormActivity : AppCompatActivity() {
             database.achievementDao().deleteAllAchievements()
             achievementAdapter.getAchievements().forEach { database.achievementDao().insert(it) }
 
-            database.projectDao().deleteAllProjects()
-            projectAdapter.getProjects().forEach { database.projectDao().insert(it) }
+            val projectsToSave = projectAdapter.getProjects()
+            Log.d("AISaveDebug", "[FormActivity] Upserting ${projectsToSave.size} projects. IDs: ${projectsToSave.map { it.projectId }}")
+            database.projectDao().upsertProjects(projectsToSave) // Use Upsert
 
             database.certificationDao().deleteAllCertifications()
             certificationAdapter.getCertifications()
                 .forEach { database.certificationDao().insert(it) }
 
-            database.experienceDao().deleteAllExperiences()
-            experienceAdapter.getExperiences().forEach { database.experienceDao().insert(it) }
+            val experiencesToSave = experienceAdapter.getExperiences()
+            Log.d("AISaveDebug", "[FormActivity] Upserting ${experiencesToSave.size} experiences. IDs: ${experiencesToSave.map { it.experienceId }}")
+            database.experienceDao().upsertExperiences(experiencesToSave) // Use Upsert
 
             database.educationDao().deleteAllEducation()
             educationAdapter.getQualifications().forEach { database.educationDao().insert(it) }
@@ -972,12 +974,6 @@ class FormActivity : AppCompatActivity() {
             educationAdapter.removeEducation(position)
             if (educationAdapter.itemCount == 0) binding.recyclerEducation.visibility = View.GONE
         }
-    }
-
-
-    override fun onStop() {
-        super.onStop()
-        saveResumeData()
     }
 
 

@@ -26,8 +26,9 @@ class ProjectOutputAdapter(
     private val projects: List<Project>,
     private val context: Context // Added context for connectivity check
 ) : RecyclerView.Adapter<ProjectOutputAdapter.ProjectViewHolder>() {
+    private val TAG = "AISaveDebug"
     private val totalTokensConsumed: Int = 0
-    private val updatedDescriptions = MutableList(projects.size) { "" } // ✅ Store user input
+    private val updatedDescriptions = MutableList(projects.size) { projects[it].output ?: "" }
     private val coroutineScope = CoroutineScope(Dispatchers.IO) // Custom coroutine scope
 
     inner class ProjectViewHolder(val binding: ItemProjectOutputBinding) :
@@ -112,12 +113,30 @@ class ProjectOutputAdapter(
 
             coroutineScope.launch {
                 val outputText = generateAIResponse(generativeModel, prompt)
+                val position = absoluteAdapterPosition // Get position safely
+
+                // --- FIX: Update the adapter's data source ---
+                if (position != RecyclerView.NO_POSITION) {
+                    if (position < updatedDescriptions.size) {
+                        Log.d(TAG, "[ProjectAdapter] Updating updatedDescriptions at pos $position with: $outputText") // <-- Log update
+                        updatedDescriptions[position] = outputText
+                    } else {
+                        Log.e(TAG, "[ProjectAdapter] Position $position out of bounds for updatedDescriptions (size ${updatedDescriptions.size})")
+                    }
+                }
+                // --- End of FIX ---
 
                 withContext(Dispatchers.Main) {
-                    binding.etProjectDescription.setText(outputText)
-                    binding.etProjectDescription.visibility = View.VISIBLE
-                    binding.lottieAnim.visibility = View.GONE
-                    binding.ivEdit.isEnabled = true
+                    // Check if the ViewHolder is still valid for this position
+                    if (absoluteAdapterPosition == position) {
+                        Log.d(TAG, "[ProjectAdapter] Setting UI text for pos $position: $outputText") // <-- Log UI set
+                        binding.etProjectDescription.setText(outputText)
+                        binding.etProjectDescription.visibility = View.VISIBLE
+                        binding.lottieAnim.visibility = View.GONE
+                        binding.ivEdit.isEnabled = true
+                    } else {
+                        Log.w(TAG, "[ProjectAdapter] ViewHolder at pos $position is no longer valid (current: $absoluteAdapterPosition) during UI update.")
+                    }
                 }
             }
         }
@@ -179,8 +198,11 @@ class ProjectOutputAdapter(
 
     // ✅ Fetch the latest descriptions stored in `updatedDescriptions`
     fun getUpdatedProjects(): List<Project> {
+        Log.d(TAG, "[ProjectAdapter] getUpdatedProjects called. Current updatedDescriptions: ${updatedDescriptions.joinToString(" | ")}") // <-- Log retrieval start
         return projects.mapIndexed { index, project ->
-            project.copy(output = updatedDescriptions[index])
+            val outputFromList = updatedDescriptions.getOrNull(index)
+            Log.d(TAG, "[ProjectAdapter] Mapping project index $index ('${project.title}'). Output from list: ${outputFromList ?: "NULL"}") // <-- Log mapping
+            project.copy(output = outputFromList ?: project.output) // Use existing output if list entry is null
         }
     }
 

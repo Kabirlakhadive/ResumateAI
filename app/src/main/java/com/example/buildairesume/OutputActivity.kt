@@ -55,6 +55,7 @@ class OutputActivity : AppCompatActivity() {
     private lateinit var experience: Experience
     private lateinit var project: Project
     private lateinit var database: UserData
+    private val TAG = "AISaveDebug"
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     @SuppressLint("NotifyDataSetChanged")
@@ -80,6 +81,7 @@ class OutputActivity : AppCompatActivity() {
             val skills = skillsDao.getAllSkills()
             projectAdapter = ProjectOutputAdapter(projects, this@OutputActivity)
             experienceAdapter = ExperienceOutputAdapter(experiences, this@OutputActivity)
+            Log.d(TAG, "[OutputActivity] Fetched ${projects.size} projects, ${experiences.size} experiences.")
 
             binding.rvProjects.adapter = projectAdapter
             binding.rvExperiences.adapter = experienceAdapter
@@ -120,17 +122,29 @@ class OutputActivity : AppCompatActivity() {
             lifecycleScope.launch { // Launch a coroutine
                 var success = false
                 try {
+                    Log.d(TAG, "[OutputActivitySave] Save Button Clicked.")
+                    Log.d(TAG, "[OutputActivitySave] Projects from adapter BEFORE DB: ${updatedProjects.joinToString { it.title + " -> output: [" + (it.output ?: "NULL") + "]" }}")
+                    Log.d(TAG, "[OutputActivitySave] Experiences from adapter BEFORE DB: ${updatedExperiences.joinToString { it.position + " -> output: [" + (it.output ?: "NULL") + "]" }}")
+                    Log.d(TAG, "[OutputActivitySave] Objective text BEFORE DB: [$updatedObjective]")
                     // Perform database operations on IO thread
                     withContext(Dispatchers.IO) {
+                        Log.d(TAG, "[OutputActivitySave] Entering DB context...")
+                        // Log IDs before update
+                        Log.d(TAG, "[OutputActivitySave] Project IDs being updated: ${updatedProjects.map { it.projectId }}")
+                        Log.d(TAG, "[OutputActivitySave] Experience IDs being updated: ${updatedExperiences.map { it.experienceId }}")
+                        Log.d(TAG, "[OutputActivitySave] Entering DB context...")
                         projectDao.updateProjects(updatedProjects)
+                        Log.d(TAG, "[OutputActivitySave] Updated projects in DB.")
                         experienceDao.updateExperiences(updatedExperiences)
+                        Log.d(TAG, "[OutputActivitySave] Updated experiences in DB.")
 
                         // Also save the updated objective back to UserProfile
                         val currentUserProfile = userProfileDao.getUser() // Fetch current profile
                         currentUserProfile?.let { profile ->
                             profile.objective = updatedObjective // Update the objective field
                             userProfileDao.insertOrUpdate(profile) // Save the updated profile
-                        }
+                            Log.d(TAG, "[OutputActivitySave] Updated objective in DB.")
+                        }?: Log.w(TAG, "[OutputActivitySave] UserProfile was null, couldn't save objective.")
                         success = true // Mark as successful
                     }
 
@@ -153,7 +167,8 @@ class OutputActivity : AppCompatActivity() {
                     }
 
                 } catch (e: Exception) {
-                    Log.e("Database Update", "Error updating projects/experiences/objective", e)
+                    Log.e(TAG, "[OutputActivitySave] Error during save process", e) // Log exception
+                    Toast.makeText(this@OutputActivity, "Failed to save changes!", Toast.LENGTH_SHORT).show()
                     Toast.makeText(
                         this@OutputActivity,
                         "Failed to save changes!",

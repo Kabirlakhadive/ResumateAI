@@ -29,9 +29,8 @@ class ExperienceOutputAdapter(
     private val experiences: List<Experience>,
     private val context: Context
 ) : RecyclerView.Adapter<ExperienceOutputAdapter.ExperienceViewHolder>() {
-
-    private val updatedDescriptions =
-        MutableList(experiences.size) { experiences[it].description } // Store generated descriptions
+    private val TAG = "AISaveDebug"
+    private val updatedDescriptions = MutableList(experiences.size) { experiences[it].output ?: "" }
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     inner class ExperienceViewHolder(val binding: ItemExperienceOutputBinding) :
@@ -123,14 +122,33 @@ class ExperienceOutputAdapter(
             binding.lottieAnim.visibility = View.VISIBLE
             binding.ivEdit.isEnabled = false
 
+
             coroutineScope.launch {
                 val outputText = generateAIResponse(generativeModel, prompt)
+                val position = absoluteAdapterPosition // Get position safely
+
+                // --- FIX: Update the adapter's data source ---
+                if (position != RecyclerView.NO_POSITION) {
+                    if (position < updatedDescriptions.size) {
+                        Log.d(TAG, "[ExperienceAdapter] Updating updatedDescriptions at pos $position with: $outputText") // <-- Log update
+                        updatedDescriptions[position] = outputText
+                    } else {
+                        Log.e(TAG, "[ExperienceAdapter] Position $position out of bounds for updatedDescriptions (size ${updatedDescriptions.size})")
+                    }
+                }
+                // --- End of FIX ---
 
                 withContext(Dispatchers.Main) {
-                    binding.etExperienceDescription.setText(outputText)
-                    binding.etExperienceDescription.visibility = View.VISIBLE
-                    binding.lottieAnim.visibility = View.GONE
-                    binding.ivEdit.isEnabled = true
+                    // Check if the ViewHolder is still valid for this position
+                    if (absoluteAdapterPosition == position) {
+                        Log.d(TAG, "[ExperienceAdapter] Setting UI text for pos $position: $outputText") // <-- Log UI set
+                        binding.etExperienceDescription.setText(outputText)
+                        binding.etExperienceDescription.visibility = View.VISIBLE
+                        binding.lottieAnim.visibility = View.GONE
+                        binding.ivEdit.isEnabled = true
+                    } else {
+                        Log.w(TAG, "[ExperienceAdapter] ViewHolder at pos $position is no longer valid (current: $absoluteAdapterPosition) during UI update.")
+                    }
                 }
             }
         }
@@ -191,8 +209,11 @@ class ExperienceOutputAdapter(
     }
 
     fun getUpdatedExperiences(): List<Experience> {
+        Log.d(TAG, "[ExperienceAdapter] getUpdatedExperiences called. Current updatedDescriptions: ${updatedDescriptions.joinToString(" | ")}") // <-- Log retrieval start
         return experiences.mapIndexed { index, experience ->
-            experience.copy(output = updatedDescriptions[index])
+            val outputFromList = updatedDescriptions.getOrNull(index)
+            Log.d(TAG, "[ExperienceAdapter] Mapping experience index $index ('${experience.position}'). Output from list: ${outputFromList ?: "NULL"}") // <-- Log mapping
+            experience.copy(output = outputFromList ?: experience.output) // Use existing output if list entry is null
         }
     }
 }

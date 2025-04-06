@@ -3,6 +3,7 @@ package com.example.buildairesume.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Upsert
 import com.example.buildairesume.models.Experience
 
 @Dao
@@ -15,6 +16,12 @@ interface ExperienceDao : BaseDao<Experience> {
 
     @Update
     fun updateExperience(experience: Experience)
+
+    @Upsert
+    suspend fun upsertExperience(experience: Experience)
+
+    @Upsert
+    suspend fun upsertExperiences(experiences: List<Experience>)
 
     @Update
     suspend fun updateExperiences(experiences: List<Experience>)
