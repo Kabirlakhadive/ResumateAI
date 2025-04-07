@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -20,7 +21,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etCompanyName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -60,21 +62,27 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_position"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/CardAddItemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Describe your experience">
+        android:hint="Describe your experience"
+        app:counterEnabled="true"
+        app:counterMaxLength="100">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="5"
-            android:minLines="2" />
+            android:maxLines="7"
+            android:minLines="2"
+            android:inputType="textMultiLine"
+            android:layout_gravity="top|left"
+            android:maxLength="100"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout

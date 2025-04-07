@@ -17,7 +17,6 @@ class AchievementAdapter(
 
         fun bind(achievement: Achievement) {
             binding.tvTitle.text = achievement.title
-            binding.tvDescription.text = achievement.description
             binding.tvDate.text = achievement.date
 
             binding.btnEdit.setOnClickListener {

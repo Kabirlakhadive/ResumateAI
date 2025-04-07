@@ -7,6 +7,5 @@ import androidx.room.PrimaryKey
 data class Achievement(
     @PrimaryKey(autoGenerate = true) val achievementId: Int? = 0, // Nullable for new entries
     val title: String,
-    val description: String,
     val date: String
 )

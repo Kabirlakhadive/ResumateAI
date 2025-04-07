@@ -1,11 +1,17 @@
 package com.example.buildairesume
 
-import android.R
+import android.R // Keep android.R import if needed for simple_dropdown_item_1line
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+// import android.view.MotionEvent // No longer needed
 import android.view.View
+import android.view.ViewTreeObserver
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
@@ -39,7 +45,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.math.abs
+// import kotlin.math.abs // No longer needed for snapping
 import kotlin.random.Random
 
 
@@ -54,7 +60,24 @@ class FormActivity : AppCompatActivity() {
     private val selectedSkills = mutableListOf<String>()
     private lateinit var database: UserData
     private lateinit var chatText: TextView
+    private var currentVisibleCardIndex = 0 // Track the current card index
+    private var isKeyboardShowing = false
+    private val keyboardVisibilityListener = ViewTreeObserver.OnGlobalLayoutListener {
+        checkKeyboardVisibility()
+    }
 
+    // --- Constants for card indices (optional but improves readability) ---
+    companion object {
+        private const val PERSONAL_INFO_INDEX = 0
+        private const val SKILLS_INDEX = 1
+        private const val LINKS_INDEX = 2
+        private const val EXPERIENCE_INDEX = 3
+        private const val PROJECTS_INDEX = 4
+        private const val CERTIFICATION_INDEX = 5
+        private const val EDUCATION_INDEX = 6
+        private const val TOTAL_CARDS = 7 // Update if you add more cards
+    }
+    // --- ---
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,73 +85,174 @@ class FormActivity : AppCompatActivity() {
         setContentView(binding.root)
         database = UserData.getInstance(this)
         chatText = binding.formActivityChat
+
+        // --- Disable scrolling on the ScrollView ---
+        // The most straightforward way is often just *not* setting an OnTouchListener
+        // that allows scrolling or handles snapping.
+        // If needed, you could explicitly disable it, but removing the listener is key.
+        // binding.mainScrollView?.setOnTouchListener { _, _ -> true } // This would block all touch
+
         setupAdapters()
         fillFormWithPreviousData()
         skillsAdapter()
         setupFragments()
         updateRecyclerViewVisibility()
+        setupKeyboardVisibilityListener()
+        genderAdapter()
+
+//        binding.btnSubmit.setOnClickListener {
+//            if (areAllFieldsFilled()) {  // ✅ Check if all fields are filled
+//                saveResumeData()
+//                val intent = Intent(this, OutputActivity::class.java)
+//                startActivity(intent)
+//                Log.d("kabir", "Generate Button pressed")
+//            } else {
+//                startTypewriterEffect(
+//                    chatText,
+//                    "Uh oh ! Looks like you forgot to fill some important information",
+//                    50
+//                )
+//            }
+//        }
+
         binding.btnSubmit.setOnClickListener {
-            if (areAllFieldsFilled()) {  // ✅ Check if all fields are filled
-                saveResumeData()
-                val intent = Intent(this, OutputActivity::class.java)
-                startActivity(intent)
-                Log.d("kabir", "Generate Button pressed")
-            } else {
+            Log.d("SubmitClick", "Submit button clicked. Performing validation.")
+
+            // 1. Check Basic Personal Info Fields First
+            if (!areAllFieldsFilled()) {
+                Log.d("SubmitValidation", "Failed: Basic personal info missing.")
+                // Use your existing typewriter effect or a simple Toast
                 startTypewriterEffect(
                     chatText,
-                    "Uh oh ! Looks like you forgot to fill some important information",
+                    "Please fill in your Name, Email, and Phone Number.", // More specific message
                     50
                 )
+                // Or uncomment this Toast if you prefer:
+                // Toast.makeText(this, "Please fill in Name, Email, and Phone Number.", Toast.LENGTH_LONG).show()
+                return@setOnClickListener // Stop validation here
             }
-        }
 
+            // 2. Check Experience
+            if (experienceAdapter.itemCount == 0) {
+                Log.d("SubmitValidation", "Failed: No experience added.")
+                Toast.makeText(this, "Please add at least one work experience.", Toast.LENGTH_LONG).show()
+                // Optional: Scroll to the Experience section
+                binding.mainScrollView?.smoothScrollTo(0, binding.cvExperience.top - 20)
+                binding.mainScrollView?.postDelayed({ updateUiForCard(EXPERIENCE_INDEX) }, 150)
+                return@setOnClickListener // Stop validation here
+            }
+
+            // 3. Check Projects
+            if (projectAdapter.itemCount == 0) {
+                Log.d("SubmitValidation", "Failed: No projects added.")
+                Toast.makeText(this, "Please add at least one project.", Toast.LENGTH_LONG).show()
+                // Optional: Scroll to the Projects section
+                binding.mainScrollView?.smoothScrollTo(0, binding.cvProjects.top - 20)
+                binding.mainScrollView?.postDelayed({ updateUiForCard(PROJECTS_INDEX) }, 150)
+                return@setOnClickListener // Stop validation here
+            }
+
+            // 4. Check Education
+            if (educationAdapter.itemCount == 0) {
+                Log.d("SubmitValidation", "Failed: No education added.")
+                Toast.makeText(this, "Please add at least one education entry.", Toast.LENGTH_LONG).show()
+                // Optional: Scroll to the Education section
+                binding.mainScrollView?.smoothScrollTo(0, binding.cvEducation.top - 20)
+                binding.mainScrollView?.postDelayed({ updateUiForCard(EDUCATION_INDEX) }, 150)
+                return@setOnClickListener // Stop validation here
+            }
+
+            // 5. Check Skills
+//            // You might want a minimum number, but checking for at least one is common.
+//            if (selectedSkills.isEmpty()) {
+//                Log.d("SubmitValidation", "Failed: No skills added.")
+//                Toast.makeText(this, "Please add at least one skill.", Toast.LENGTH_LONG).show()
+//                // Optional: Scroll to the Skills section
+//                binding.mainScrollView?.smoothScrollTo(0, binding.cvSkills.top - 20)
+//                binding.mainScrollView?.postDelayed({ updateUiForCard(SKILLS_INDEX) }, 150)
+//                return@setOnClickListener // Stop validation here
+//            }
+//            // --- Add minimum skills check example (optional) ---
+
+            val MINIMUM_SKILLS = 5 // Example minimum
+            if (selectedSkills.size < MINIMUM_SKILLS) {
+                Log.d("SubmitValidation", "Failed: Not enough skills added.")
+                Toast.makeText(this, "Please add at least $MINIMUM_SKILLS skills.", Toast.LENGTH_LONG).show()
+                // Optional: Scroll to Skills
+                binding.mainScrollView?.smoothScrollTo(0, binding.cvSkills.top - 20)
+                binding.mainScrollView?.postDelayed({ updateUiForCard(SKILLS_INDEX) }, 150)
+                return@setOnClickListener
+            }
+
+            // --- End minimum skills check example ---
+
+
+            // 6. If all checks pass, proceed with saving and navigating
+            Log.d("SubmitValidation", "All checks passed. Saving data and starting OutputActivity.")
+            saveResumeData()
+            val intent = Intent(this, OutputActivity::class.java)
+            startActivity(intent)
+        }
 
         binding.fabNext.setOnClickListener {
             Log.d("kabir", "FAB Next Button pressed")
+            unfocus()
             scrollToNextCard()
         }
 
-        val welcomeTextList = listOf(
-            "Let's start with your personal information!",
-            "Tell us about yourself first.",
-            "Basic details help build a great resume!",
-            "Who are you? Let’s add your personal info!",
-            "Your journey starts with personal details."
-        )
+        setupNavigationRail() // Setup NavRail listeners
 
-        startTypewriterEffect(chatText, welcomeTextList.random(), 50)
+        // Initial state setup
+        updateUiForCard(PERSONAL_INFO_INDEX) // Set initial NavRail, chat, FAB
 
-        setupNavigationRail()
-
-        binding.lottieAnimCard.setOnClickListener{
+        binding.lottieAnimCard.setOnClickListener {
             showChat()
         }
 
         setupSpinner()
 
-        binding.mainScrollView?.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                binding.mainScrollView!!.postDelayed({
-                    snapToNearestCard()
-                }, 100)
-
-                val lastCard =
-                    binding.mainLinearLayout.getChildAt(binding.mainLinearLayout.childCount - 1)
-                val isLastCardVisible =
-                    abs(binding.mainScrollView.scrollY - lastCard.top) < binding.mainScrollView.height / 2
-
-                binding.fabNext.visibility = if (isLastCardVisible) View.GONE else View.VISIBLE
-            }
-            false
+        binding.mainScrollView.setOnTouchListener { _, _ ->
+            // Return true to consume the touch event, preventing the ScrollView
+            // from processing it for scrolling. Programmatic scrolling via
+            // smoothScrollTo() in your NavRail and FAB listeners will still work.
+            true
         }
 
+        // REMOVED: setOnTouchListener for mainScrollView - Disables manual scrolling and snapping
+        // binding.mainScrollView?.setOnTouchListener { _, event -> ... }
+    }
+
+
+    private fun unfocus(){
+        // --- Add this section to clear focus ---
+        val focusedView = currentFocus // Get the view that currently has focus in the activity window
+        if (focusedView != null) {
+            // Option 1: Just clear focus (usually hides keyboard too)
+            focusedView.clearFocus()
+            Log.d("FocusClear", "Cleared focus from: ${focusedView.id}")
+
+            // Option 2: Explicitly hide keyboard (more robust if clearFocus alone isn't enough)
+            // You might not need both clearFocus() and hideKeyboard(), try clearFocus() first.
+            // hideKeyboard(focusedView)
+        } else {
+            Log.d("FocusClear", "No view currently had focus.")
+        }
+        // --- End of section ---
+
+        hideKeyboard(focusedView)
+        // Proceed with scrolling AFTER clearing focus/hiding keyboard
+    }
+
+    private fun hideKeyboard(view: View?) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        Log.d("Keyboard", "Attempted to hide keyboard.")
     }
 
     private fun showChat() {
         val chatCard = binding.formActivityChatCard
 
         chatCard.apply {
-
             alpha = 0f // Start from invisible
             animate()
                 .alpha(1f) // Fade in
@@ -148,75 +272,266 @@ class FormActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupKeyboardVisibilityListener() {
+        // Add the listener to the root view's ViewTreeObserver
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(keyboardVisibilityListener)
+    }
+
+    private fun checkKeyboardVisibility() {
+        val rootView = binding.root
+        val rect = Rect()
+        rootView.getWindowVisibleDisplayFrame(rect) // Gets the visible display frame size
+
+        val screenHeight = rootView.rootView.height // Gets the total screen height
+        val keypadHeight = screenHeight - rect.bottom // Calculates the height occupied by system UI/keyboard
+
+        val currentlyVisible = keypadHeight > screenHeight * 0.15 // Heuristic
+
+        if (isKeyboardShowing != currentlyVisible) {
+            val wasKeyboardShowing = isKeyboardShowing // Store the previous state
+            isKeyboardShowing = currentlyVisible // Update the state
+
+            if (isKeyboardShowing) {
+                // Keyboard IS NOW VISIBLE
+                binding.chatConstraintView.visibility = View.GONE
+                Log.d("KeyboardVisibility", "Keyboard shown, hiding Lottie card.")
+            } else {
+                // Keyboard IS NOW HIDDEN
+                binding.chatConstraintView.visibility = View.VISIBLE
+                Log.d("KeyboardVisibility", "Keyboard hidden, showing Lottie card.")
+
+                // --- ADDED SCROLL LOGIC ---
+                // Check if the keyboard WAS showing and the current card is Personal Info
+                if (wasKeyboardShowing && currentVisibleCardIndex == PERSONAL_INFO_INDEX) {
+                    Log.d("KeyboardVisibility", "Keyboard hidden while on Personal Info. Scrolling to Skills card.")
+
+                    // Target the next card (Skills)
+                    val targetView = binding.cvPersonalInformation
+                    if (targetView != null) {
+                        val targetScrollY = targetView.top - 20 // Adjust padding if needed
+                        binding.mainScrollView?.smoothScrollTo(0, targetScrollY)
+
+                        // IMPORTANT: Update the UI and tracked index to reflect the scroll
+                        // Use postDelayed to allow scroll animation to start
+                        binding.mainScrollView?.postDelayed({
+                            // Update NavRail selection, chat text, FAB visibility, and currentVisibleCardIndex
+                            updateUiForCard(SKILLS_INDEX)
+                            Log.d("KeyboardVisibility", "UI updated for Skills card after keyboard hide scroll.")
+                        }, 150) // Delay might need slight adjustment
+
+                    } else {
+                        Log.w("KeyboardVisibility", "Cannot scroll, target view cvSkills not found.")
+                    }
+                }
+                // --- END OF ADDED SCROLL LOGIC ---
+            }
+        }
+    }
 
     private fun getSectionText(index: Int): String {
         val messages = when (index) {
-            0 -> listOf(
+            PERSONAL_INFO_INDEX -> listOf(
+                // Original Theme: Start here, basic details, who are you
                 "Let's start with your personal information!",
                 "Tell us about yourself first.",
                 "Basic details help build a great resume!",
                 "Who are you? Let’s add your personal info!",
-                "Your journey starts with personal details."
+                "Your journey starts with personal details.",
+                // Expanded Variations: Contact, foundation, identity, getting started
+                "Time to enter your essential contact information.",
+                "Let's lay the foundation: your personal details.",
+                "We need your name, contact info, and location.",
+                "Begin by telling us the basics about you.",
+                "First things first: Your personal identification.",
+                "Provide your core details so recruiters can reach you.",
+                "Let's get the personal info section filled out.",
+                "Your contact details are crucial - let's add them.",
+                "Input your name and how employers can contact you.",
+                "Start building your profile with personal info.",
+                "This section covers who you are and how to contact you.",
+                "Add your fundamental details to get started.",
+                "Fill in your personal information to kick things off.",
+                "We'll begin with your name, address, and contact details.",
+                "Every great resume needs accurate personal info!"
             )
 
-            1 -> listOf(
+            SKILLS_INDEX -> listOf(
+                // Original Theme: Add skills, expertise, strengths, 10-15 count
                 "You got skills! Add at least 10-15 skills.",
-                "Show off your expertise—list at least 10 skills!",
+                "Show off your expertise—list at least 10-15 skills!",
                 "Let’s add your skills. Aim for 10-15 key strengths!",
-                "Highlight your abilities! Add at least 10 strong skills.",
-                "A strong resume has strong skills—add at least 10!"
+                "Highlight your abilities! Add at least 10-15 strong skills.",
+                "A strong resume has strong skills—add at least 10-15!",
+                // Expanded Variations: Competencies, technical/soft, value, quantify
+                "What are your core competencies? List 10-15.",
+                "Showcase 10-15 technical and soft skills here.",
+                "Detail your key capabilities – aim for 10-15.",
+                "List the skills that make you valuable (10-15 minimum).",
+                "Recruiters scan for skills – make sure to list 10-15.",
+                "Time to impress with your skillset! Add 10-15.",
+                "Add a comprehensive list of your skills (10-15 is a good target).",
+                "Highlight 10-15 skills relevant to the jobs you want.",
+                "Let's populate the skills section. Aim for 10-15.",
+                "Include a mix of hard and soft skills (at least 10-15 total).",
+                "What are you good at? List 10-15 skills here.",
+                "Demonstrate your expertise by listing 10-15 relevant skills.",
+                "Your abilities matter! Add 10-15 of your top skills.",
+                "Fill this section with 10-15 of your most important skills.",
+                "Quantify your expertise: add 10-15 skills."
             )
 
-            2 -> listOf(
+            LINKS_INDEX -> listOf(
+                // Original Theme: Add links, portfolio/LinkedIn, access, professional
                 "Add your important links here.",
                 "Do you have a portfolio or LinkedIn? Add them!",
                 "Your links help recruiters find you easily.",
                 "Make sure to include your professional links!",
-                "Boost your profile by adding key links."
+                "Boost your profile by adding key links.",
+                // Expanded Variations: GitHub, website, online presence, credibility
+                "Share links to your LinkedIn, portfolio, or GitHub.",
+                "Add relevant online profiles or website links.",
+                "Provide URLs that showcase your work or profile.",
+                "Got a personal website or online portfolio? Link it here!",
+                "Include links to give recruiters more context.",
+                "Strengthen your application with professional links.",
+                "Your online presence matters - add links here.",
+                "Help recruiters learn more about you via links.",
+                "Connect your professional profiles (LinkedIn, etc.).",
+                "Add URLs for portfolio, blog, or other relevant sites.",
+                "Use this space for essential external links.",
+                "Show, don't just tell! Add links to your work.",
+                "Input any relevant web links (Portfolio, GitHub...).",
+                "Links can add depth – include yours.",
+                "Make it easy for them to see more: add your links."
             )
 
-            3 -> listOf(
-                "Add at least 2 work experiences or internships!",
-                "Where have you worked before? Add at least 2 roles!",
-                "Showcase your career journey—list at least 2 experiences.",
-                "Your work history matters—add 2+ jobs or internships!",
-                "Employers love experience—add at least 2 positions!"
+            EXPERIENCE_INDEX -> listOf(
+                // Original Theme: Experience/internships, past roles, journey, history, 2-4 count
+                "Add 2-4 work experiences or internships!",
+                "Where have you worked before? Add 2-4 roles!",
+                "Showcase your career journey—list 2-4 experiences.",
+                "Your work history matters—add 2-4 jobs or internships!",
+                "Employers love experience—add 2-4 positions!",
+                // Expanded Variations: Responsibilities, achievements, impact, growth, 2-4 count
+                "Detail 2-4 of your most relevant past jobs.",
+                "List 2-4 previous roles, including internships.",
+                "Outline your professional background with 2-4 entries.",
+                "Time to add your work history. Aim for 2-4 positions.",
+                "Include 2-4 key roles that highlight your expertise.",
+                "Describe 2-4 experiences, focusing on achievements.",
+                "Where have you made an impact? List 2-4 jobs/internships.",
+                "Your professional path: add 2-4 significant experiences.",
+                "Show your growth – list 2-4 past roles.",
+                "Recruiters want to see experience: add 2-4 here.",
+                "Summarize 2-4 of your most impactful work experiences.",
+                "Got internships or jobs? Add 2-4.",
+                "Document your work trajectory with 2-4 entries.",
+                "Let's add 2-4 examples of your professional experience.",
+                "Focus on quality: detail 2-4 relevant experiences."
             )
 
-            4 -> listOf(
-                "Showcase your projects! Add at least 3.",
-                "What have you built? Add a minimum of 3 projects!",
-                "Highlight your best work—include at least 3 projects.",
-                "Impress recruiters with 3+ personal projects!",
-                "Your projects tell your story—list at least 3."
+            PROJECTS_INDEX -> listOf(
+                // Original Theme: Showcase projects, built, best work, personal, story, 2-4 count
+                "Showcase your projects! Add 2-4.",
+                "What have you built? Add 2-4 projects!",
+                "Highlight your best work—include 2-4 projects.",
+                "Impress recruiters with 2-4 personal projects!",
+                "Your projects tell your story—list 2-4.",
+                // Expanded Variations: Demonstrate skills, initiative, problem-solving, results, 2-4 count
+                "List 2-4 projects you're proud of.",
+                "Add 2-4 examples of your work or passion projects.",
+                "Detail 2-4 significant projects (personal or professional).",
+                "Show your skills in action: add 2-4 projects.",
+                "Include 2-4 projects that demonstrate your abilities.",
+                "What cool things have you made? List 2-4.",
+                "Highlight 2-4 key projects and your role in them.",
+                "Add 2-4 tangible examples of your capabilities.",
+                "Projects show initiative! Include 2-4.",
+                "Let's add 2-4 of your notable project experiences.",
+                "Got code, designs, or case studies? Link 2-4 projects.",
+                "Impress with your portfolio: add 2-4 project highlights.",
+                "Add 2-4 projects to illustrate your practical skills.",
+                "Show problem-solving through 2-4 projects.",
+                "Describe 2-4 significant accomplishments via projects."
             )
 
-            5 -> listOf(
-                "List your certifications here.",
-                "Certifications boost your resume—add them!",
-                "Have any extra qualifications? Add them here!",
-                "Showcase your achievements with certifications.",
-                "Professional certificates make a difference!"
+            CERTIFICATION_INDEX -> listOf(
+                // Original Theme: Certs/Achievements, qualifications, credentials, awards, honors, 1-2 count
+                "Add 1-2 certifications or key achievements.",
+                "List 1-2 important qualifications or accomplishments.",
+                "Showcase your credentials: Add 1-2 certifications or major achievements.",
+                "Highlight 1-2 significant awards, certifications, or honors.",
+                "Boost your profile with 1-2 relevant certifications or achievements.",
+                // Expanded Variations: Recognition, validation, specialized knowledge, stand-out items, 1-2 count
+                "Include 1-2 standout certifications or awards.",
+                "Got formal recognition? Add 1-2 certifications or honors.",
+                "List 1-2 key credentials or major accomplishments.",
+                "Add 1-2 notable certifications or significant achievements.",
+                "Highlight 1-2 ways you've been recognized (certs, awards).",
+                "Mention 1-2 important certifications or personal achievements.",
+                "Showcase specialized knowledge with 1-2 certs or awards.",
+                "List 1-2 of your proudest achievements or certifications.",
+                "Time to add 1-2 key qualifications, like certifications or honors.",
+                "Include 1-2 items that validate your skills (certs/achievements).",
+                "Did you earn a certification or award? Add 1-2.",
+                "Add 1-2 extra credentials or significant accomplishments here.",
+                "Round out your profile with 1-2 certs or key achievements.",
+                "Show extra qualifications: Add 1-2 certifications or awards.",
+                "Highlight 1-2 key accomplishments or certifications."
             )
 
-            6 -> listOf(
+            EDUCATION_INDEX -> listOf(
+                // Original Theme: Add education, studied, background, qualifications, degrees/courses
                 "Add your education details.",
                 "Where did you study? Let’s add your education!",
                 "Your academic background is important!",
                 "Education matters—add your qualifications!",
-                "Include your degrees and courses here."
+                "Include your degrees and courses here.",
+                // Expanded Variations: Institutions, dates, relevant coursework, GPA (optional), academic achievements
+                "List your schools, degrees, and graduation dates.",
+                "Detail your academic history: institutions, degrees, years.",
+                "Outline your educational qualifications.",
+                "Add universities, colleges, or relevant courses.",
+                "Your schooling provides valuable context - list it here.",
+                "Fill in your educational background details.",
+                "Mention your degrees, majors, and institutions attended.",
+                "Provide information about your academic journey.",
+                "Let's add the Education section to your resume.",
+                "Include relevant academic achievements if applicable.",
+                "Don't forget your education - add it now!",
+                "List your highest level of education and other relevant schooling.",
+                "Where did you gain your foundational knowledge? Add it here.",
+                "Time to detail your academic credentials.",
+                "Enter the details of your degrees and diplomas."
             )
 
             else -> listOf(
+                // Original Theme: Generic encouragement, progress, nearly done
                 "Let's get your data!",
                 "Tell us more about yourself.",
                 "We’re almost done, keep going!",
                 "Great progress! Let’s add more details.",
-                "Your resume is shaping up nicely!"
+                "Your resume is shaping up nicely!",
+                // Expanded Variations: Filling gaps, completeness, stronger resume, next step, polishing
+                "Let's continue building your profile.",
+                "Time to add details for this section.",
+                "Keep up the great work! What's next?",
+                "Adding information here makes your resume stronger.",
+                "Let's fill in this part of your resume.",
+                "Ready for the next section?",
+                "What details should we add here?",
+                "Your resume is getting better with each step!",
+                "Continue providing your information.",
+                "Let's complete this section.",
+                "One more step closer to a great resume!",
+                "Making good headway! Let's add this info.",
+                "Focus on this section now.",
+                "Help us understand more by filling this out.",
+                "Keep the momentum going!"
             )
         }
-
-        return messages.random()
+        // Ensure randomness even if the list is somehow empty (fallback)
+        return if (messages.isNotEmpty()) messages.random() else "Please provide the required information."
     }
 
     private var typewriterJob: Job? = null
@@ -247,7 +562,7 @@ class FormActivity : AppCompatActivity() {
             }
             binding.lottieAnim.speed = 0.5F
 
-            // Wait 2 seconds before fading out
+            // Wait before fading out
             delay(4000)
 
             withContext(Dispatchers.Main) {
@@ -260,177 +575,64 @@ class FormActivity : AppCompatActivity() {
     }
 
     private fun areAllFieldsFilled(): Boolean {
+        // Add more checks here for minimum requirements if needed
         return !binding.etName.text.isNullOrEmpty() &&
                 !binding.etEmail.text.isNullOrEmpty() &&
                 !binding.etPhone.text.isNullOrEmpty()
+        // Example: && selectedSkills.size >= 10
+        // Example: && experienceAdapter.itemCount >= 2
     }
 
     private fun scrollToNextCard() {
-        Log.d("kabir", "scrollToNextCard called")
-        val scrollView = binding.mainScrollView ?: return // Exit if scrollview is null
-        val container = binding.mainLinearLayout ?: return // Exit if container is null
-        val childCount = container.childCount
-
-        Log.d("kabir", "Child count: $childCount")
-        if (childCount <= 1) return // Nothing to scroll to
-
-        var currentCardIndex = -1
-        val scrollY = scrollView.scrollY
-        val viewHeight = scrollView.height
-
-        // --- Find the card currently most prominent ---
-        // Find the card whose top edge is closest to the top of the viewport,
-        // but prioritize cards currently within the top half of the screen.
-        var minTopDistance = Int.MAX_VALUE
-        for (i in 0 until childCount) {
-            val cardView = container.getChildAt(i)
-            val cardTop = cardView.top
-            val distance = abs(scrollY - cardTop)
-
-            // Check if the card top is within roughly the top 60% of the viewport
-            // This is a bit more generous than before to find the "current" card
-            // even if not perfectly snapped.
-            if (cardTop >= scrollY - viewHeight * 0.1 && cardTop < scrollY + viewHeight * 0.6) {
-                if (distance < minTopDistance) {
-                    minTopDistance = distance
-                    currentCardIndex = i
-                }
-            }
-        }
-
-        // Fallback: If no card was found in the preferred zone, find the one whose
-        // top is strictly closest to the current scrollY.
-        if (currentCardIndex == -1) {
-            for (i in 0 until childCount) {
-                val cardView = container.getChildAt(i)
-                val distance = abs(scrollY - cardView.top)
-                if (distance < minTopDistance) {
-                    minTopDistance = distance
-                    currentCardIndex = i
-                }
-            }
-        }
-
-        Log.d("kabir", "Determined current card index: $currentCardIndex")
-
-        // Scroll to the next card if it exists
-        if (currentCardIndex != -1 && currentCardIndex < childCount - 1) {
-            val nextCardIndex = currentCardIndex + 1
-            val nextCard = container.getChildAt(nextCardIndex) ?: return // Safety check
-
-            // Smooth scroll and update NavigationRail/Chat AFTER animation finishes
-            scrollView.post {
-                // Using a fixed offset for a little padding above the card
-                val targetScrollY = nextCard.top - 20 // Adjust '20' as needed (DP preferably)
-                scrollView.smoothScrollTo(0, targetScrollY)
-
-                // Delay updates until the smooth scroll likely settles
-                scrollView.postDelayed({
-                    updateNavigationRailSelection(nextCardIndex) // Update NavRail
-                    val sectionText = getSectionText(nextCardIndex)
-                    startTypewriterEffect(chatText, sectionText) // Update Chat
-
-                    // Check FAB visibility *after* potentially scrolling
-                    binding.fabNext.visibility =
-                        if (nextCardIndex == childCount - 1) View.GONE else View.VISIBLE
-
-                }, 350) // Increased delay slightly
-            }
-        } else {
-            // If already at the last card (or couldn't find current), ensure FAB is hidden
-            binding.fabNext.visibility = View.GONE
-        }
-    }
-
-    /**
-     * Snaps the scroll view to the nearest card section if the scroll settles close enough to it.
-     * Allows some free scrolling between cards.
-     */
-    private fun snapToNearestCard() {
+        Log.d("kabir", "scrollToNextCard called, current index: $currentVisibleCardIndex")
         val scrollView = binding.mainScrollView ?: return
         val container = binding.mainLinearLayout ?: return
-        val childCount = container.childCount
-        if (childCount == 0) return
+        val childCount = container.childCount // Or use TOTAL_CARDS
 
-        val scrollY = scrollView.scrollY
-        val viewHeight = scrollView.height
+        if (currentVisibleCardIndex < childCount - 1) {
+            val nextCardIndex = currentVisibleCardIndex + 1
+            val nextCard = container.getChildAt(nextCardIndex) ?: return // Safety check
 
-        var nearestCard: View? = null
-        var minDistance = Int.MAX_VALUE
-        var nearestIndex = -1
+            // Smooth scroll to the next card
+            val targetScrollY = nextCard.top - 20 // Adjust '20' padding as needed
+            scrollView.smoothScrollTo(0, targetScrollY)
 
-        // Find the card whose top is numerically closest to the current scroll position
-        for (i in 0 until childCount) {
-            val cardView = container.getChildAt(i)
-            val cardTop = cardView.top
-            val distance = abs(scrollY - cardTop)
-
-            if (distance < minDistance) {
-                minDistance = distance
-                nearestCard = cardView
-                nearestIndex = i
-            }
-        }
-
-        // --- Apply Less Aggressive Snapping Threshold ---
-        // Only snap if the scroll position ended relatively close to a card's top.
-        // Example: Snap if within 20% of the screen height. Adjust threshold as needed.
-        val snapThreshold = viewHeight / 3.5 // Stricter threshold
-
-        if (nearestCard != null && minDistance < snapThreshold) {
-            Log.d("snap", "Snapping to card $nearestIndex, distance $minDistance < threshold $snapThreshold")
-            val targetScrollY = nearestCard.top - 20 // Same fixed offset
-
-            // Post the smooth scroll to allow the touch event handling to complete
-            scrollView.post {
-                if (scrollView.scrollY != targetScrollY) { // Avoid scrolling if already there
-                    scrollView.smoothScrollTo(0, targetScrollY)
-                }
-            }
-
-            // Update NavRail selection and chat *even if we snapped*
-            updateNavigationRailSelection(nearestIndex)
-            val sectionText = getSectionText(nearestIndex)
-            // Update chat immediately when snapping feels more natural
-            startTypewriterEffect(chatText, sectionText)
+            // Update UI after a short delay for scroll animation smoothness
+            scrollView.postDelayed({
+                updateUiForCard(nextCardIndex)
+            }, 150) // Shorter delay might suffice for programmatic scroll
 
         } else {
-            Log.d("snap", "No snap triggered, distance $minDistance >= threshold $snapThreshold")
-            // No snap - user scrolled somewhere in between cards.
-            // We still might need to update the NavRail based on which card is *most* visible.
-            // Let's find the card whose center is closest to the viewport center.
-            var bestVisibleIndex = -1
-            var minCenterDistance = Int.MAX_VALUE
-            val viewportCenter = scrollY + viewHeight / 2
-            for (i in 0 until childCount) {
-                val cardView = container.getChildAt(i)
-                val cardCenter = cardView.top + cardView.height / 2
-                val centerDistance = abs(viewportCenter - cardCenter)
-                if(centerDistance < minCenterDistance) {
-                    minCenterDistance = centerDistance
-                    bestVisibleIndex = i
-                }
-            }
-            if(bestVisibleIndex != -1) {
-                updateNavigationRailSelection(bestVisibleIndex)
-                // Optionally, update chat based on the most visible card even without snapping
-                // val sectionText = getSectionText(bestVisibleIndex)
-                // startTypewriterEffect(chatText, sectionText)
-            }
-            // Use nearestIndex for FAB logic even if not snapping
-            nearestIndex = bestVisibleIndex
+            // Already at the last card, ensure FAB is hidden
+            binding.fabNext.visibility = View.GONE
+            Log.d("kabir", "Already at the last card.")
         }
-
-        // Update FAB visibility based on the final determined index (snapped or most visible)
-        if(nearestIndex != -1) {
-            val isLastCard = nearestIndex == childCount - 1
-            binding.fabNext.visibility = if (isLastCard) View.GONE else View.VISIBLE
-        } else if (childCount > 0) {
-            // Fallback if no index determined (should be rare with >0 children)
-            binding.fabNext.visibility = View.VISIBLE
-        }
-
     }
+
+    // REMOVED: snapToNearestCard() function - No longer needed
+
+    // Helper function to update NavRail, Chat, and FAB based on card index
+    private fun updateUiForCard(index: Int) {
+        if (index < 0 || index >= TOTAL_CARDS) {
+            Log.w("UpdateUI", "Invalid index received: $index")
+            return // Avoid index out of bounds
+        }
+        Log.d("UpdateUI", "Updating UI for card index: $index")
+        currentVisibleCardIndex = index // Update the tracked index
+
+        // Update NavigationRail Selection
+        updateNavigationRailSelection(index)
+
+        // Update Chat Text
+        val sectionText = getSectionText(index)
+        startTypewriterEffect(chatText, sectionText)
+
+        // Update FAB Visibility
+        val isLastCard = (index == TOTAL_CARDS - 1) // Check against total cards
+        binding.fabNext.visibility = if (isLastCard) View.GONE else View.VISIBLE
+        Log.d("UpdateUI", "FAB visibility set to: ${binding.fabNext.visibility}")
+    }
+
 
     private fun updateNavigationRailSelection(index: Int) {
         val navRail = binding.inputNavRail
@@ -448,6 +650,8 @@ class FormActivity : AppCompatActivity() {
 
         if (index in menuItems.indices) {
             navRail?.menu?.findItem(menuItems[index])?.isChecked = true
+        } else {
+            Log.w("NavRailUpdate", "Index $index out of bounds for menu items.")
         }
     }
 
@@ -455,43 +659,98 @@ class FormActivity : AppCompatActivity() {
         val navigationRailView = binding.inputNavRail
 
         navigationRailView?.setOnItemSelectedListener { item ->
-            val targetView: View? = when (item.itemId) {
-                com.example.buildairesume.R.id.nav_personalInfo -> binding.cvPersonalInformation
-                com.example.buildairesume.R.id.nav_skills -> binding.cvSkills
-                com.example.buildairesume.R.id.nav_links -> binding.cvLinks
-                com.example.buildairesume.R.id.nav_certification -> binding.cvCertifications
-                com.example.buildairesume.R.id.nav_projects -> binding.cvProjects
-                com.example.buildairesume.R.id.nav_experience -> binding.cvExperience
-                com.example.buildairesume.R.id.nav_education -> binding.cvEducation
-                else -> null
-            }
+            val targetView: View?
+            val sectionIndex: Int
 
-            targetView?.let {
-                binding.mainScrollView?.smoothScrollTo(0, it.top)
-
-                // 🔹 Update chat text with typewriter effect
-                val sectionIndex = when (item.itemId) {
-                    com.example.buildairesume.R.id.nav_personalInfo -> 0
-                    com.example.buildairesume.R.id.nav_skills -> 1
-                    com.example.buildairesume.R.id.nav_links -> 2
-                    com.example.buildairesume.R.id.nav_experience -> 3
-                    com.example.buildairesume.R.id.nav_projects -> 4
-                    com.example.buildairesume.R.id.nav_certification -> 5
-                    com.example.buildairesume.R.id.nav_education -> 6
-                    else -> -1
+            when (item.itemId) {
+                com.example.buildairesume.R.id.nav_personalInfo -> {
+                    targetView = binding.cvPersonalInformation
+                    sectionIndex = PERSONAL_INFO_INDEX
+                    unfocus()
                 }
 
-                if (sectionIndex != -1) {
-                    val sectionText = getSectionText(sectionIndex)
-                    startTypewriterEffect(chatText, sectionText) // 🔹 Update chat text
+                com.example.buildairesume.R.id.nav_skills -> {
+                    targetView = binding.cvSkills
+                    sectionIndex = SKILLS_INDEX
+                    unfocus()
                 }
 
-                // 🔹 Hide FAB when at last section
-                binding.fabNext.visibility = if (sectionIndex == 6) View.GONE else View.VISIBLE
-                Log.d("kabir", "FAB visibility set to: ${binding.fabNext.visibility}")
+                com.example.buildairesume.R.id.nav_links -> {
+                    targetView = binding.cvLinks
+                    sectionIndex = LINKS_INDEX
+                    unfocus()
+                }
+
+                com.example.buildairesume.R.id.nav_experience -> { // Corrected mapping
+                    targetView = binding.cvExperience
+                    sectionIndex = EXPERIENCE_INDEX
+                }
+
+                com.example.buildairesume.R.id.nav_projects -> { // Corrected mapping
+                    targetView = binding.cvProjects
+                    sectionIndex = PROJECTS_INDEX
+                    unfocus()
+                }
+
+                com.example.buildairesume.R.id.nav_certification -> { // Corrected mapping
+                    targetView = binding.cvCertifications
+                    sectionIndex = CERTIFICATION_INDEX
+                    unfocus()
+                }
+
+                com.example.buildairesume.R.id.nav_education -> { // Corrected mapping
+                    targetView = binding.cvEducation
+                    sectionIndex = EDUCATION_INDEX
+                    unfocus()
+                }
+
+                else -> {
+                    targetView = null
+                    sectionIndex = -1
+                }
             }
 
-            true
+            if (targetView != null && sectionIndex != -1) {
+                // Smooth scroll to the target view
+                val targetScrollY = targetView.top - 20 // Adjust padding
+                binding.mainScrollView?.smoothScrollTo(0, targetScrollY)
+
+                // Update UI elements (Chat, FAB visibility, current index)
+                // Use postDelayed to ensure UI updates after scroll starts/settles a bit
+                binding.mainScrollView?.postDelayed({
+                    updateUiForCard(sectionIndex)
+                }, 150) // Adjust delay if needed
+
+            } else {
+                Log.w(
+                    "NavRailClick",
+                    "No target view or invalid section index for item ${item.itemId}"
+                )
+            }
+
+            true // Indicate the event was handled
+        }
+    }
+
+    private fun genderAdapter() {
+        val spinner = binding.spinnerGender // Reference to your AutoCompleteTextView for skills
+        val genderOptions = listOf("Male", "Female", "Rather Not Say","Non-Binary")
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.simple_dropdown_item_1line,genderOptions
+        )
+        spinner.setAdapter(adapter)
+
+        val displayMetrics = resources.displayMetrics
+        val screenHeight = displayMetrics.heightPixels
+        val desiredPercentage = 0.35f
+        val calculatedHeight = (screenHeight * desiredPercentage).toInt()
+        spinner.dropDownHeight = calculatedHeight
+
+        spinner.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) spinner.showDropDown() }
+        spinner.setOnClickListener { spinner.showDropDown() }
+        spinner.setOnItemClickListener { _, _, _, _ ->
+            spinner.clearFocus() // Hide keyboard/dropdown
         }
     }
 
@@ -502,58 +761,40 @@ class FormActivity : AppCompatActivity() {
         editTextSkills.setAdapter(adapter)
         editTextSkills.threshold = 1 // Show suggestions after 1 character
 
-        // --- Calculate and set dropdown height for skills ---
-        // 1. Get screen height in pixels
         val displayMetrics = resources.displayMetrics
         val screenHeight = displayMetrics.heightPixels
-
-        // 2. Calculate desired height (using the same 35%)
         val desiredPercentage = 0.35f // 35%
         val calculatedHeight = (screenHeight * desiredPercentage).toInt()
-
-        // 3. Set the dropdown height for the skills AutoCompleteTextView
         editTextSkills.dropDownHeight = calculatedHeight
-        // --- End of height setting ---
 
-        // Handle item selection
         editTextSkills.setOnItemClickListener { _, _, position, _ ->
             val selectedSkill = adapter.getItem(position) ?: return@setOnItemClickListener
-
             if (!selectedSkills.contains(selectedSkill)) {
-                selectedSkills.add(selectedSkill) // Add to internal list
-                addChip(selectedSkill) // Create a visual chip
+                selectedSkills.add(selectedSkill)
+                addChip(selectedSkill)
             }
-
-            editTextSkills.text.clear() // Clear input field after selection
-            // Consider clearing focus as well if the keyboard persists
-            // editTextSkills.clearFocus()
-            // InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            // imm.hideSoftInputFromWindow(editTextSkills.getWindowToken(), 0);
+            editTextSkills.text.clear()
         }
-
-        // Optional: Add focus/click listeners if you want the dropdown to appear proactively
-        // editTextSkills.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) editTextSkills.showDropDown() }
-        // editTextSkills.setOnClickListener { editTextSkills.showDropDown() }
     }
 
     private fun addChip(skill: String) {
-        Log.d("SkillsDebug", "Adding chip: $skill") // Debug Log
+        Log.d("SkillsDebug", "Adding chip: $skill")
         val chip = Chip(this).apply {
             text = skill
             textSize = 10f
             chipCornerRadius = 12f
-            isCloseIconVisible = true // Show the close icon
+            isCloseIconVisible = true
             setOnCloseIconClickListener {
-                selectedSkills.remove(skill) // Remove from list
-                binding.chipGroupSkills.removeView(this) // Remove chip
+                selectedSkills.remove(skill)
+                binding.chipGroupSkills.removeView(this)
             }
         }
-        binding.chipGroupSkills.addView(chip) // Add chip to the group
+        binding.chipGroupSkills.addView(chip)
     }
 
     // Save resume data to file
     private fun saveResumeData() {
-        lifecycleScope.launch(Dispatchers.IO) {  // Runs on a background thread
+        lifecycleScope.launch(Dispatchers.IO) {
             val userProfile = UserProfile(
                 fullName = binding.etName.text.toString(),
                 email = binding.etEmail.text.toString(),
@@ -563,31 +804,36 @@ class FormActivity : AppCompatActivity() {
                 linkedIn = binding.etLinkedin.text.toString(),
                 github = binding.etGithub.text.toString(),
                 website = binding.etWebsite.text.toString(),
-                objective = null
+                objective = null, // Or get from an EditText if you add one
+                gender = binding.spinnerGender.text.toString()
             )
-
             database.userProfileDao().insertOrUpdate(userProfile)
 
             database.skillsDao().deleteAll()
             selectedSkills.forEach { database.skillsDao().insert(Skills(skillName = it)) }
 
+            // Clear and insert for items managed by adapters to ensure consistency
             database.achievementDao().deleteAllAchievements()
             achievementAdapter.getAchievements().forEach { database.achievementDao().insert(it) }
 
+            database.projectDao().deleteAllProjects() // Clear before inserting current list
             val projectsToSave = projectAdapter.getProjects()
-            Log.d("AISaveDebug", "[FormActivity] Upserting ${projectsToSave.size} projects. IDs: ${projectsToSave.map { it.projectId }}")
-            database.projectDao().upsertProjects(projectsToSave) // Use Upsert
+            Log.d("AISaveDebug", "[FormActivity] Saving ${projectsToSave.size} projects.")
+            database.projectDao().upsertProjects(projectsToSave) // Use simple insert after delete
 
             database.certificationDao().deleteAllCertifications()
             certificationAdapter.getCertifications()
                 .forEach { database.certificationDao().insert(it) }
 
+            database.experienceDao().deleteAllExperiences() // Clear before inserting current list
             val experiencesToSave = experienceAdapter.getExperiences()
-            Log.d("AISaveDebug", "[FormActivity] Upserting ${experiencesToSave.size} experiences. IDs: ${experiencesToSave.map { it.experienceId }}")
-            database.experienceDao().upsertExperiences(experiencesToSave) // Use Upsert
+            Log.d("AISaveDebug", "[FormActivity] Saving ${experiencesToSave.size} experiences.")
+            database.experienceDao().upsertExperiences(experiencesToSave) // Use simple insert
 
             database.educationDao().deleteAllEducation()
             educationAdapter.getQualifications().forEach { database.educationDao().insert(it) }
+
+            Log.d("SaveData", "Data saved successfully.")
         }
     }
 
@@ -595,6 +841,13 @@ class FormActivity : AppCompatActivity() {
     private fun fillFormWithPreviousData() {
         lifecycleScope.launch(Dispatchers.IO) {
             val userProfile = database.userProfileDao().getUser()
+            val skills = database.skillsDao().getAllSkills().map { it.skillName }
+            val achievements = database.achievementDao().getAllAchievements()
+            val projects = database.projectDao().getAllProjects()
+            val certifications = database.certificationDao().getAllCertifications()
+            val experiences = database.experienceDao().getAllExperiences()
+            val education = database.educationDao().getAllEducation()
+            val gender = database.userProfileDao().getUser()?.gender
 
             withContext(Dispatchers.Main) {
                 userProfile?.let {
@@ -602,183 +855,124 @@ class FormActivity : AppCompatActivity() {
                     binding.etEmail.setText(it.email)
                     binding.etPhone.setText(it.phoneNumber)
                     binding.etAddress.setText(it.address)
-                    binding.spinnerJobProfile.setText(it.jobProfile, false)
+                    binding.spinnerJobProfile.setText(it.jobProfile, false) // Don't filter
                     binding.etLinkedin.setText(it.linkedIn)
                     binding.etGithub.setText(it.github)
                     binding.etWebsite.setText(it.website)
+                    binding.spinnerGender.setText(gender, false)
                 }
-            }
 
-            // Load skills from Room database
-            val skills = database.skillsDao().getAllSkills().map { it.skillName }
-
-            withContext(Dispatchers.Main) {
-                selectedSkills.clear()  // Clear old data
+                // Load skills and create chips
+                selectedSkills.clear()
                 selectedSkills.addAll(skills)
-                loadSkills(selectedSkills) // Ensure chips are displayed
-            }
+                loadSkills(selectedSkills) // Load chips based on DB data
 
-            // Load other data
-            val achievements = database.achievementDao().getAllAchievements()
-            val projects = database.projectDao().getAllProjects()
-            val certifications = database.certificationDao().getAllCertifications()
-            val experiences = database.experienceDao().getAllExperiences()
-            val education = database.educationDao().getAllEducation()
-
-            withContext(Dispatchers.Main) {
+                // Set adapter data
                 achievementAdapter.setAchievements(achievements)
                 projectAdapter.setProjects(projects)
                 certificationAdapter.setCertifications(certifications)
                 experienceAdapter.setExperiences(experiences)
                 educationAdapter.setQualifications(education)
+
+                // Update visibility based on loaded data
+                updateRecyclerViewVisibility() // Call this AFTER adapters are populated
             }
         }
     }
 
-    // Update RecyclerView visibility dynamically
+    // Update RecyclerView visibility dynamically (call this after loading data)
     private fun updateRecyclerViewVisibility() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val hasAchievements = database.achievementDao().getAllAchievements().isNotEmpty()
-            val hasProjects = database.projectDao().getAllProjects().isNotEmpty()
-            val hasCertifications = database.certificationDao().getAllCertifications().isNotEmpty()
-            val hasExperiences = database.experienceDao().getAllExperiences().isNotEmpty()
-            val hasEducation = database.educationDao().getAllEducation().isNotEmpty()
-
-            withContext(Dispatchers.Main) {
-                with(binding) {
-                    recyclerAchievements.visibility =
-                        if (hasAchievements) View.VISIBLE else View.GONE
-                    recyclerProjects.visibility = if (hasProjects) View.VISIBLE else View.GONE
-                    recyclerCertifications.visibility =
-                        if (hasCertifications) View.VISIBLE else View.GONE
-                    recyclerExperience.visibility = if (hasExperiences) View.VISIBLE else View.GONE
-                    recyclerEducation.visibility = if (hasEducation) View.VISIBLE else View.GONE
-                }
+        // This can now directly check adapter item counts on the main thread
+        // as it's called after data loading.
+        lifecycleScope.launch(Dispatchers.Main) {
+            with(binding) {
+                recyclerAchievements.visibility =
+                    if (achievementAdapter.itemCount > 0) View.VISIBLE else View.GONE
+                recyclerProjects.visibility =
+                    if (projectAdapter.itemCount > 0) View.VISIBLE else View.GONE
+                recyclerCertifications.visibility =
+                    if (certificationAdapter.itemCount > 0) View.VISIBLE else View.GONE
+                recyclerExperience.visibility =
+                    if (experienceAdapter.itemCount > 0) View.VISIBLE else View.GONE
+                recyclerEducation.visibility =
+                    if (educationAdapter.itemCount > 0) View.VISIBLE else View.GONE
             }
         }
     }
-
 
     private fun loadSkills(skills: List<String>) {
-        binding.chipGroupSkills.removeAllViews() // Clear old chips to prevent duplication
-
-        for (skill in skills) {
-            if (!selectedSkills.contains(skill)) {
-                selectedSkills.add(skill)
-            }
-            addChip(skill) // Add chips properly
-        }
+        binding.chipGroupSkills.removeAllViews() // Clear existing chips
+        // Add chips for the loaded skills. The 'selectedSkills' list is already updated.
+        skills.forEach { addChip(it) }
     }
 
     private fun setupSpinner() {
-        val spinner = binding.spinnerJobProfile // This is your AutoCompleteTextView
-        val adapter =
-            ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, JobList.jobList)
-
+        val spinner = binding.spinnerJobProfile
+        val adapter = ArrayAdapter(this, R.layout.simple_dropdown_item_1line, JobList.jobList)
         spinner.setAdapter(adapter)
 
-        // --- Calculate and set dropdown height ---
-        // 1. Get screen height in pixels
-        val displayMetrics = resources.displayMetrics // Get display metrics from context
+        val displayMetrics = resources.displayMetrics
         val screenHeight = displayMetrics.heightPixels
-
-        // 2. Calculate desired height (e.g., 35% of screen height)
-        //    Use a value between 0.30 and 0.40 as requested
-        val desiredPercentage = 0.35f // 35%
+        val desiredPercentage = 0.35f
         val calculatedHeight = (screenHeight * desiredPercentage).toInt()
+        spinner.dropDownHeight = calculatedHeight
 
-        // 3. Set the dropdown height for the AutoCompleteTextView
-        spinner.dropDownHeight = calculatedHeight // Property access works, or spinner.setDropDownHeight(calculatedHeight)
-        // --- End of height setting ---
-
-        // Show dropdown on focus
-        spinner.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                spinner.showDropDown()
-            }
-        }
-        // Show dropdown on click (redundant with focus listener but harmless)
-        spinner.setOnClickListener {
-            spinner.showDropDown()
-        }
-
-        // Handle item selection
+        spinner.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) spinner.showDropDown() }
+        spinner.setOnClickListener { spinner.showDropDown() }
         spinner.setOnItemClickListener { parent, _, position, _ ->
             val selectedJob = parent.getItemAtPosition(position).toString()
-            Toast.makeText(this, "Selected: $selectedJob", Toast.LENGTH_SHORT).show()
-            // Optional: you might want to clear focus after selection
-            // spinner.clearFocus()
+            // Toast.makeText(this, "Selected: $selectedJob", Toast.LENGTH_SHORT).show() // Optional toast
+            spinner.clearFocus() // Hide keyboard/dropdown
         }
     }
 
     private fun setupFragments() {
-        // Open Achievement Fragment with callback
         binding.btnAddAchievement.setOnClickListener {
             openDialog(
                 AddAchievementFragment(
                     onAdd = { achievement -> addAchievementToList(achievement) },
-                    onEdit = null, // No edit function needed when adding a new achievement
-                    achievementToEdit = null, // No achievement to edit
-                    position = null
+                    onEdit = null, achievementToEdit = null, position = null
                 )
             )
         }
-
-        // Open Project Fragment with callback
         binding.btnAddProject.setOnClickListener {
             openDialog(
                 AddProjectFragment(
                     onAdd = { project -> addProjectToList(project) },
-                    onEdit = null, // No edit function needed when adding a new project
-                    projectToEdit = null, // No project to edit
-                    position = null
+                    onEdit = null, projectToEdit = null, position = null
                 )
             )
         }
-
-        // Open Certification Fragment with callback
         binding.btnAddCertification.setOnClickListener {
             openDialog(
                 AddCertificationFragment(
                     onAdd = { certification -> addCertificationToList(certification) },
-                    onEdit = null, // No edit function needed when adding a new certification
-                    certificationToEdit = null, // No certification to edit
-                    position = null
+                    onEdit = null, certificationToEdit = null, position = null
                 )
             )
-
         }
-
         binding.btnAddExperience.setOnClickListener {
             openDialog(
                 AddExperienceFragment(
                     onAdd = { experience -> addExperienceToList(experience) },
-                    onEdit = null, // No edit function needed when adding a new experience
-                    experienceToEdit = null, // No experience to edit
-                    position = null
+                    onEdit = null, experienceToEdit = null, position = null
                 )
             )
         }
-
         binding.btnAddEducation.setOnClickListener {
             openDialog(
                 AddEducationFragment(
                     onAdd = { education -> addEducationToList(education) },
-                    onEdit = null, // No edit function needed when adding a new experience
-                    educationToEdit = null, // No experience to edit
-                    position = null
+                    onEdit = null, educationToEdit = null, position = null
                 )
             )
         }
     }
 
     private fun setupAdapters() {
-        achievementAdapter = AchievementAdapter(mutableListOf(), onEdit = { achievement, position ->
-            editAchievement(
-                achievement, position
-            )
-        },  // Pass edit function
-            onRemove = { position -> removeAchievement(position) }  // Pass remove function
+        achievementAdapter = AchievementAdapter(mutableListOf(),
+            onEdit = { achievement, position -> editAchievement(achievement, position) },
+            onRemove = { position -> removeAchievement(position) }
         )
         binding.recyclerAchievements.apply {
             layoutManager = LinearLayoutManager(this@FormActivity)
@@ -787,7 +981,8 @@ class FormActivity : AppCompatActivity() {
 
         projectAdapter = ProjectAdapter(mutableListOf(),
             onEdit = { project, position -> editProject(project, position) },
-            onRemove = { position -> removeProject(position) })
+            onRemove = { position -> removeProject(position) }
+        )
         binding.recyclerProjects.apply {
             layoutManager = LinearLayoutManager(this@FormActivity)
             adapter = projectAdapter
@@ -795,7 +990,8 @@ class FormActivity : AppCompatActivity() {
 
         certificationAdapter = CertificationAdapter(mutableListOf(),
             onEdit = { certification, position -> editCertification(certification, position) },
-            onRemove = { position -> removeCertification(position) })
+            onRemove = { position -> removeCertification(position) }
+        )
         binding.recyclerCertifications.apply {
             layoutManager = LinearLayoutManager(this@FormActivity)
             adapter = certificationAdapter
@@ -803,7 +999,8 @@ class FormActivity : AppCompatActivity() {
 
         experienceAdapter = ExperienceAdapter(mutableListOf(),
             onEdit = { experience, position -> editExperience(experience, position) },
-            onRemove = { position -> removeExperience(position) })
+            onRemove = { position -> removeExperience(position) }
+        )
         binding.recyclerExperience.apply {
             layoutManager = LinearLayoutManager(this@FormActivity)
             adapter = experienceAdapter
@@ -811,24 +1008,23 @@ class FormActivity : AppCompatActivity() {
 
         educationAdapter = EducationAdapter(mutableListOf(),
             onEdit = { education, position -> editEducation(education, position) },
-            onRemove = { position -> removeEducation(position) })
+            onRemove = { position -> removeEducation(position) }
+        )
         binding.recyclerEducation.apply {
             layoutManager = LinearLayoutManager(this@FormActivity)
             adapter = educationAdapter
         }
     }
 
-
-    // Function to open a DialogFragment
     private fun openDialog(fragment: DialogFragment) {
         fragment.show(supportFragmentManager, fragment::class.java.simpleName)
     }
 
-
-    // Functions to update lists (to be implemented)
+    // Add functions
     private fun addAchievementToList(achievement: Achievement) {
         achievementAdapter.addAchievement(achievement)
-        binding.recyclerAchievements.visibility = View.VISIBLE
+        binding.recyclerAchievements.visibility =
+            View.VISIBLE // Ensure visible when adding first item
     }
 
     private fun addProjectToList(project: Project) {
@@ -851,17 +1047,13 @@ class FormActivity : AppCompatActivity() {
         binding.recyclerEducation.visibility = View.VISIBLE
     }
 
-
-    // **Edit Functions**
-    // In FormActivity.kt, modify the editAchievement function:
+    // Edit Functions
     private fun editAchievement(achievement: Achievement, position: Int) {
         val fragment = AddAchievementFragment(
-            onAdd = { updatedAchievement ->
-                achievementAdapter.updateAchievement(position, updatedAchievement)
-            },
-            onEdit = { updatedAchievement, pos ->
+            onAdd = { /* Not used in edit mode */ },
+            onEdit = { updatedAchievement, pos -> // Use onEdit lambda
                 achievementAdapter.updateAchievement(pos, updatedAchievement)
-            }, // Add this line
+            },
             achievementToEdit = achievement,
             position = position
         )
@@ -870,37 +1062,29 @@ class FormActivity : AppCompatActivity() {
 
     private fun editCertification(certification: Certification, position: Int) {
         val fragment = AddCertificationFragment(
-            onAdd = { updatedCertification ->
-                certificationAdapter.updateCertification(position, updatedCertification)
-            },
+            onAdd = { /* Not used */ },
             onEdit = { updatedCertification, pos ->
                 certificationAdapter.updateCertification(pos, updatedCertification)
             },
-            certificationToEdit = certification,
-            position = position
+            certificationToEdit = certification, position = position
         )
         fragment.show(supportFragmentManager, "EditCertificationFragment")
     }
 
     private fun editProject(project: Project, position: Int) {
         val fragment = AddProjectFragment(
-            onAdd = { updatedProject ->
-                projectAdapter.updateProject(position, updatedProject)
-            },
+            onAdd = { /* Not used */ },
             onEdit = { updatedProject, pos ->
                 projectAdapter.updateProject(pos, updatedProject)
             },
-            projectToEdit = project,
-            position = position
+            projectToEdit = project, position = position
         )
         fragment.show(supportFragmentManager, "EditProjectFragment")
     }
 
     private fun editExperience(experience: Experience, position: Int) {
         val fragment = AddExperienceFragment(
-            onAdd = { updatedExperience ->
-                experienceAdapter.updateExperience(position, updatedExperience)
-            },
+            onAdd = { /* Not used */ },
             onEdit = { updatedExperience, pos ->
                 experienceAdapter.updateExperience(pos, updatedExperience)
             },
@@ -911,9 +1095,7 @@ class FormActivity : AppCompatActivity() {
 
     private fun editEducation(education: Education, position: Int) {
         val fragment = AddEducationFragment(
-            onAdd = { updatedEducation ->
-                educationAdapter.updateEducation(position, updatedEducation)
-            },
+            onAdd = { /* Not used */ },
             onEdit = { updatedEducation, pos ->
                 educationAdapter.updateEducation(pos, updatedEducation)
             },
@@ -922,23 +1104,19 @@ class FormActivity : AppCompatActivity() {
         fragment.show(supportFragmentManager, "EditEducationFragment")
     }
 
-
-    // Common function for showing a remove confirmation dialog
+    // Remove Confirmation Dialog
     private fun showRemoveDialog(title: String, message: String, onConfirm: () -> Unit) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(title)
-        builder.setMessage(message)
-        builder.setPositiveButton("Yes") { _, _ -> onConfirm() }
-        builder.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
-        builder.show()
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Yes") { _, _ -> onConfirm() }
+            .setNegativeButton("No", null) // Simpler way to dismiss
+            .show()
     }
 
-
-    // remove functions
+    // Remove functions
     private fun removeAchievement(position: Int) {
-        showRemoveDialog(
-            "Remove Achievement", "Are you sure you want to remove this achievement?"
-        ) {
+        showRemoveDialog("Remove Achievement", "Are you sure?") {
             achievementAdapter.removeAchievement(position)
             if (achievementAdapter.itemCount == 0) binding.recyclerAchievements.visibility =
                 View.GONE
@@ -946,9 +1124,7 @@ class FormActivity : AppCompatActivity() {
     }
 
     private fun removeCertification(position: Int) {
-        showRemoveDialog(
-            "Remove Certification", "Are you sure you want to remove this certification?"
-        ) {
+        showRemoveDialog("Remove Certification", "Are you sure?") {
             certificationAdapter.removeCertification(position)
             if (certificationAdapter.itemCount == 0) binding.recyclerCertifications.visibility =
                 View.GONE
@@ -956,25 +1132,29 @@ class FormActivity : AppCompatActivity() {
     }
 
     private fun removeProject(position: Int) {
-        showRemoveDialog("Remove Project", "Are you sure you want to remove this project?") {
+        showRemoveDialog("Remove Project", "Are you sure?") {
             projectAdapter.removeProject(position)
             if (projectAdapter.itemCount == 0) binding.recyclerProjects.visibility = View.GONE
         }
     }
 
     private fun removeExperience(position: Int) {
-        showRemoveDialog("Remove Experience", "Are you sure you want to remove this experience?") {
+        showRemoveDialog("Remove Experience", "Are you sure?") {
             experienceAdapter.removeExperience(position)
             if (experienceAdapter.itemCount == 0) binding.recyclerExperience.visibility = View.GONE
         }
     }
 
     private fun removeEducation(position: Int) {
-        showRemoveDialog("Remove Education", "Are you sure you want to remove this education?") {
+        showRemoveDialog("Remove Education", "Are you sure?") {
             educationAdapter.removeEducation(position)
             if (educationAdapter.itemCount == 0) binding.recyclerEducation.visibility = View.GONE
         }
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clean up the listener to prevent memory leaks
+        binding.root.viewTreeObserver.removeOnGlobalLayoutListener(keyboardVisibilityListener)
+    }
 }

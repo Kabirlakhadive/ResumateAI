@@ -147,7 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
-                android:inputType="text"
+                android:inputType="numberDecimal"
                 style="@style/CardAddItemEditSpinner" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -162,7 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
-                android:inputType="text"
+                android:inputType="number"
                 style="@style/CardAddItemEditText" />
 
         </com.google.android.material.textfield.TextInputLayout>

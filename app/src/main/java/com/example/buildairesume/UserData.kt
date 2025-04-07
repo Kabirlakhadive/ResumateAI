@@ -23,7 +23,7 @@ import com.example.buildairesume.models.UserProfile
 
 @Database(
     entities = [UserProfile::class, Skills::class, Achievement::class, Project::class, Certification::class, Experience::class, Education::class],
-    version = 5, // Update when making schema changes
+    version = 7, // Update when making schema changes
     exportSchema = true // Consider exporting the schema for version tracking
 )
 abstract class UserData : RoomDatabase() {

@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="start"
+        android:paddingTop="280dp"
         android:background="@color/colorBackground"
         app:labelVisibilityMode="selected"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,9 +35,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_constraint_view"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginBottom="90dp"
         android:elevation="30dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -44,7 +46,9 @@
             android:id="@+id/lottie_anim_card"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_margin="10dp"
+            android:layout_marginVertical="10dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="10dp"
             app:cardBackgroundColor="#E0F7FA"
             app:cardCornerRadius="22.5dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -57,7 +61,6 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="15dp"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/waves" />
@@ -66,9 +69,9 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/form_activity_chat_card"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
             android:layout_marginVertical="10dp"
-            android:layout_marginRight="10dp"
             app:cardCornerRadius="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,8 +80,8 @@
 
             <TextView
                 android:id="@+id/output_activity_chat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center|left"
                 android:padding="10dp"
                 tools:text="Chat Text" />
@@ -91,8 +94,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:padding="12dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_save"
+        android:paddingRight="12dp"
+        android:paddingVertical="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/output_nav_rail"
         app:layout_constraintTop_toTopOf="parent">
@@ -107,8 +111,9 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_objective_output"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="16dp">
+                android:layout_height="860dp"
+                android:layout_marginBottom="16dp"
+                app:strokeWidth="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -172,9 +177,9 @@
             <!-- Projects Section -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_project_output"
-
+                app:strokeWidth="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="860dp"
                 android:layout_marginBottom="16dp"
                 android:minHeight="635dp">
 
@@ -210,9 +215,9 @@
             <!-- Experience Section -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_experience_output"
-
+                app:strokeWidth="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="650dp"
                 android:minHeight="635dp"
                 app:cardCornerRadius="8dp">
 
@@ -244,27 +249,30 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginVertical="10dp"
+                android:text="Save"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
         </LinearLayout>
     </ScrollView>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
+        android:layout_margin="25dp"
         android:backgroundTint="@color/colorSecondaryVariant"
         android:src="@drawable/icon_next"
-        app:layout_constraintBottom_toTopOf="@id/chat_constraint_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Fab.Circle"/>
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Fab.Circle" />
 
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="10dp"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

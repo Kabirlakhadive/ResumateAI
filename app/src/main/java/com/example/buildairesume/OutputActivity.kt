@@ -369,6 +369,8 @@ class OutputActivity : AppCompatActivity() {
             - **Industry**: Based on experience at ${experiences.firstOrNull()?.companyName ?: "various companies"}
             --**Applying for Job Profile**: ${userProfile?.jobProfile ?: "Not specified"}
             - **Key Skills**: ${skills.joinToString(", ") { it.skillName }}
+            - **Gender** : ${userProfile?.gender ?: "Not specified"}
+            - **Relevant Work Experiences**: ${experiences.joinToString(", ") { it.position }}
             - **Notable Projects**: ${projects.firstOrNull()?.title ?: "No significant projects listed"}
             - **Education**: ${education.firstOrNull()?.qualification} in ${education.firstOrNull()?.branch ?: education.firstOrNull()?.degree ?: "relevant field"}
             - **Achievements**: ${achievements.firstOrNull()?.title ?: "No major achievements listed"}

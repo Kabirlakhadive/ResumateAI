@@ -42,7 +42,7 @@
     <color name="colorOnBackground">#1A1B1F</color> <!-- Near Black for readability -->
 
     <!-- Surface Color (For cards, sheets, menus - Pure white for clear distinction from background) -->
-    <color name="colorSurface">#FFFFFFFF</color> <!-- Pure white - distinct from background -->
+    <color name="colorSurface">#F8F9FA</color> <!-- Pure white - distinct from background -->
     <!-- Text/icons on Surfaces -->
     <color name="colorOnSurface">#1A1B1F</color> <!-- Near Black for readability -->
 

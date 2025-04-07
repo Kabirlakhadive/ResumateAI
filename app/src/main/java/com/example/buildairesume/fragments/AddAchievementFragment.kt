@@ -46,21 +46,18 @@ class AddAchievementFragment(
 
         achievementToEdit?.let {
             binding.etTitle.setText(it.title)
-            binding.etDescription.setText(it.description)
             binding.etDate.setText(it.date)
             binding.btnAdd.text = "Update"
         }
 
         binding.btnAdd.setOnClickListener {
             val title = binding.etTitle.text.toString()
-            val description = binding.etDescription.text.toString()
             val date = binding.etDate.text.toString()
 
-            if (title.isNotEmpty() && description.isNotEmpty() && date.isNotEmpty()) {
+            if (title.isNotEmpty()  && date.isNotEmpty()) {
                 val newAchievement = Achievement(
                     achievementId = achievementToEdit?.achievementId, // Keep existing ID if editing
                     title = title,
-                    description = description,
                     date = date
                 )
                 if (achievementToEdit != null && position != null) {

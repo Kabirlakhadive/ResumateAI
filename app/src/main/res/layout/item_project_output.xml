@@ -39,7 +39,7 @@
         android:enabled="false"
         android:hint="Description"
         android:inputType="textMultiLine"
-        android:maxLines="8"
+        android:maxLines="18"
         android:minLines="3"
         android:scrollbars="vertical"
         style="@style/CardOutputEditText"

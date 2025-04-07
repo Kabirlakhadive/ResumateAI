@@ -49,7 +49,7 @@
 
     <!-- Slightly lighter dark surface (Cards, Sheets, Menus) -->
     <!-- Standard Material approach uses overlays; #1E1E1E is common -->
-    <color name="colorSurface">#FF1E1E1E</color> <!-- Slightly lighter than background -->
+    <color name="colorSurface">#FF121212</color> <!-- Slightly lighter than background -->
     <!-- White text/icons on Surfaces. Using the same off-white as OnBackground -->
     <color name="colorOnSurface">#EAEAF1</color>
 
