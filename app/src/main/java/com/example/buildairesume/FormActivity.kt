@@ -4,6 +4,7 @@ import android.R // Keep android.R import if needed for simple_dropdown_item_1li
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -125,17 +128,32 @@ class FormActivity : AppCompatActivity() {
                 startTypewriterEffect(
                     chatText,
                     "Please fill in your Name, Email, and Phone Number.", // More specific message
-                    50
+                    30
                 )
+                binding.mainScrollView?.smoothScrollTo(0, binding.cvPersonalInformation.top - 20)
+                binding.mainScrollView?.postDelayed({ updateUiForCard(PERSONAL_INFO_INDEX) }, 150)
+
                 // Or uncomment this Toast if you prefer:
                 // Toast.makeText(this, "Please fill in Name, Email, and Phone Number.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener // Stop validation here
             }
 
+            val MINIMUM_SKILLS = 5 // Example minimum
+            if (selectedSkills.size < MINIMUM_SKILLS) {
+                Log.d("SubmitValidation", "Failed: Not enough skills added.")
+//                Toast.makeText(this, "Please add at least $MINIMUM_SKILLS skills.", Toast.LENGTH_LONG).show()
+                startTypewriterEffect(chatText,"Please add at least $MINIMUM_SKILLS skills.",30)
+                // Optional: Scroll to Skills
+                binding.mainScrollView?.smoothScrollTo(0, binding.cvSkills.top - 20)
+                binding.mainScrollView?.postDelayed({ updateUiForCard(SKILLS_INDEX) }, 150)
+                return@setOnClickListener
+            }
+
             // 2. Check Experience
             if (experienceAdapter.itemCount == 0) {
                 Log.d("SubmitValidation", "Failed: No experience added.")
-                Toast.makeText(this, "Please add at least one work experience.", Toast.LENGTH_LONG).show()
+//                Toast.makeText(this, "Please add at least one work experience.", Toast.LENGTH_LONG).show()
+                startTypewriterEffect(chatText,"Please add at least one work experience.",30)
                 // Optional: Scroll to the Experience section
                 binding.mainScrollView?.smoothScrollTo(0, binding.cvExperience.top - 20)
                 binding.mainScrollView?.postDelayed({ updateUiForCard(EXPERIENCE_INDEX) }, 150)
@@ -145,7 +163,8 @@ class FormActivity : AppCompatActivity() {
             // 3. Check Projects
             if (projectAdapter.itemCount == 0) {
                 Log.d("SubmitValidation", "Failed: No projects added.")
-                Toast.makeText(this, "Please add at least one project.", Toast.LENGTH_LONG).show()
+//                Toast.makeText(this, "Please add at least one project.", Toast.LENGTH_LONG).show()
+                startTypewriterEffect(chatText,"Please add at least one project.",30)
                 // Optional: Scroll to the Projects section
                 binding.mainScrollView?.smoothScrollTo(0, binding.cvProjects.top - 20)
                 binding.mainScrollView?.postDelayed({ updateUiForCard(PROJECTS_INDEX) }, 150)
@@ -155,7 +174,8 @@ class FormActivity : AppCompatActivity() {
             // 4. Check Education
             if (educationAdapter.itemCount == 0) {
                 Log.d("SubmitValidation", "Failed: No education added.")
-                Toast.makeText(this, "Please add at least one education entry.", Toast.LENGTH_LONG).show()
+//                Toast.makeText(this, "Please add at least one education entry.", Toast.LENGTH_LONG).show()
+                startTypewriterEffect(chatText,"Please add at least one education entry.",30)
                 // Optional: Scroll to the Education section
                 binding.mainScrollView?.smoothScrollTo(0, binding.cvEducation.top - 20)
                 binding.mainScrollView?.postDelayed({ updateUiForCard(EDUCATION_INDEX) }, 150)
@@ -174,17 +194,9 @@ class FormActivity : AppCompatActivity() {
 //            }
 //            // --- Add minimum skills check example (optional) ---
 
-            val MINIMUM_SKILLS = 5 // Example minimum
-            if (selectedSkills.size < MINIMUM_SKILLS) {
-                Log.d("SubmitValidation", "Failed: Not enough skills added.")
-                Toast.makeText(this, "Please add at least $MINIMUM_SKILLS skills.", Toast.LENGTH_LONG).show()
-                // Optional: Scroll to Skills
-                binding.mainScrollView?.smoothScrollTo(0, binding.cvSkills.top - 20)
-                binding.mainScrollView?.postDelayed({ updateUiForCard(SKILLS_INDEX) }, 150)
-                return@setOnClickListener
-            }
 
-            // --- End minimum skills check example ---
+
+
 
 
             // 6. If all checks pass, proceed with saving and navigating
@@ -285,7 +297,7 @@ class FormActivity : AppCompatActivity() {
         val screenHeight = rootView.rootView.height // Gets the total screen height
         val keypadHeight = screenHeight - rect.bottom // Calculates the height occupied by system UI/keyboard
 
-        val currentlyVisible = keypadHeight > screenHeight * 0.15 // Heuristic
+        val currentlyVisible = keypadHeight > screenHeight * 0.15
 
         if (isKeyboardShowing != currentlyVisible) {
             val wasKeyboardShowing = isKeyboardShowing // Store the previous state
@@ -315,7 +327,7 @@ class FormActivity : AppCompatActivity() {
                         // Use postDelayed to allow scroll animation to start
                         binding.mainScrollView?.postDelayed({
                             // Update NavRail selection, chat text, FAB visibility, and currentVisibleCardIndex
-                            updateUiForCard(SKILLS_INDEX)
+                            updateUiForCard(PERSONAL_INFO_INDEX)
                             Log.d("KeyboardVisibility", "UI updated for Skills card after keyboard hide scroll.")
                         }, 150) // Delay might need slight adjustment
 
@@ -543,7 +555,6 @@ class FormActivity : AppCompatActivity() {
     ) {
         typewriterJob?.cancel()
         textView.text = "" // Clear text initially
-
         val chatCard = binding.formActivityChatCard
         chatCard.alpha = 1f // Ensure it's fully visible at the start
 
