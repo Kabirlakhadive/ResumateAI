@@ -116,13 +116,19 @@ class AddEducationFragment(
             // Hide Branch & Specialization when selecting Senior Secondary
             binding.fBranch.visibility = View.GONE
             binding.fSpecialization.visibility = View.GONE
-        } else if(binding.spinnerQualification.text.toString() == "Diploma")
-        {
+        } else if (binding.spinnerQualification.text.toString() == "Diploma") {
             binding.fDegree.visibility = View.VISIBLE
             binding.fDegree.hint = "Diploma Title"
             setupDropdown(
                 binding.etDegree,
-                listOf("Diploma in Computer Engineering", "Diploma in Mechanical Engineering", "Diploma in Civil Engineering", "Diploma in Electrical Engineering", "Diploma in Electronics", "Other")
+                listOf(
+                    "Diploma in Computer Engineering",
+                    "Diploma in Mechanical Engineering",
+                    "Diploma in Civil Engineering",
+                    "Diploma in Electrical Engineering",
+                    "Diploma in Electronics",
+                    "Other"
+                )
             )
 
             binding.fSchool.visibility = View.VISIBLE
@@ -137,9 +143,7 @@ class AddEducationFragment(
             // Specialization often not required for diploma
             binding.fSpecialization.visibility = View.GONE
 
-        }
-
-        else {
+        } else {
             binding.fDegree.visibility = View.VISIBLE
             binding.fDegree.hint = "Degree"
             setupDropdown(binding.etDegree, DegreeList.degrees)
@@ -172,7 +176,7 @@ class AddEducationFragment(
     private fun setupSpinners() {
         setupDropdown(
             binding.spinnerQualification,
-            listOf("12th Grade", "Under Graduate", "Post Graduate", "PhD" , "Diploma")
+            listOf("12th Grade", "Under Graduate", "Post Graduate", "PhD", "Diploma")
         )
         setupDropdown(binding.spinnerGradingSystem, listOf("Percentage", "CGPA", "Percentile"))
         setupDropdown(binding.etDegree, DegreeList.degrees)

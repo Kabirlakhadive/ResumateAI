@@ -454,7 +454,7 @@ class Template2 {
 
                         "skills" -> {
                             div.add(createHeading("Skills"))
-                            val skillsText = allSkills ?: "No Skills Listed"
+                            val skillsText = allSkills
                             div.add(
                                 Paragraph(skillsText)
                                     .setFontSize(textSize)

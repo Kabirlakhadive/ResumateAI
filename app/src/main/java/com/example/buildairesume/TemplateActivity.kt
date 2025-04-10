@@ -57,7 +57,7 @@ class TemplateActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         Log.d("PDFGenerator", "Loading templates...")
 
         val images = listOf(
-            "a1.png", "a2.png", "c1.png", "b1.png", "b2.png","d1.png"
+            "a1.png", "a2.png", "c1.png", "b1.png", "b2.png", "d1.png"
         )
 
         for (image in images) {

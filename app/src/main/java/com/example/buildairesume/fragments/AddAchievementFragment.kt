@@ -54,7 +54,7 @@ class AddAchievementFragment(
             val title = binding.etTitle.text.toString()
             val date = binding.etDate.text.toString()
 
-            if (title.isNotEmpty()  && date.isNotEmpty()) {
+            if (title.isNotEmpty() && date.isNotEmpty()) {
                 val newAchievement = Achievement(
                     achievementId = achievementToEdit?.achievementId, // Keep existing ID if editing
                     title = title,

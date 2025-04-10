@@ -34,7 +34,8 @@
     <!-- Secondary Variant Color (Lightest accent shade - Lighter than Secondary - Indigo 200) -->
     <color name="colorSecondaryVariant">#9FA8DA</color>
     <!-- Text/icons on Secondary (White still offers reasonable contrast on this lighter secondary) -->
-    <color name="colorOnSecondary">#FFFFFFFF</color> <!-- Could consider black #000000 if contrast feels low -->
+    <color name="colorOnSecondary">#FFFFFFFF
+    </color> <!-- Could consider black #000000 if contrast feels low -->
 
     <!-- Background Color (Slightly cool off-white for softer look) -->
     <color name="colorBackground">#F8F9FA</color> <!-- Very light grey/blue tint -->
@@ -49,7 +50,8 @@
     <!-- Surface Variant Color (Subtly different surface, related to theme - Light Indigo 50) -->
     <color name="colorSurfaceVariant">#E8EAF6</color> <!-- Very Light Indigo -->
     <!-- Text/icon color for less prominent elements on surfaces -->
-    <color name="colorOnSurfaceVariant">#455A64</color> <!-- Blue Grey 700 - Good contrast on Surface Variant -->
+    <color name="colorOnSurfaceVariant">#455A64
+    </color> <!-- Blue Grey 700 - Good contrast on Surface Variant -->
 
     <!-- Error Color (For indicating errors - Standard Material Red 700) -->
     <color name="colorError">#D32F2F</color>

@@ -15,8 +15,6 @@ import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.core.animation.doOnEnd
 import androidx.lifecycle.lifecycleScope
 import com.example.buildairesume.dao.ExperienceDao
 import com.example.buildairesume.dao.ProjectDao
@@ -81,7 +79,10 @@ class OutputActivity : AppCompatActivity() {
             val skills = skillsDao.getAllSkills()
             projectAdapter = ProjectOutputAdapter(projects, this@OutputActivity)
             experienceAdapter = ExperienceOutputAdapter(experiences, this@OutputActivity)
-            Log.d(TAG, "[OutputActivity] Fetched ${projects.size} projects, ${experiences.size} experiences.")
+            Log.d(
+                TAG,
+                "[OutputActivity] Fetched ${projects.size} projects, ${experiences.size} experiences."
+            )
 
             binding.rvProjects.adapter = projectAdapter
             binding.rvExperiences.adapter = experienceAdapter
@@ -111,7 +112,8 @@ class OutputActivity : AppCompatActivity() {
 
         binding.btnSave.setOnClickListener {
             // Show loading/progress indicator
-            binding.progressBarSaving.visibility = View.VISIBLE // Add a ProgressBar with id progressBarSaving to your layout
+            binding.progressBarSaving.visibility =
+                View.VISIBLE // Add a ProgressBar with id progressBarSaving to your layout
             binding.btnSave.isEnabled = false // Disable button during save
 
             val updatedProjects = projectAdapter.getUpdatedProjects()
@@ -123,15 +125,27 @@ class OutputActivity : AppCompatActivity() {
                 var success = false
                 try {
                     Log.d(TAG, "[OutputActivitySave] Save Button Clicked.")
-                    Log.d(TAG, "[OutputActivitySave] Projects from adapter BEFORE DB: ${updatedProjects.joinToString { it.title + " -> output: [" + (it.output ?: "NULL") + "]" }}")
-                    Log.d(TAG, "[OutputActivitySave] Experiences from adapter BEFORE DB: ${updatedExperiences.joinToString { it.position + " -> output: [" + (it.output ?: "NULL") + "]" }}")
+                    Log.d(
+                        TAG,
+                        "[OutputActivitySave] Projects from adapter BEFORE DB: ${updatedProjects.joinToString { it.title + " -> output: [" + (it.output ?: "NULL") + "]" }}"
+                    )
+                    Log.d(
+                        TAG,
+                        "[OutputActivitySave] Experiences from adapter BEFORE DB: ${updatedExperiences.joinToString { it.position + " -> output: [" + (it.output ?: "NULL") + "]" }}"
+                    )
                     Log.d(TAG, "[OutputActivitySave] Objective text BEFORE DB: [$updatedObjective]")
                     // Perform database operations on IO thread
                     withContext(Dispatchers.IO) {
                         Log.d(TAG, "[OutputActivitySave] Entering DB context...")
                         // Log IDs before update
-                        Log.d(TAG, "[OutputActivitySave] Project IDs being updated: ${updatedProjects.map { it.projectId }}")
-                        Log.d(TAG, "[OutputActivitySave] Experience IDs being updated: ${updatedExperiences.map { it.experienceId }}")
+                        Log.d(
+                            TAG,
+                            "[OutputActivitySave] Project IDs being updated: ${updatedProjects.map { it.projectId }}"
+                        )
+                        Log.d(
+                            TAG,
+                            "[OutputActivitySave] Experience IDs being updated: ${updatedExperiences.map { it.experienceId }}"
+                        )
                         Log.d(TAG, "[OutputActivitySave] Entering DB context...")
                         projectDao.updateProjects(updatedProjects)
                         Log.d(TAG, "[OutputActivitySave] Updated projects in DB.")
@@ -144,7 +158,10 @@ class OutputActivity : AppCompatActivity() {
                             profile.objective = updatedObjective // Update the objective field
                             userProfileDao.insertOrUpdate(profile) // Save the updated profile
                             Log.d(TAG, "[OutputActivitySave] Updated objective in DB.")
-                        }?: Log.w(TAG, "[OutputActivitySave] UserProfile was null, couldn't save objective.")
+                        } ?: Log.w(
+                            TAG,
+                            "[OutputActivitySave] UserProfile was null, couldn't save objective."
+                        )
                         success = true // Mark as successful
                     }
 
@@ -168,7 +185,11 @@ class OutputActivity : AppCompatActivity() {
 
                 } catch (e: Exception) {
                     Log.e(TAG, "[OutputActivitySave] Error during save process", e) // Log exception
-                    Toast.makeText(this@OutputActivity, "Failed to save changes!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@OutputActivity,
+                        "Failed to save changes!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     Toast.makeText(
                         this@OutputActivity,
                         "Failed to save changes!",
@@ -182,7 +203,7 @@ class OutputActivity : AppCompatActivity() {
             }
         }
 
-        binding.lottieAnimCard.setOnClickListener{
+        binding.lottieAnimCard.setOnClickListener {
             showChat()
         }
         binding.fabNext.setOnClickListener {
@@ -190,9 +211,9 @@ class OutputActivity : AppCompatActivity() {
         }
 
         setupNavigationRail()
-        binding.mainScrollView?.setOnTouchListener { _, event ->
+        binding.mainScrollView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                binding.mainScrollView!!.postDelayed({
+                binding.mainScrollView.postDelayed({
                     snapToNearestCard()
                 }, 100)
 
@@ -320,7 +341,6 @@ class OutputActivity : AppCompatActivity() {
     }
 
 
-
     private suspend fun callAIWithRetry(
         prompt: String,
         binding: ActivityOutputBinding
@@ -436,7 +456,7 @@ class OutputActivity : AppCompatActivity() {
             )
 
         if (index in menuItems.indices) {
-            navRail?.menu?.findItem(menuItems[index])?.isChecked = true
+            navRail.menu?.findItem(menuItems[index])?.isChecked = true
         }
     }
 
@@ -479,7 +499,7 @@ class OutputActivity : AppCompatActivity() {
     private fun snapToNearestCard() {
         val scrollView = binding.mainScrollView
         val container = binding.mainLinearLayout
-        val childCount = container!!.childCount
+        val childCount = container.childCount
 
         var nearestCard: View? = null
         var minDistance = Int.MAX_VALUE
@@ -488,7 +508,7 @@ class OutputActivity : AppCompatActivity() {
         for (i in 0 until childCount) {
             val cardView = container.getChildAt(i)
             val cardTop = cardView.top
-            val distance = scrollView!!.scrollY - cardTop  // Difference from scroll position
+            val distance = scrollView.scrollY - cardTop  // Difference from scroll position
 
             // Adjust snapping logic for both up & down
             if (Math.abs(distance) < minDistance && Math.abs(distance) < scrollView.height / 1.2) {
@@ -499,7 +519,7 @@ class OutputActivity : AppCompatActivity() {
         }
 
         nearestCard?.let {
-            scrollView?.post {
+            scrollView.post {
                 scrollView.smoothScrollTo(0, it.top - 20)
             }
             updateNavigationRailSelection(nearestIndex)
@@ -513,10 +533,10 @@ class OutputActivity : AppCompatActivity() {
     private fun setupNavigationRail() {
         val navigationRailView = binding.outputNavRail
 
-        navigationRailView?.setOnItemSelectedListener { item ->
+        navigationRailView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_objective_output -> {
-                    binding.cvObjectiveOutput?.let {
+                    binding.cvObjectiveOutput.let {
                         binding.mainScrollView.smoothScrollTo(
                             0,
                             it.top
@@ -528,7 +548,7 @@ class OutputActivity : AppCompatActivity() {
 
                 R.id.nav_projects_output -> {
                     Log.d("PDFGenerator", "project output button pressed")
-                    binding.cvProjectOutput?.let {
+                    binding.cvProjectOutput.let {
                         binding.mainScrollView.smoothScrollTo(
                             0,
                             it.top
@@ -539,7 +559,7 @@ class OutputActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_experience_output -> {
-                    binding.cvExperienceOutput?.let {
+                    binding.cvExperienceOutput.let {
                         binding.mainScrollView.smoothScrollTo(
                             0,
                             it.top

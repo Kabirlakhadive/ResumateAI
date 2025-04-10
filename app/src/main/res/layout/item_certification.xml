@@ -49,8 +49,7 @@
                     android:src="@drawable/icon_write"
                     app:layout_constraintEnd_toStartOf="@id/btn_remove"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <ImageButton
                     android:id="@+id/btn_remove"
@@ -62,24 +61,23 @@
                     android:src="@drawable/icon_close"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="10dp"
-                >
-            <TextView
-                android:id="@+id/tvYear"
-                style="@style/CardItemSubheading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:layout_margin="10dp"
-                tools:text="2023" />
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:id="@+id/tvYear"
+                    style="@style/CardItemSubheading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:layout_margin="10dp"
+                    tools:text="2023" />
 
             </androidx.cardview.widget.CardView>
 

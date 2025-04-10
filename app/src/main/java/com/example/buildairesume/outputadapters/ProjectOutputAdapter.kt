@@ -88,7 +88,7 @@ class ProjectOutputAdapter(
         private fun modelCall(project: Project, binding: ItemProjectOutputBinding) {
             val apiKey = BuildConfig.GEMINI_API_KEY
             val model = BuildConfig.GEMINI_MODEL
-            val generativeModel = GenerativeModel(model , apiKey)
+            val generativeModel = GenerativeModel(model, apiKey)
             val numOfLines = if (itemCount > 2) "1" else "1-2"
 
             Log.d("PDFGeneration", "Number of projects: $itemCount")
@@ -118,10 +118,16 @@ class ProjectOutputAdapter(
                 // --- FIX: Update the adapter's data source ---
                 if (position != RecyclerView.NO_POSITION) {
                     if (position < updatedDescriptions.size) {
-                        Log.d(TAG, "[ProjectAdapter] Updating updatedDescriptions at pos $position with: $outputText") // <-- Log update
+                        Log.d(
+                            TAG,
+                            "[ProjectAdapter] Updating updatedDescriptions at pos $position with: $outputText"
+                        ) // <-- Log update
                         updatedDescriptions[position] = outputText
                     } else {
-                        Log.e(TAG, "[ProjectAdapter] Position $position out of bounds for updatedDescriptions (size ${updatedDescriptions.size})")
+                        Log.e(
+                            TAG,
+                            "[ProjectAdapter] Position $position out of bounds for updatedDescriptions (size ${updatedDescriptions.size})"
+                        )
                     }
                 }
                 // --- End of FIX ---
@@ -129,13 +135,19 @@ class ProjectOutputAdapter(
                 withContext(Dispatchers.Main) {
                     // Check if the ViewHolder is still valid for this position
                     if (absoluteAdapterPosition == position) {
-                        Log.d(TAG, "[ProjectAdapter] Setting UI text for pos $position: $outputText") // <-- Log UI set
+                        Log.d(
+                            TAG,
+                            "[ProjectAdapter] Setting UI text for pos $position: $outputText"
+                        ) // <-- Log UI set
                         binding.etProjectDescription.setText(outputText)
                         binding.etProjectDescription.visibility = View.VISIBLE
                         binding.lottieAnim.visibility = View.GONE
                         binding.ivEdit.isEnabled = true
                     } else {
-                        Log.w(TAG, "[ProjectAdapter] ViewHolder at pos $position is no longer valid (current: $absoluteAdapterPosition) during UI update.")
+                        Log.w(
+                            TAG,
+                            "[ProjectAdapter] ViewHolder at pos $position is no longer valid (current: $absoluteAdapterPosition) during UI update."
+                        )
                     }
                 }
             }
@@ -198,11 +210,21 @@ class ProjectOutputAdapter(
 
     // ✅ Fetch the latest descriptions stored in `updatedDescriptions`
     fun getUpdatedProjects(): List<Project> {
-        Log.d(TAG, "[ProjectAdapter] getUpdatedProjects called. Current updatedDescriptions: ${updatedDescriptions.joinToString(" | ")}") // <-- Log retrieval start
+        Log.d(
+            TAG,
+            "[ProjectAdapter] getUpdatedProjects called. Current updatedDescriptions: ${
+                updatedDescriptions.joinToString(" | ")
+            }"
+        ) // <-- Log retrieval start
         return projects.mapIndexed { index, project ->
             val outputFromList = updatedDescriptions.getOrNull(index)
-            Log.d(TAG, "[ProjectAdapter] Mapping project index $index ('${project.title}'). Output from list: ${outputFromList ?: "NULL"}") // <-- Log mapping
-            project.copy(output = outputFromList ?: project.output) // Use existing output if list entry is null
+            Log.d(
+                TAG,
+                "[ProjectAdapter] Mapping project index $index ('${project.title}'). Output from list: ${outputFromList ?: "NULL"}"
+            ) // <-- Log mapping
+            project.copy(
+                output = outputFromList ?: project.output
+            ) // Use existing output if list entry is null
         }
     }
 

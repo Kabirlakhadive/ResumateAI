@@ -68,18 +68,30 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.nav_about -> {
                     // Handle home navigation
-                    true}
-                R.id.nav_github ->{
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Kabirlakhadive/ResumateAI/tree/main"))
+                    true
+                }
+
+                R.id.nav_github -> {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://github.com/Kabirlakhadive/ResumateAI/tree/main")
+                    )
                     startActivity(intent)
                     true
                 }
-                R.id.nav_feedback ->{
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLScK2NCsX4Ih4tBI7NHyzUf-AqzFyAr3nbK05IIydbwCoCJwYA/viewform?usp=header"))
+
+                R.id.nav_feedback -> {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLScK2NCsX4Ih4tBI7NHyzUf-AqzFyAr3nbK05IIydbwCoCJwYA/viewform?usp=header")
+                    )
                     startActivity(intent)
                     true
                 }
-                else -> {false}
+
+                else -> {
+                    false
+                }
             }
         }
 
@@ -129,7 +141,6 @@ class MainActivity : AppCompatActivity() {
         )
 
 
-
         val textView = binding.welcomeText
         val welcomeText = welcomeMessages.random()
         val welcomeBackText = welcomeBackMessages.random()
@@ -172,7 +183,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun startTypewriterEffect(textView: TextView, fullText: String, delayMillis: Long = 50) {
+    private fun startTypewriterEffect(
+        textView: TextView,
+        fullText: String,
+        delayMillis: Long = 50
+    ) {
         textView.text = "" // Clear the text initially
         var currentIndex = 0
 
@@ -257,7 +272,11 @@ class MainActivity : AppCompatActivity() {
                         }
                         .onError { throwable ->
                             Log.e("MainActivity", "Error loading PDF", throwable)
-                            Toast.makeText(this@MainActivity, "Error loading resume.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Error loading resume.",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             isPdfLoaded = false // Ensure flag is false on error
                         }
                         .load()
@@ -277,8 +296,6 @@ class MainActivity : AppCompatActivity() {
             // binding.pdfView.visibility = View.GONE // Or hide it
         }
     }
-
-
 
 
     private fun loadUserData() {
@@ -301,7 +318,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setupClickListeners() {
-        binding.btnChangeTemplate.setOnClickListener{launchTemplateActivity()}
+        binding.btnChangeTemplate.setOnClickListener { launchTemplateActivity() }
         binding.btnEditData.setOnClickListener { launchFormActivity() }
         binding.btnDownload.setOnClickListener { downloadResumeFile(this) }
         binding.btnShare.setOnClickListener {
@@ -396,7 +413,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchTemplateActivity() {
-        val intent = Intent(this,TemplateActivity::class.java)
+        val intent = Intent(this, TemplateActivity::class.java)
         startActivity(intent)
     }
 }

@@ -3,8 +3,6 @@
     <style name="Base.Theme.BuildAiResume" parent="Theme.Material3.DayNight.NoActionBar">
 
 
-
-
         <item name="textInputStyle">@style/Widget.App.TextInputLayout.OutlinedBox.Rounded</item>
 
 
@@ -16,25 +14,29 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item> <!-- Indigo 700 (#303F9F) -->
         <!-- Variant of the primary brand color. -->
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item> <!-- Indigo 400 (#5C6BC0) -->
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant
+        </item> <!-- Indigo 400 (#5C6BC0) -->
         <!-- Text color for elements displayed on top of the primary color. -->
         <item name="colorOnPrimary">@color/colorOnPrimary</item> <!-- White (#FFFFFFFF) -->
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorSecondary</item> <!-- Indigo 300 (#7986CB) -->
         <!-- Variant of the secondary brand color. -->
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item> <!-- Indigo 200 (#9FA8DA) -->
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant
+        </item> <!-- Indigo 200 (#9FA8DA) -->
         <!-- Text color for elements displayed on top of the secondary color. -->
         <item name="colorOnSecondary">@color/colorOnSecondary</item> <!-- White (#FFFFFFFF) -->
 
         <!-- Status bar color. -->
         <!-- Using background for potentially edge-to-edge look.colorPrimaryVariant is also common for M2 -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/colorBackground</item> <!-- Slightly cool off-white (#F8F9FA) -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/colorBackground
+        </item> <!-- Slightly cool off-white (#F8F9FA) -->
         <!-- Customize navigation bar color if desired -->
         <!-- <item name="android:navigationBarColor" tools:targetApi="l">?attr/colorSurface</item> -->
 
         <!-- Background color for the app -->
-        <item name="android:colorBackground">@color/colorBackground</item> <!-- Slightly cool off-white (#F8F9FA) -->
+        <item name="android:colorBackground">@color/colorBackground
+        </item> <!-- Slightly cool off-white (#F8F9FA) -->
         <!-- Color role used for the background of the application -->
         <!-- Text color for elements displayed on top of the background color. -->
         <item name="colorOnBackground">@color/colorOnBackground</item> <!-- Near Black (#1A1B1F) -->
@@ -45,8 +47,10 @@
         <item name="colorOnSurface">@color/colorOnSurface</item> <!-- Near Black (#1A1B1F) -->
 
         <!-- Surface Variant color (subtler backgrounds/outlines) -->
-        <item name="colorSurfaceVariant">@color/colorSurfaceVariant</item> <!-- Very Light Indigo (#E8EAF6) -->
-        <item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant</item> <!-- Blue Grey 700 (#455A64) -->
+        <item name="colorSurfaceVariant">@color/colorSurfaceVariant
+        </item> <!-- Very Light Indigo (#E8EAF6) -->
+        <item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariant
+        </item> <!-- Blue Grey 700 (#455A64) -->
 
         <!-- Outline color (borders, dividers) -->
         <item name="colorOutline">@color/colorOutline</item> <!-- Grey 400 (#BDBDBD) -->
@@ -58,10 +62,12 @@
 
         <!-- Container colors (M3 concept, mapping as per your snippet) -->
         <!-- This might not be standard M2, often needs M3 parent/components -->
-        <item name="colorSecondaryContainer">@color/colorSecondary</item> <!-- Maps to Indigo 300 (#7986CB) -->
+        <item name="colorSecondaryContainer">@color/colorSecondary
+        </item> <!-- Maps to Indigo 300 (#7986CB) -->
         <!-- Text/icon color on Secondary Container. Need to ensure contrast. -->
         <!-- Since colorSecondaryContainer = colorSecondary, OnSecondaryContainer could be OnSecondary -->
-        <item name="colorOnSecondaryContainer">@color/colorOnSecondary</item> <!-- White (#FFFFFFFF) -->
+        <item name="colorOnSecondaryContainer">@color/colorOnSecondary
+        </item> <!-- White (#FFFFFFFF) -->
         <!-- Other container colors might be needed if using M3 components -->
         <!-- <item name="colorPrimaryContainer">...</item> -->
         <!-- <item name="colorOnPrimaryContainer">...</item> -->
@@ -74,13 +80,13 @@
     </style>
 
     <style name="Theme.BuildAiResume" parent="Base.Theme.BuildAiResume" />
-    
+
     <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/colorSurface</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
         <item name="postSplashScreenTheme">@style/Theme.BuildAiResume</item>
-        
-        
+
+
     </style>
 
 

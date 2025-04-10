@@ -57,7 +57,8 @@
     <!-- Using a slightly lighter gray than surface for subtle contrast -->
     <color name="colorSurfaceVariant">#FF2C2C32</color> <!-- Subtly different dark surface -->
     <!-- Text/icon color for less prominent elements (medium-emphasis white/off-white) -->
-    <color name="colorOnSurfaceVariant">#CACAE1</color> <!-- Muted off-white (corresponds somewhat to indigo tint) -->
+    <color name="colorOnSurfaceVariant">#CACAE1
+    </color> <!-- Muted off-white (corresponds somewhat to indigo tint) -->
 
     <!-- Error Color (Standard dark theme error color - Light Red/Pink) -->
     <!-- Material Default Dark Error: #CF6679 -->
@@ -74,6 +75,7 @@
     <color name="red_error">#CF6679</color> <!-- Using dark theme error color now -->
     <color name="grey_light">#BDBDBD</color> <!-- Less relevant in dark usually -->
     <color name="grey_medium">#757575</color> <!-- Less relevant in dark usually -->
-    <color name="grey_dark">#424242</color> <!-- More useful as a variant surface/component potentially -->
+    <color name="grey_dark">#424242
+    </color> <!-- More useful as a variant surface/component potentially -->
 
 </resources>

@@ -1,25 +1,20 @@
 package com.example.buildairesume
 
-import android.R // Keep android.R import if needed for simple_dropdown_item_1line
-import android.annotation.SuppressLint
+// import android.view.MotionEvent // No longer needed
+// import kotlin.math.abs // No longer needed for snapping
+import android.R
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-// import android.view.MotionEvent // No longer needed
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,7 +43,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-// import kotlin.math.abs // No longer needed for snapping
 import kotlin.random.Random
 
 
@@ -130,8 +124,8 @@ class FormActivity : AppCompatActivity() {
                     "Please fill in your Name, Email, and Phone Number.", // More specific message
                     30
                 )
-                binding.mainScrollView?.smoothScrollTo(0, binding.cvPersonalInformation.top - 20)
-                binding.mainScrollView?.postDelayed({ updateUiForCard(PERSONAL_INFO_INDEX) }, 150)
+                binding.mainScrollView.smoothScrollTo(0, binding.cvPersonalInformation.top - 20)
+                binding.mainScrollView.postDelayed({ updateUiForCard(PERSONAL_INFO_INDEX) }, 150)
 
                 // Or uncomment this Toast if you prefer:
                 // Toast.makeText(this, "Please fill in Name, Email, and Phone Number.", Toast.LENGTH_LONG).show()
@@ -142,10 +136,10 @@ class FormActivity : AppCompatActivity() {
             if (selectedSkills.size < MINIMUM_SKILLS) {
                 Log.d("SubmitValidation", "Failed: Not enough skills added.")
 //                Toast.makeText(this, "Please add at least $MINIMUM_SKILLS skills.", Toast.LENGTH_LONG).show()
-                startTypewriterEffect(chatText,"Please add at least $MINIMUM_SKILLS skills.",30)
+                startTypewriterEffect(chatText, "Please add at least $MINIMUM_SKILLS skills.", 30)
                 // Optional: Scroll to Skills
-                binding.mainScrollView?.smoothScrollTo(0, binding.cvSkills.top - 20)
-                binding.mainScrollView?.postDelayed({ updateUiForCard(SKILLS_INDEX) }, 150)
+                binding.mainScrollView.smoothScrollTo(0, binding.cvSkills.top - 20)
+                binding.mainScrollView.postDelayed({ updateUiForCard(SKILLS_INDEX) }, 150)
                 return@setOnClickListener
             }
 
@@ -153,10 +147,10 @@ class FormActivity : AppCompatActivity() {
             if (experienceAdapter.itemCount == 0) {
                 Log.d("SubmitValidation", "Failed: No experience added.")
 //                Toast.makeText(this, "Please add at least one work experience.", Toast.LENGTH_LONG).show()
-                startTypewriterEffect(chatText,"Please add at least one work experience.",30)
+                startTypewriterEffect(chatText, "Please add at least one work experience.", 30)
                 // Optional: Scroll to the Experience section
-                binding.mainScrollView?.smoothScrollTo(0, binding.cvExperience.top - 20)
-                binding.mainScrollView?.postDelayed({ updateUiForCard(EXPERIENCE_INDEX) }, 150)
+                binding.mainScrollView.smoothScrollTo(0, binding.cvExperience.top - 20)
+                binding.mainScrollView.postDelayed({ updateUiForCard(EXPERIENCE_INDEX) }, 150)
                 return@setOnClickListener // Stop validation here
             }
 
@@ -164,10 +158,10 @@ class FormActivity : AppCompatActivity() {
             if (projectAdapter.itemCount == 0) {
                 Log.d("SubmitValidation", "Failed: No projects added.")
 //                Toast.makeText(this, "Please add at least one project.", Toast.LENGTH_LONG).show()
-                startTypewriterEffect(chatText,"Please add at least one project.",30)
+                startTypewriterEffect(chatText, "Please add at least one project.", 30)
                 // Optional: Scroll to the Projects section
-                binding.mainScrollView?.smoothScrollTo(0, binding.cvProjects.top - 20)
-                binding.mainScrollView?.postDelayed({ updateUiForCard(PROJECTS_INDEX) }, 150)
+                binding.mainScrollView.smoothScrollTo(0, binding.cvProjects.top - 20)
+                binding.mainScrollView.postDelayed({ updateUiForCard(PROJECTS_INDEX) }, 150)
                 return@setOnClickListener // Stop validation here
             }
 
@@ -175,10 +169,10 @@ class FormActivity : AppCompatActivity() {
             if (educationAdapter.itemCount == 0) {
                 Log.d("SubmitValidation", "Failed: No education added.")
 //                Toast.makeText(this, "Please add at least one education entry.", Toast.LENGTH_LONG).show()
-                startTypewriterEffect(chatText,"Please add at least one education entry.",30)
+                startTypewriterEffect(chatText, "Please add at least one education entry.", 30)
                 // Optional: Scroll to the Education section
-                binding.mainScrollView?.smoothScrollTo(0, binding.cvEducation.top - 20)
-                binding.mainScrollView?.postDelayed({ updateUiForCard(EDUCATION_INDEX) }, 150)
+                binding.mainScrollView.smoothScrollTo(0, binding.cvEducation.top - 20)
+                binding.mainScrollView.postDelayed({ updateUiForCard(EDUCATION_INDEX) }, 150)
                 return@setOnClickListener // Stop validation here
             }
 
@@ -193,10 +187,6 @@ class FormActivity : AppCompatActivity() {
 //                return@setOnClickListener // Stop validation here
 //            }
 //            // --- Add minimum skills check example (optional) ---
-
-
-
-
 
 
             // 6. If all checks pass, proceed with saving and navigating
@@ -235,9 +225,10 @@ class FormActivity : AppCompatActivity() {
     }
 
 
-    private fun unfocus(){
+    private fun unfocus() {
         // --- Add this section to clear focus ---
-        val focusedView = currentFocus // Get the view that currently has focus in the activity window
+        val focusedView =
+            currentFocus // Get the view that currently has focus in the activity window
         if (focusedView != null) {
             // Option 1: Just clear focus (usually hides keyboard too)
             focusedView.clearFocus()
@@ -295,7 +286,8 @@ class FormActivity : AppCompatActivity() {
         rootView.getWindowVisibleDisplayFrame(rect) // Gets the visible display frame size
 
         val screenHeight = rootView.rootView.height // Gets the total screen height
-        val keypadHeight = screenHeight - rect.bottom // Calculates the height occupied by system UI/keyboard
+        val keypadHeight =
+            screenHeight - rect.bottom // Calculates the height occupied by system UI/keyboard
 
         val currentlyVisible = keypadHeight > screenHeight * 0.15
 
@@ -315,24 +307,33 @@ class FormActivity : AppCompatActivity() {
                 // --- ADDED SCROLL LOGIC ---
                 // Check if the keyboard WAS showing and the current card is Personal Info
                 if (wasKeyboardShowing && currentVisibleCardIndex == PERSONAL_INFO_INDEX) {
-                    Log.d("KeyboardVisibility", "Keyboard hidden while on Personal Info. Scrolling to Skills card.")
+                    Log.d(
+                        "KeyboardVisibility",
+                        "Keyboard hidden while on Personal Info. Scrolling to Skills card."
+                    )
 
                     // Target the next card (Skills)
                     val targetView = binding.cvPersonalInformation
                     if (targetView != null) {
                         val targetScrollY = targetView.top - 20 // Adjust padding if needed
-                        binding.mainScrollView?.smoothScrollTo(0, targetScrollY)
+                        binding.mainScrollView.smoothScrollTo(0, targetScrollY)
 
                         // IMPORTANT: Update the UI and tracked index to reflect the scroll
                         // Use postDelayed to allow scroll animation to start
-                        binding.mainScrollView?.postDelayed({
+                        binding.mainScrollView.postDelayed({
                             // Update NavRail selection, chat text, FAB visibility, and currentVisibleCardIndex
                             updateUiForCard(PERSONAL_INFO_INDEX)
-                            Log.d("KeyboardVisibility", "UI updated for Skills card after keyboard hide scroll.")
+                            Log.d(
+                                "KeyboardVisibility",
+                                "UI updated for Skills card after keyboard hide scroll."
+                            )
                         }, 150) // Delay might need slight adjustment
 
                     } else {
-                        Log.w("KeyboardVisibility", "Cannot scroll, target view cvSkills not found.")
+                        Log.w(
+                            "KeyboardVisibility",
+                            "Cannot scroll, target view cvSkills not found."
+                        )
                     }
                 }
                 // --- END OF ADDED SCROLL LOGIC ---
@@ -596,8 +597,8 @@ class FormActivity : AppCompatActivity() {
 
     private fun scrollToNextCard() {
         Log.d("kabir", "scrollToNextCard called, current index: $currentVisibleCardIndex")
-        val scrollView = binding.mainScrollView ?: return
-        val container = binding.mainLinearLayout ?: return
+        val scrollView = binding.mainScrollView
+        val container = binding.mainLinearLayout
         val childCount = container.childCount // Or use TOTAL_CARDS
 
         if (currentVisibleCardIndex < childCount - 1) {
@@ -660,7 +661,7 @@ class FormActivity : AppCompatActivity() {
         )
 
         if (index in menuItems.indices) {
-            navRail?.menu?.findItem(menuItems[index])?.isChecked = true
+            navRail.menu?.findItem(menuItems[index])?.isChecked = true
         } else {
             Log.w("NavRailUpdate", "Index $index out of bounds for menu items.")
         }
@@ -669,7 +670,7 @@ class FormActivity : AppCompatActivity() {
     private fun setupNavigationRail() {
         val navigationRailView = binding.inputNavRail
 
-        navigationRailView?.setOnItemSelectedListener { item ->
+        navigationRailView.setOnItemSelectedListener { item ->
             val targetView: View?
             val sectionIndex: Int
 
@@ -724,11 +725,11 @@ class FormActivity : AppCompatActivity() {
             if (targetView != null && sectionIndex != -1) {
                 // Smooth scroll to the target view
                 val targetScrollY = targetView.top - 20 // Adjust padding
-                binding.mainScrollView?.smoothScrollTo(0, targetScrollY)
+                binding.mainScrollView.smoothScrollTo(0, targetScrollY)
 
                 // Update UI elements (Chat, FAB visibility, current index)
                 // Use postDelayed to ensure UI updates after scroll starts/settles a bit
-                binding.mainScrollView?.postDelayed({
+                binding.mainScrollView.postDelayed({
                     updateUiForCard(sectionIndex)
                 }, 150) // Adjust delay if needed
 
@@ -745,10 +746,10 @@ class FormActivity : AppCompatActivity() {
 
     private fun genderAdapter() {
         val spinner = binding.spinnerGender // Reference to your AutoCompleteTextView for skills
-        val genderOptions = listOf("Male", "Female", "Rather Not Say","Non-Binary")
+        val genderOptions = listOf("Male", "Female", "Rather Not Say", "Non-Binary")
         val adapter = ArrayAdapter(
             this,
-            R.layout.simple_dropdown_item_1line,genderOptions
+            R.layout.simple_dropdown_item_1line, genderOptions
         )
         spinner.setAdapter(adapter)
 

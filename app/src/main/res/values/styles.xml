@@ -19,7 +19,7 @@
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
 
         <!-- Status bar color. -->
-         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- You can uncomment and customize the status bar color if needed -->
 
         <!-- Background color for the app -->
@@ -41,7 +41,7 @@
         <!-- ... other non-color theme items -->
 
         <!-- You can optionally set the default style for all TextInputLayouts here -->
-         <item name="textInputStyle">@style/Widget.App.TextInputLayout.OutlinedBox.Rounded</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.OutlinedBox.Rounded</item>
     </style>
     <!-- Custom TextInputLayout Style -->
     <style name="Widget.App.TextInputLayout.OutlinedBox.Rounded" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -119,10 +119,4 @@
     <!-- _____________________________________________________Backgrounds__________________________________________________ -->
 
 
-
-
-
-
-
-
-    </resources>
+</resources>

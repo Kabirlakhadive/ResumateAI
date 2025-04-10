@@ -123,9 +123,9 @@ class Template1 {
 
                 document.setMargins(
                     marginJson.getInt("topMargin").toFloat() * scaleFactor,
-                    marginJson.getInt("rightMargin").toFloat() *scaleFactor,
-                    marginJson.getInt("bottomMargin").toFloat() *scaleFactor,
-                    marginJson.getInt("leftMargin").toFloat() *scaleFactor
+                    marginJson.getInt("rightMargin").toFloat() * scaleFactor,
+                    marginJson.getInt("bottomMargin").toFloat() * scaleFactor,
+                    marginJson.getInt("leftMargin").toFloat() * scaleFactor
                 )
 
                 /*<-----------------------------Helper functions for adding elements--------------------------------->*/
@@ -255,7 +255,7 @@ class Template1 {
                         .setPadding(contactJson.getDouble("paddingVertical").toFloat())
                         .setMarginBottom(nameMarginBottom)
 
-                    if(contactJson.getBoolean("backgroundColor")){
+                    if (contactJson.getBoolean("backgroundColor")) {
                         contactParagraph.setBackgroundColor(getColorFromHex(contactJson.getString("background")))
                     }
 
@@ -405,14 +405,19 @@ class Template1 {
                 fun formatDate(dateStr: String): String {
                     return try {
                         val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                        val outputFormat = SimpleDateFormat(jsonObject.getString("dateFormat"), Locale.getDefault())
+                        val outputFormat = SimpleDateFormat(
+                            jsonObject.getString("dateFormat"),
+                            Locale.getDefault()
+                        )
                         val date = inputFormat.parse(dateStr)
-                        outputFormat.format(date ?: return dateStr) // If parsing fails, return the original string
+                        outputFormat.format(
+                            date ?: return dateStr
+                        ) // If parsing fails, return the original string
                     } catch (e: Exception) {
-                        Log.d("PDFGenerator","Error formatting date: ${e.message}")
-                        Log.d("PDFGenerator","Input date string: $dateStr")
-                        Log.d("PDFGenerator","Input date format: dd/MM/yyyy")
-                        Log.d("PDFGenerator","Output date format: ${jsonObject.getString("date")}")
+                        Log.d("PDFGenerator", "Error formatting date: ${e.message}")
+                        Log.d("PDFGenerator", "Input date string: $dateStr")
+                        Log.d("PDFGenerator", "Input date format: dd/MM/yyyy")
+                        Log.d("PDFGenerator", "Output date format: ${jsonObject.getString("date")}")
                         dateStr // Fallback if date conversion fails
                     }
                 }
@@ -488,8 +493,14 @@ class Template1 {
                                     "${formatDate(it.startDate)} - ${formatDate(it.endDate.toString())}"
                                 )
                                 addText(it.output.toString())
-                                Log.d("PDFGenerator", "Formated Date : ${formatDate(it.startDate)} - ${formatDate(it.endDate.toString())}")
-                                Log.d("PDFGenerator", "Date : ${it.startDate} - ${it.endDate.toString()}")
+                                Log.d(
+                                    "PDFGenerator",
+                                    "Formated Date : ${formatDate(it.startDate)} - ${formatDate(it.endDate.toString())}"
+                                )
+                                Log.d(
+                                    "PDFGenerator",
+                                    "Date : ${it.startDate} - ${it.endDate.toString()}"
+                                )
                             }
                         }
 

@@ -67,7 +67,7 @@
 
         <meta-data
             android:name="com.example.buildairesume.GEMINI_MODEL"
-            android:value="${GEMINI_MODEL}"/>
-        
+            android:value="${GEMINI_MODEL}" />
+
     </application>
 </manifest>

@@ -89,11 +89,12 @@ class ExperienceOutputAdapter(
             // Call AI Model if teh internet is available
             if (isInternetAvailable(context)) {
                 modelCall(experience, binding)
-            }
-            else { binding.etExperienceDescription.apply {
+            } else {
+                binding.etExperienceDescription.apply {
                     setText("AI generation Failed, Check Internet Connection")
                     setTextColor(Color.RED)
-                } }
+                }
+            }
         }
 
         private fun modelCall(experience: Experience, binding: ItemExperienceOutputBinding) {
@@ -130,10 +131,16 @@ class ExperienceOutputAdapter(
                 // --- FIX: Update the adapter's data source ---
                 if (position != RecyclerView.NO_POSITION) {
                     if (position < updatedDescriptions.size) {
-                        Log.d(TAG, "[ExperienceAdapter] Updating updatedDescriptions at pos $position with: $outputText") // <-- Log update
+                        Log.d(
+                            TAG,
+                            "[ExperienceAdapter] Updating updatedDescriptions at pos $position with: $outputText"
+                        ) // <-- Log update
                         updatedDescriptions[position] = outputText
                     } else {
-                        Log.e(TAG, "[ExperienceAdapter] Position $position out of bounds for updatedDescriptions (size ${updatedDescriptions.size})")
+                        Log.e(
+                            TAG,
+                            "[ExperienceAdapter] Position $position out of bounds for updatedDescriptions (size ${updatedDescriptions.size})"
+                        )
                     }
                 }
                 // --- End of FIX ---
@@ -141,13 +148,19 @@ class ExperienceOutputAdapter(
                 withContext(Dispatchers.Main) {
                     // Check if the ViewHolder is still valid for this position
                     if (absoluteAdapterPosition == position) {
-                        Log.d(TAG, "[ExperienceAdapter] Setting UI text for pos $position: $outputText") // <-- Log UI set
+                        Log.d(
+                            TAG,
+                            "[ExperienceAdapter] Setting UI text for pos $position: $outputText"
+                        ) // <-- Log UI set
                         binding.etExperienceDescription.setText(outputText)
                         binding.etExperienceDescription.visibility = View.VISIBLE
                         binding.lottieAnim.visibility = View.GONE
                         binding.ivEdit.isEnabled = true
                     } else {
-                        Log.w(TAG, "[ExperienceAdapter] ViewHolder at pos $position is no longer valid (current: $absoluteAdapterPosition) during UI update.")
+                        Log.w(
+                            TAG,
+                            "[ExperienceAdapter] ViewHolder at pos $position is no longer valid (current: $absoluteAdapterPosition) during UI update."
+                        )
                     }
                 }
             }
@@ -209,11 +222,21 @@ class ExperienceOutputAdapter(
     }
 
     fun getUpdatedExperiences(): List<Experience> {
-        Log.d(TAG, "[ExperienceAdapter] getUpdatedExperiences called. Current updatedDescriptions: ${updatedDescriptions.joinToString(" | ")}") // <-- Log retrieval start
+        Log.d(
+            TAG,
+            "[ExperienceAdapter] getUpdatedExperiences called. Current updatedDescriptions: ${
+                updatedDescriptions.joinToString(" | ")
+            }"
+        ) // <-- Log retrieval start
         return experiences.mapIndexed { index, experience ->
             val outputFromList = updatedDescriptions.getOrNull(index)
-            Log.d(TAG, "[ExperienceAdapter] Mapping experience index $index ('${experience.position}'). Output from list: ${outputFromList ?: "NULL"}") // <-- Log mapping
-            experience.copy(output = outputFromList ?: experience.output) // Use existing output if list entry is null
+            Log.d(
+                TAG,
+                "[ExperienceAdapter] Mapping experience index $index ('${experience.position}'). Output from list: ${outputFromList ?: "NULL"}"
+            ) // <-- Log mapping
+            experience.copy(
+                output = outputFromList ?: experience.output
+            ) // Use existing output if list entry is null
         }
     }
 }
