@@ -9,11 +9,13 @@
 
     <com.google.android.material.navigationrail.NavigationRailView
         android:id="@+id/input_nav_rail"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="0dp"
         android:layout_gravity="start"
         android:background="@color/colorBackground"
         android:paddingTop="100dp"
+        app:itemIconSize="20dp"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,13 +26,12 @@
         android:id="@+id/fab_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_margin="24dp"
         android:backgroundTint="@color/colorSecondaryVariant"
         android:src="@drawable/icon_next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Fab.Circle" />
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_constraint_view"
@@ -44,11 +45,11 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/lottie_anim_card"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginVertical="10dp"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             app:cardBackgroundColor="#E0F7FA"
             app:cardCornerRadius="22.5dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -58,8 +59,8 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottie_anim"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
@@ -70,8 +71,7 @@
             android:id="@+id/form_activity_chat_card"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="10dp"
-            android:layout_marginVertical="10dp"
+            android:layout_margin="8dp"
             app:cardCornerRadius="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,10 +80,10 @@
 
             <TextView
                 android:id="@+id/form_activity_chat"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center|left"
-                android:padding="10dp"
+                android:gravity="center|start"
+                android:padding="12dp"
                 tools:text="Chat Text" />
         </androidx.cardview.widget.CardView>
 
@@ -95,50 +95,47 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         android:paddingVertical="12dp"
-        android:paddingRight="12dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/input_nav_rail"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <LinearLayout
             android:id="@+id/main_linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
-            <!--- Personal Information -->
+            <!--Personal Info-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_personal_information"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="10dp"
+                android:layout_marginVertical="8dp"
                 android:elevation="0dp"
-                android:padding="15dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="6dp">
-                    <!-- Form Title -->
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/tv_personalInfo"
                         style="@style/CardTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="12dp"
                         android:paddingBottom="16dp"
-                        android:text="Personal Information"
-                        android:textSize="20sp" />
+                        android:text="Personal Information" />
 
-                    <!-- Name Input -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp">
+                        android:layout_margin="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_name"
@@ -148,11 +145,10 @@
                             android:inputType="textCapWords" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Email Input -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp">
+                        android:layout_margin="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_email"
@@ -162,11 +158,10 @@
                             android:inputType="textEmailAddress" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Phone Number Input -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp">
+                        android:layout_margin="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_phone"
@@ -176,11 +171,10 @@
                             android:inputType="phone" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Gender-->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="62dp"
-                        android:layout_margin="10dp"
+                        android:layout_margin="12dp"
                         android:hint="Gender">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -193,11 +187,10 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <!-- Address Section -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp">
+                        android:layout_margin="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_address"
@@ -207,11 +200,10 @@
                             android:inputType="textPostalAddress" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Job Profile Selector (Spinner or Button) -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="62dp"
-                        android:layout_margin="10dp"
+                        android:layout_margin="12dp"
                         android:hint="Select Job Profile (Optional)">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -225,36 +217,33 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!--- Skills -->
+            <!--Skills-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_skills"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="10dp"
-                android:padding="15dp"
+                android:layout_marginVertical="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="6dp">
+                    android:padding="12dp">
 
                     <TextView
                         android:id="@+id/tv_skills"
                         style="@style/CardTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="12dp"
                         android:paddingBottom="16dp"
-                        android:text="Skills"
-                        android:textSize="20sp" />
+                        android:text="Skills" />
 
-                    <!-- AutoCompleteTextView for skill selection -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="62dp"
-                        android:layout_margin="10dp"
+                        android:layout_margin="12dp"
                         android:hint="Add Skills">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -268,12 +257,12 @@
                     <ScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <!-- ChipGroup to display selected skills -->
+
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/chipGroupSkills"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
+                            android:layout_margin="12dp"
                             app:chipSpacingHorizontal="8dp"
                             app:chipSpacingVertical="4dp"
                             app:singleLine="false" />
@@ -281,37 +270,34 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!--- Links -->
+            <!--Links-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_links"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="10dp"
-                android:padding="15dp"
+                android:layout_marginVertical="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="6dp">
+                    android:padding="12dp">
 
                     <TextView
                         android:id="@+id/tv_onlineProfiles"
                         style="@style/CardTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="12dp"
                         android:paddingBottom="16dp"
-                        android:text="Online Profiles"
-                        android:textSize="20sp" />
+                        android:text="Online Profiles" />
 
 
-                    <!-- LinkedIn -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp">
+                        android:layout_margin="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_linkedin"
@@ -324,9 +310,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-
-                        >
+                        android:layout_margin="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_github"
@@ -339,7 +323,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp">
+                        android:layout_margin="12dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_website"
@@ -352,89 +336,88 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!--- Experience -->
+            <!--Experience-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_experience"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="10dp"
-                android:padding="15dp"
+                android:layout_marginVertical="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="680dp"
                     android:orientation="vertical"
-                    android:padding="6dp">
+                    android:padding="12dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
                             style="@style/CardTitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:paddingBottom="16dp"
-                            android:text="Experience"
-                            android:textSize="20sp" />
+                            android:layout_margin="12dp"
+                            android:layout_weight="1"
+                            android:paddingVertical="16dp"
+                            android:text="Experience" />
 
                         <ImageButton
                             android:id="@+id/btn_add_experience"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:layout_margin="6dp"
                             android:background="@drawable/remove_button"
                             android:src="@drawable/icon_add" />
                     </LinearLayout>
 
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_experience"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"
-                            android:visibility="gone" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_experience"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:visibility="gone" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!--- Projects -->
+            <!--Projects-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_projects"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="10dp"
-                android:padding="15dp"
+                android:layout_marginVertical="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="680dp"
                     android:orientation="vertical"
-                    android:padding="6dp">
+                    android:padding="12dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
                             style="@style/CardTitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:paddingBottom="16dp"
-                            android:text="Add Projects"
-                            android:textSize="20sp" />
+                            android:layout_margin="12dp"
+                            android:layout_weight="1"
+                            android:paddingVertical="16dp"
+                            android:text="Add Projects" />
 
                         <ImageButton
                             android:id="@+id/btn_add_project"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:layout_margin="6dp"
+                            android:layout_margin="8dp"
                             android:background="@drawable/remove_button"
                             android:src="@drawable/icon_add" />
                     </LinearLayout>
@@ -449,40 +432,40 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!--- Achievements -->
+            <!--Acomplishments-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_certifications"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="10dp"
-                android:padding="15dp"
+                android:layout_marginVertical="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="6dp">
+                    android:padding="12dp">
 
                     <TextView
                         style="@style/CardTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:paddingBottom="16dp"
-                        android:text="Accomplishments"
-                        android:textSize="20sp" />
+                        android:layout_margin="12dp"
+                        android:paddingVertical="16dp"
+                        android:text="Accomplishments" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:paddingBottom="16dp"
+                            android:layout_margin="12dp"
+                            android:layout_weight="1"
+                            android:paddingVertical="16dp"
                             android:text="Add Achievements"
                             android:textSize="20sp" />
 
@@ -490,7 +473,7 @@
                             android:id="@+id/btn_add_achievement"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:layout_margin="6dp"
+                            android:layout_margin="8dp"
                             android:background="@drawable/remove_button"
                             android:src="@drawable/icon_add" />
                     </LinearLayout>
@@ -505,13 +488,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:paddingBottom="16dp"
+                            android:layout_margin="12dp"
+                            android:layout_weight="1"
+                            android:paddingVertical="16dp"
                             android:text="Add Certificates"
                             android:textSize="20sp" />
 
@@ -519,7 +504,7 @@
                             android:id="@+id/btn_add_certification"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:layout_margin="6dp"
+                            android:layout_margin="8dp"
                             android:background="@drawable/remove_button"
                             android:src="@drawable/icon_add" />
                     </LinearLayout>
@@ -536,40 +521,39 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!--- Education -->
+            <!--Education-->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_education"
                 android:layout_width="match_parent"
                 android:layout_height="650dp"
-                android:layout_marginVertical="10dp"
-                android:padding="15dp"
+                android:layout_marginVertical="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="6dp">
+                    android:padding="12dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
                             style="@style/CardTitle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:paddingBottom="16dp"
-                            android:text="Education"
-                            android:textSize="20sp" />
+                            android:layout_margin="12dp"
+                            android:layout_weight="1"
+                            android:paddingVertical="16dp"
+                            android:text="Education" />
 
                         <ImageButton
                             android:id="@+id/btn_add_education"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:layout_margin="6dp"
                             android:background="@drawable/remove_button"
                             android:src="@drawable/icon_add" />
                     </LinearLayout>
@@ -589,8 +573,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="16dp"
                 android:text="Next"
                 android:textSize="16sp" />
 

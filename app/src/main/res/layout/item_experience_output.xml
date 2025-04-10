@@ -34,7 +34,7 @@
         style="@style/CardOutputEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_marginVertical="12dp"
         android:enabled="false"
         android:hint="Description"
         android:inputType="textMultiLine"

@@ -138,11 +138,13 @@ class MainActivity : AppCompatActivity() {
 
         if (!doesFileExists(this)) {
             binding.resumePreviewContainer.visibility = View.GONE
+            binding.chatBot.visibility = View.GONE
             binding.welcomeText.visibility = View.VISIBLE
             binding.btnDownload.visibility = View.GONE
             binding.btnShare.visibility = View.GONE
             binding.welcomeText.height = 600
             binding.btnChangeTemplate.visibility = View.GONE
+            binding.startTitle.visibility = View.VISIBLE
             Log.d("MainActivity", "Starting typewriter effect")
             startTypewriterEffect(textView, welcomeText, delayMillis)
         } else {
@@ -151,6 +153,7 @@ class MainActivity : AppCompatActivity() {
             binding.btnDownload.visibility = View.VISIBLE
             binding.btnShare.visibility = View.VISIBLE
             binding.btnChangeTemplate.visibility = View.VISIBLE
+            binding.startTitle.visibility = View.GONE
             if (intent?.getBooleanExtra("fromTemplateActivity", false) == true) {
                 startTypewriterEffect(textView, afterGenerationText, delayMillis)
             } else {

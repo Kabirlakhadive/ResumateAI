@@ -235,7 +235,7 @@ class OutputActivity : AppCompatActivity() {
         }
 
 
-        startTypewriterEffect(binding.outputActivityChat, chatTextVariations.random(), 50)
+        startTypewriterEffect(binding.outputActivityChat, chatTextVariations.random(), 30)
 
     }
 
@@ -293,7 +293,7 @@ class OutputActivity : AppCompatActivity() {
             binding.lottieAnim.speed = 0.5F
 
             // Wait 2 seconds before fading out
-            delay(4000)
+            delay(2000)
 
             withContext(Dispatchers.Main) {
                 chatCard.animate()

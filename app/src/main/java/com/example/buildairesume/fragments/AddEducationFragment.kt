@@ -99,12 +99,12 @@ class AddEducationFragment(
     }
 
     private fun adjustFragment() {
-        if (binding.spinnerQualification.text.toString() == "Senior Secondary (12th)") {
+        if (binding.spinnerQualification.text.toString() == "12th Grade") {
             binding.fDegree.visibility = View.VISIBLE
             binding.fDegree.hint = "Stream"
             setupDropdown(
                 binding.etDegree,
-                listOf("Science", "Commerce", "Arts", "Vocational", "Humanities", "Diploma")
+                listOf("Science", "Commerce", "Arts", "Vocational", "Humanities")
             )
 
             binding.fSchool.visibility = View.VISIBLE
@@ -116,7 +116,30 @@ class AddEducationFragment(
             // Hide Branch & Specialization when selecting Senior Secondary
             binding.fBranch.visibility = View.GONE
             binding.fSpecialization.visibility = View.GONE
-        } else {
+        } else if(binding.spinnerQualification.text.toString() == "Diploma")
+        {
+            binding.fDegree.visibility = View.VISIBLE
+            binding.fDegree.hint = "Diploma Title"
+            setupDropdown(
+                binding.etDegree,
+                listOf("Diploma in Computer Engineering", "Diploma in Mechanical Engineering", "Diploma in Civil Engineering", "Diploma in Electrical Engineering", "Diploma in Electronics", "Other")
+            )
+
+            binding.fSchool.visibility = View.VISIBLE
+            binding.fSchool.hint = "Institute/College"
+
+            binding.fBoard.visibility = View.VISIBLE
+            binding.fBoard.hint = "Board/University"
+
+            binding.fBranch.visibility = View.VISIBLE
+            binding.fBranch.hint = "Branch"
+
+            // Specialization often not required for diploma
+            binding.fSpecialization.visibility = View.GONE
+
+        }
+
+        else {
             binding.fDegree.visibility = View.VISIBLE
             binding.fDegree.hint = "Degree"
             setupDropdown(binding.etDegree, DegreeList.degrees)
@@ -149,7 +172,7 @@ class AddEducationFragment(
     private fun setupSpinners() {
         setupDropdown(
             binding.spinnerQualification,
-            listOf("Senior Secondary (12th)", "Under Graduate", "Post Graduate", "PhD")
+            listOf("12th Grade", "Under Graduate", "Post Graduate", "PhD" , "Diploma")
         )
         setupDropdown(binding.spinnerGradingSystem, listOf("Percentage", "CGPA", "Percentile"))
         setupDropdown(binding.etDegree, DegreeList.degrees)

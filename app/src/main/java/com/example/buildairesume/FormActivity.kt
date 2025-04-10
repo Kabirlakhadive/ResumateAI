@@ -574,7 +574,7 @@ class FormActivity : AppCompatActivity() {
             binding.lottieAnim.speed = 0.5F
 
             // Wait before fading out
-            delay(4000)
+            delay(2000)
 
             withContext(Dispatchers.Main) {
                 chatCard.animate()

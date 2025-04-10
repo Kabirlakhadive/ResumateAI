@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OutputActivity"
-    >
+    tools:context=".OutputActivity">
 
     <ProgressBar
         android:id="@+id/progressBarSaving"
@@ -13,31 +12,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.navigationrail.NavigationRailView
         android:id="@+id/output_nav_rail"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="0dp"
         android:layout_gravity="start"
-        android:paddingTop="280dp"
         android:background="@color/colorBackground"
-        app:labelVisibilityMode="selected"
+        android:paddingTop="220dp"
+        app:itemIconSize="20dp"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/output_nav_menu"
-        />
+        app:menu="@menu/output_nav_menu" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_constraint_view"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="90dp"
         android:elevation="30dp"
+        android:minHeight="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -70,9 +70,9 @@
             android:id="@+id/form_activity_chat_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="50dp"
             android:layout_margin="10dp"
             android:layout_marginVertical="10dp"
+            android:minHeight="50dp"
             app:cardCornerRadius="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -96,8 +96,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:paddingRight="12dp"
         android:paddingVertical="12dp"
+        android:paddingRight="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/output_nav_rail"
@@ -120,7 +120,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="635dp"
-                    android:padding="16dp">
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/tvObjectiveTitle"
@@ -149,7 +149,7 @@
                         style="@style/CardOutputEditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginVertical="8dp"
                         android:enabled="false"
                         android:hint="Description"
                         android:inputType="textMultiLine"
@@ -179,16 +179,16 @@
             <!-- Projects Section -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_project_output"
-                app:strokeWidth="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
                 android:layout_marginBottom="16dp"
-                android:minHeight="635dp">
+                android:minHeight="635dp"
+                app:strokeWidth="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="16dp">
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/tvProjectsTitle"
@@ -196,7 +196,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Projects"
-
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -217,16 +216,16 @@
             <!-- Experience Section -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_experience_output"
-                app:strokeWidth="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="650dp"
                 android:minHeight="635dp"
-                app:cardCornerRadius="8dp">
+                app:cardCornerRadius="8dp"
+                app:strokeWidth="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="16dp">
+                    android:padding="4dp">
 
                     <TextView
                         android:id="@+id/tvExperienceTitle"
@@ -274,7 +273,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Fab.Circle" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
