@@ -93,7 +93,7 @@
     </style>
 
     <style name="CardItemSubheading" parent="Widget.AppCompat.TextView">
-
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="CardItemText" parent="Widget.AppCompat.TextView">

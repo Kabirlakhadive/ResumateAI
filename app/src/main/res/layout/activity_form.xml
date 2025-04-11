@@ -4,24 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="20dp"
+    android:layout_marginBottom="16dp"
     tools:context=".FormActivity">
-
-    <com.google.android.material.navigationrail.NavigationRailView
-        android:id="@+id/input_nav_rail"
-        android:layout_width="40dp"
-        android:layout_height="0dp"
-        android:layout_gravity="start"
-        android:background="@color/colorBackground"
-        android:paddingTop="100dp"
-        app:itemIconSize="20dp"
-        app:labelVisibilityMode="unlabeled"
+ <!-- navigation rail-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/input_nav_rail_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="40dp"
+        app:cardCornerRadius="20dp"
+        android:layout_gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/input_nav_menu" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <com.google.android.material.navigationrail.NavigationRailView
+            android:id="@+id/input_nav_rail"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackground"
+            android:paddingTop="1dp"
+            android:paddingBottom="20dp"
+            app:itemPaddingTop="0dp"
+            app:itemPaddingBottom="0dp"
+            app:itemIconSize="20dp"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/input_nav_menu" />
+    </androidx.cardview.widget.CardView>
 
+<!-- Floating Action Button-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_next"
         android:layout_width="wrap_content"
@@ -33,6 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Fab.Circle" />
 
+<!-- Chat Card-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_constraint_view"
         android:layout_width="0dp"
@@ -47,9 +60,10 @@
             android:id="@+id/lottie_anim_card"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginVertical="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             app:cardBackgroundColor="#E0F7FA"
             app:cardCornerRadius="22.5dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,16 +103,18 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+<!-- Main Content-->
     <ScrollView
         android:id="@+id/main_scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
         android:paddingVertical="12dp"
+
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/input_nav_rail"
+        app:layout_constraintStart_toEndOf="@id/input_nav_rail_card"
         app:layout_constraintTop_toTopOf="parent">
 
 
@@ -114,7 +130,8 @@
                 android:id="@+id/cv_personal_information"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:elevation="0dp"
                 app:strokeWidth="0dp">
 
@@ -222,14 +239,14 @@
                 android:id="@+id/cv_skills"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_skills"
@@ -251,7 +268,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:inputType="text"
-                            android:padding="18dp" />
+                            android:padding="12dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <ScrollView
@@ -275,14 +292,14 @@
                 android:id="@+id/cv_links"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_onlineProfiles"
@@ -341,14 +358,14 @@
                 android:id="@+id/cv_experience"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="680dp"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -369,6 +386,7 @@
                             android:id="@+id/btn_add_experience"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
+                            android:layout_marginEnd="12dp"
                             android:background="@drawable/remove_button"
                             android:src="@drawable/icon_add" />
                     </LinearLayout>
@@ -389,14 +407,14 @@
                 android:id="@+id/cv_projects"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="680dp"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -417,7 +435,7 @@
                             android:id="@+id/btn_add_project"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:layout_margin="8dp"
+                            android:layout_marginEnd="12dp"
                             android:background="@drawable/remove_button"
                             android:src="@drawable/icon_add" />
                     </LinearLayout>
@@ -437,14 +455,14 @@
                 android:id="@+id/cv_certifications"
                 android:layout_width="match_parent"
                 android:layout_height="860dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:orientation="vertical">
 
                     <TextView
                         style="@style/CardTitle"
@@ -473,7 +491,7 @@
                             android:id="@+id/btn_add_achievement"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:layout_margin="8dp"
+                            android:layout_marginEnd="12dp"
                             android:background="@drawable/remove_button"
                             android:src="@drawable/icon_add" />
                     </LinearLayout>
@@ -504,7 +522,7 @@
                             android:id="@+id/btn_add_certification"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:layout_margin="8dp"
+                            android:layout_marginEnd="12dp"
                             android:background="@drawable/remove_button"
                             android:src="@drawable/icon_add" />
                     </LinearLayout>
@@ -526,14 +544,14 @@
                 android:id="@+id/cv_education"
                 android:layout_width="match_parent"
                 android:layout_height="650dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -554,6 +572,7 @@
                             android:id="@+id/btn_add_education"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
+                            android:layout_marginEnd="12dp"
                             android:background="@drawable/remove_button"
                             android:src="@drawable/icon_add" />
                     </LinearLayout>
@@ -573,8 +592,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginVertical="16dp"
+                android:layout_margin="16dp"
                 android:text="Next"
                 android:textSize="16sp" />
 

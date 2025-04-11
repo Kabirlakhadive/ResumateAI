@@ -107,7 +107,7 @@ class ProjectOutputAdapter(
     """.trimIndent()
 
             // 🌟 Show Loading Animation & Disable Input
-            binding.etProjectDescription.visibility = View.INVISIBLE
+            binding.projectOutputCard.visibility = View.INVISIBLE
             binding.lottieAnim.visibility = View.VISIBLE
             binding.ivEdit.isEnabled = false
 
@@ -140,7 +140,7 @@ class ProjectOutputAdapter(
                             "[ProjectAdapter] Setting UI text for pos $position: $outputText"
                         ) // <-- Log UI set
                         binding.etProjectDescription.setText(outputText)
-                        binding.etProjectDescription.visibility = View.VISIBLE
+                        binding.projectOutputCard.visibility = View.VISIBLE
                         binding.lottieAnim.visibility = View.GONE
                         binding.ivEdit.isEnabled = true
                     } else {

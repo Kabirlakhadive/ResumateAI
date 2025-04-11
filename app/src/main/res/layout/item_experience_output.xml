@@ -1,75 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorSurface"
+    app:cardCornerRadius="15dp"
+    android:layout_marginVertical="5dp">
 
-    <TextView
-        android:id="@+id/tvExperienceTitle"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Position at Company" />
+        android:background="@color/colorSurfaceVariant">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieAnim"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/etExperienceDescription"
-        app:layout_constraintEnd_toStartOf="@id/ivEdit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvExperienceDate"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/generating" />
+        <TextView
+            android:id="@+id/tvExperienceTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:padding="5dp"
+            style="@style/CardItemHeading"
+            app:layout_constraintEnd_toStartOf="@id/ivEdit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Position at Company" />
+        <TextView
+            android:id="@+id/tvExperienceDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:padding="5dp"
+            style="@style/CardItemSubheading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvExperienceTitle"
+            tools:text="Date" />
+        <ImageButton
+            android:id="@+id/ivEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/transparent"
+            android:padding="8dp"
+            android:src="@drawable/icon_write"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvExperienceTitle"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etExperienceDescription"
-        style="@style/CardOutputEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="12dp"
-        android:enabled="false"
-        android:hint="Description"
-        android:inputType="textMultiLine"
-        android:maxLines="18"
-        android:minLines="3"
-        android:scrollbars="vertical"
-        app:layout_constraintEnd_toStartOf="@id/ivEdit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvExperienceDate"
-        tools:text="Description" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnim"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/etExperienceOutputCard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvExperienceDate"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/generating"
+            android:elevation="20dp"/>
 
-    <TextView
-        android:id="@+id/tvExperienceDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvExperienceTitle"
-        tools:text="Date" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/etExperienceOutputCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvExperienceDate">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etExperienceDescriptionLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:hint="Experience Description">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etExperienceDescription"
+                    style="@style/CardOutputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:inputType="textMultiLine"
+                    android:maxLines="18"
+                    android:minLines="3"
+                    android:scrollbars="vertical"
+                    />
 
 
-    <ImageButton
-        android:id="@+id/ivEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/small_button"
-        android:padding="8dp"
-        android:src="@drawable/icon_write"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/etExperienceDescription"
-        app:layout_constraintTop_toBottomOf="@id/tvExperienceDate" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

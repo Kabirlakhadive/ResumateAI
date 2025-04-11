@@ -119,7 +119,8 @@ class ExperienceOutputAdapter(
     """.trimIndent()
 
             // 🌟 Show Loading Animation & Disable Input
-            binding.etExperienceDescription.visibility = View.INVISIBLE
+//            binding.etExperienceDescription.visibility = View.INVISIBLE
+            binding.etExperienceOutputCard.visibility = View.INVISIBLE
             binding.lottieAnim.visibility = View.VISIBLE
             binding.ivEdit.isEnabled = false
 
@@ -153,7 +154,8 @@ class ExperienceOutputAdapter(
                             "[ExperienceAdapter] Setting UI text for pos $position: $outputText"
                         ) // <-- Log UI set
                         binding.etExperienceDescription.setText(outputText)
-                        binding.etExperienceDescription.visibility = View.VISIBLE
+//                        binding.etExperienceDescription.visibility = View.VISIBLE
+                        binding.etExperienceOutputCard.visibility = View.VISIBLE
                         binding.lottieAnim.visibility = View.GONE
                         binding.ivEdit.isEnabled = true
                     } else {

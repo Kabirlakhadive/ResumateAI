@@ -25,103 +25,112 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvQualification"
+                    style="@style/CardItemHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Qualification" />
+
+                <ImageButton
+                    android:id="@+id/btn_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_write"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_remove"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/btn_remove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_close"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 app:cardCornerRadius="10dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tvQualification"
-                        style="@style/CardItemHeading"
+                        android:id="@+id/tvSchool"
+                        style="@style/CardItemSubheading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Qualification" />
+                        android:layout_marginTop="5dp"
+                        tools:text="School/College" />
 
-                    <ImageButton
-                        android:id="@+id/btn_edit"
+                    <TextView
+                        android:id="@+id/tvBoard"
+                        style="@style/CardItemText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:background="@color/transparent"
-                        android:src="@drawable/icon_write"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/btn_remove"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginLeft="5dp"
+                        android:textSize="14dp"
+                        android:visibility="gone"
+                        tools:text="Board/University" />
 
-                    <ImageButton
-                        android:id="@+id/btn_remove"
+                    <TextView
+                        android:id="@+id/tvDegree"
+                        style="@style/CardItemText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:background="@color/transparent"
-                        android:src="@drawable/icon_close"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginLeft="5dp"
+                        tools:text="Degree" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/tvBranch"
+                        style="@style/CardItemText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        tools:text="Branch with specialization" />
+
+                    <TextView
+                        android:id="@+id/tvScore"
+                        style="@style/CardItemText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="14dp"
+                        android:visibility="gone"
+                        tools:text="Score" />
+
+                    <TextView
+                        android:id="@+id/tvYear"
+                        style="@style/CardItemText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="5dp"
+                        tools:text="Year" />
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/tvSchool"
-                style="@style/CardItemSubheading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                tools:text="School/College" />
-
-            <TextView
-                android:id="@+id/tvBoard"
-                style="@style/CardItemText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:textSize="14dp"
-                android:visibility="gone"
-                tools:text="Board/University" />
-
-            <TextView
-                android:id="@+id/tvDegree"
-                style="@style/CardItemText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                tools:text="Degree" />
-
-            <TextView
-                android:id="@+id/tvBranch"
-                style="@style/CardItemText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                tools:text="Branch with specialization" />
-
-            <TextView
-                android:id="@+id/tvScore"
-                style="@style/CardItemText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:textSize="14dp"
-                android:visibility="gone"
-                tools:text="Score" />
-
-            <TextView
-                android:id="@+id/tvYear"
-                style="@style/CardItemText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                tools:text="Year" />
 
         </LinearLayout>
 

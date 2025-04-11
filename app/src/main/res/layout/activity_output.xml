@@ -16,20 +16,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.navigationrail.NavigationRailView
-        android:id="@+id/output_nav_rail"
-        android:layout_width="40dp"
-        android:layout_height="0dp"
-        android:layout_gravity="start"
-        android:background="@color/colorBackground"
-        android:paddingTop="220dp"
-        app:itemIconSize="20dp"
-        app:labelVisibilityMode="unlabeled"
+    <!--NavRail-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/output_nav_rail_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/output_nav_menu" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.navigationrail.NavigationRailView
+            android:id="@+id/output_nav_rail"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@color/colorBackground"
+            android:paddingBottom="10dp"
+            app:itemIconSize="20dp"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/output_nav_menu" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_constraint_view"
@@ -44,11 +52,12 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/lottie_anim_card"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginVertical="10dp"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             app:cardBackgroundColor="#E0F7FA"
             app:cardCornerRadius="22.5dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -58,16 +67,16 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottie_anim"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/waves" />
         </androidx.cardview.widget.CardView>
-
+        <!--ChatCard-->
         <androidx.cardview.widget.CardView
-            android:id="@+id/form_activity_chat_card"
+            android:id="@+id/output_activity_chat_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -100,7 +109,7 @@
         android:paddingRight="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/output_nav_rail"
+        app:layout_constraintStart_toEndOf="@id/output_nav_rail_card"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -108,6 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
 
             <!-- Objective Section -->
             <com.google.android.material.card.MaterialCardView
@@ -117,63 +127,74 @@
                 android:layout_marginBottom="16dp"
                 app:strokeWidth="0dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="635dp"
-                    android:padding="8dp">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    app:cardCornerRadius="15dp">
 
-                    <TextView
-                        android:id="@+id/tvObjectiveTitle"
-                        style="@style/CardTitle"
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Objective"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:background="@color/colorSurfaceVariant"
+                        android:padding="8dp">
 
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/loading_anim"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@id/etObjective"
-                        app:layout_constraintEnd_toStartOf="@id/ivEdit"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvObjectiveTitle"
-                        app:lottie_autoPlay="true"
-                        app:lottie_rawRes="@raw/generating" />
+                        <TextView
+                            android:id="@+id/tvObjectiveTitle"
+                            style="@style/CardTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Objective"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/loading_anim"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@id/etObjectiveDescriptionLayout"
+                            app:layout_constraintEnd_toStartOf="@id/ivEdit"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvObjectiveTitle"
+                            app:lottie_autoPlay="true"
+                            app:lottie_rawRes="@raw/generating" />
 
-                    <EditText
-                        android:id="@+id/etObjective"
-                        style="@style/CardOutputEditText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
-                        android:enabled="false"
-                        android:hint="Description"
-                        android:inputType="textMultiLine"
-                        android:maxLines="18"
-                        android:minLines="3"
-                        android:scrollbars="vertical"
-                        app:layout_constraintEnd_toStartOf="@id/ivEdit"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvObjectiveTitle" />
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/etObjectiveDescriptionLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            app:layout_constraintEnd_toStartOf="@id/ivEdit"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvObjectiveTitle">
 
-                    <ImageButton
-                        android:id="@+id/ivEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/small_button"
-                        android:padding="8dp"
-                        android:src="@drawable/icon_write"
-                        android:textSize="12dp"
-                        app:layout_constraintBottom_toBottomOf="@id/etObjective"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/etObjective"
-                        app:layout_constraintTop_toTopOf="@id/etObjective" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etObjective"
+                                style="@style/CardOutputEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:inputType="textMultiLine"
+                                android:maxLines="18"
+                                android:minLines="3"
+                                android:scrollbars="vertical"
+                                tools:text="Objective Output" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <ImageButton
+                            android:id="@+id/ivEdit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/transparent"
+                            android:padding="8dp"
+                            android:src="@drawable/icon_write"
+                            android:textSize="12dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Projects Section -->
@@ -185,10 +206,10 @@
                 android:minHeight="635dp"
                 app:strokeWidth="0dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="8dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvProjectsTitle"
@@ -199,18 +220,26 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvProjects"
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:nestedScrollingEnabled="true"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvProjectsTitle" />
+                        android:layout_height="635dp"
+                        android:background="@color/colorBackground"
+                        android:padding="8dp"
+                        app:cardCornerRadius="15dp"
+                        app:strokeWidth="0dp">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvProjects"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:nestedScrollingEnabled="true"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvProjectsTitle" />
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Experience Section -->
@@ -222,10 +251,11 @@
                 app:cardCornerRadius="8dp"
                 app:strokeWidth="0dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="4dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvExperienceTitle"
@@ -236,17 +266,26 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvExperiences"
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="true"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvExperienceTitle" />
+                        android:layout_height="635dp"
+                        android:background="@color/colorBackground"
+                        android:padding="8dp"
+                        app:cardCornerRadius="15dp"
+                        app:strokeWidth="0dp">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvExperiences"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="true"
+                            android:paddingBottom="30dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvExperienceTitle" />
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
