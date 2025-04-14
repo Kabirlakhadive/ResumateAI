@@ -5,7 +5,6 @@
 
         <item name="textInputStyle">@style/Widget.App.TextInputLayout.OutlinedBox.Rounded</item>
 
-
         <!-- ================================================== -->
         <!-- LIGHT THEME COLORS (Using Indigo Muted - USER HIERARCHY P > PV > S > SV) -->
         <!-- References colors defined in res/values/colors.xml -->

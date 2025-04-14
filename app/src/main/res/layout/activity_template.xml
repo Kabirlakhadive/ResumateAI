@@ -11,46 +11,38 @@
         android:id="@+id/templateHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose a Template"
         android:layout_margin="20dp"
+        android:text="Choose a Template"
         android:textSize="24sp"
-
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Scrollable Grid Layout -->
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_templates"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:fillViewport="true"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:nestedScrollingEnabled="true"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/btn_generate_resume"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/templateHeading">
+        app:layout_constraintTop_toBottomOf="@id/templateHeading"
+        tools:listitem="@layout/item_template" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_templates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/item_template" />
-
-    </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:layout_width="0dp"
         android:id="@+id/btn_generate_resume"
+        style="@style/Widget.App.Button.SquareRounded"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="10dp"
         android:text="Generate Resume"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

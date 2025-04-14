@@ -166,29 +166,8 @@ class OutputActivity : AppCompatActivity() {
             lifecycleScope.launch { // Launch a coroutine
                 var success = false
                 try {
-                    Log.d(TAG, "[OutputActivitySave] Save Button Clicked.")
-                    Log.d(
-                        TAG,
-                        "[OutputActivitySave] Projects from adapter BEFORE DB: ${updatedProjects.joinToString { it.title + " -> output: [" + (it.output ?: "NULL") + "]" }}"
-                    )
-                    Log.d(
-                        TAG,
-                        "[OutputActivitySave] Experiences from adapter BEFORE DB: ${updatedExperiences.joinToString { it.position + " -> output: [" + (it.output ?: "NULL") + "]" }}"
-                    )
-                    Log.d(TAG, "[OutputActivitySave] Objective text BEFORE DB: [$updatedObjective]")
-                    // Perform database operations on IO thread
-                    withContext(Dispatchers.IO) {
-                        Log.d(TAG, "[OutputActivitySave] Entering DB context...")
-                        // Log IDs before update
-                        Log.d(
-                            TAG,
-                            "[OutputActivitySave] Project IDs being updated: ${updatedProjects.map { it.projectId }}"
-                        )
-                        Log.d(
-                            TAG,
-                            "[OutputActivitySave] Experience IDs being updated: ${updatedExperiences.map { it.experienceId }}"
-                        )
 
+                    withContext(Dispatchers.IO) {
                         // --- Check for empty lists before DB operations ---
                         if (updatedProjects.isNotEmpty()){
                             projectDao.updateProjects(updatedProjects)
@@ -204,10 +183,6 @@ class OutputActivity : AppCompatActivity() {
                             Log.w(TAG, "[OutputActivitySave] No experiences to update in DB.")
                         }
 
-
-                        // Also save the updated objective back to UserProfile
-                        // Re-fetch or use the existing 'userProfile' instance (ensure it's up-to-date if needed)
-                        // val currentUserProfile = userProfileDao.getUser() // Re-fetch if mutations elsewhere are possible
                         val currentUserProfile = userProfile // Use existing instance if safe
                         currentUserProfile.objective = updatedObjective // Update the objective field
                         userProfileDao.insertOrUpdate(currentUserProfile) // Save the updated profile
@@ -236,14 +211,12 @@ class OutputActivity : AppCompatActivity() {
                     }
 
                 } catch (e: Exception) {
-                    Log.e(TAG, "[OutputActivitySave] Error during save process", e) // Log exception
                     Toast.makeText(
                         this@OutputActivity,
                         "Failed to save changes! Error: ${e.localizedMessage}", // Show error detail
                         Toast.LENGTH_LONG // Longer duration for error
                     ).show()
                 } finally {
-                    // Ensure UI updates happen on the Main thread
                     binding.progressBarSaving.visibility = View.GONE // Hide loading
                     binding.btnSave.isEnabled = true // Re-enable button
                 }
@@ -265,19 +238,6 @@ class OutputActivity : AppCompatActivity() {
             // from processing it for scrolling. Programmatic scrolling still works.
             true
         }
-
-        // --- REMOVED old ScrollView OnTouchListener that handled snapping ---
-        /*
-        binding.mainScrollView.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                binding.mainScrollView.postDelayed({
-                    snapToNearestCard() // REMOVED
-                }, 100)
-                // ... rest of old logic ...
-            }
-            false
-        }
-        */
 
         val chatTextVariations = listOf(
             "Here is your AI-generated content for your resume. You can edit it by tapping on the pencil icon.",
@@ -310,11 +270,11 @@ class OutputActivity : AppCompatActivity() {
                 binding.ivEdit.setImageResource(com.example.buildairesume.R.drawable.icon_write) // Default image
                 // Optional: Save the objective automatically here if desired
                 val updatedObjective = binding.etObjective.text.toString()
-                lifecycleScope.launch(Dispatchers.IO) {
-                    userProfile.objective = updatedObjective
-                    userProfileDao.insertOrUpdate(userProfile)
-                    Log.d(TAG, "Objective saved automatically after edit.")
-                }
+//                lifecycleScope.launch(Dispatchers.IO) {
+//                    userProfile.objective = updatedObjective
+//                    userProfileDao.insertOrUpdate(userProfile)
+//                    Log.d(TAG, "Objective saved automatically after edit.")
+//                }
             }
         }
 
@@ -359,7 +319,7 @@ class OutputActivity : AppCompatActivity() {
     private fun startTypewriterEffect(
         textView: TextView,
         fullText: String,
-        delayMillis: Long = 50
+        delayMillis: Long = 5
     ) {
         typewriterJob?.cancel()
         textView.text = "" // Clear text initially
@@ -372,7 +332,7 @@ class OutputActivity : AppCompatActivity() {
 
         typewriterJob = lifecycleScope.launch {
             while (currentIndex < fullText.length) {
-                val nextStep = if (Random.nextBoolean()) 1 else Random.nextInt(2, 5)
+                val nextStep = if (Random.nextBoolean()) 1 else Random.nextInt(2, 3)
                 val endIndex = (currentIndex + nextStep).coerceAtMost(fullText.length)
 
                 textView.text = fullText.substring(0, endIndex)
@@ -392,21 +352,6 @@ class OutputActivity : AppCompatActivity() {
                     .start()
             }
         }
-    }
-
-    // Function to collapse the chat card smoothly (Kept as is, seems unused)
-    private fun collapseChatCard() {
-        val chatCard = binding.outputActivityChatCard
-        val collapseAnim = ValueAnimator.ofInt(chatCard.width, 0).apply {
-            duration = 500
-            addUpdateListener { animation ->
-                val value = animation.animatedValue as Int
-                val params = chatCard.layoutParams
-                params.width = value
-                chatCard.layoutParams = params
-            }
-        }
-        collapseAnim.start()
     }
 
 
@@ -450,7 +395,7 @@ class OutputActivity : AppCompatActivity() {
 
             val prompt = """
             Write a professional **objective section** for a resume in 4-5 lines, ensuring it is in **third-person** and **omits any headings**.
-
+           
             The objective should concisely summarize the candidate’s background, skills, and career aspirations based on the following details:
 
             - **Name**: ${userProfile.fullName}
@@ -472,17 +417,17 @@ class OutputActivity : AppCompatActivity() {
 
             val objectiveText = callAIWithRetry(prompt, binding) // Binding might not be needed by callAIWithRetry
 
-            // Update the userProfile object in memory
-            userProfile.objective = objectiveText
-
-            // --- Update database in IO context ---
-            withContext(Dispatchers.IO) {
-                userProfileDao.insertOrUpdate(userProfile) // Persist the updated objective
-            }
+//            // Update the userProfile object in memory
+//            userProfile.objective = objectiveText
+//
+//            // --- Update database in IO context ---
+//            withContext(Dispatchers.IO) {
+//                userProfileDao.insertOrUpdate(userProfile) // Persist the updated objective
+//            }
 
             // --- Update UI on Main context ---
             withContext(Dispatchers.Main) {
-                binding.etObjective.setText(objectiveText)
+                binding.etObjective.setText(objectiveText.trim())
                 // Handle potential AI failure display
                 if (objectiveText.startsWith("AI generation failed") || objectiveText.startsWith("Error:")) {
                     binding.etObjective.setTextColor(Color.RED)
@@ -587,12 +532,6 @@ class OutputActivity : AppCompatActivity() {
         }
     }
 
-    // --- REMOVED snapToNearestCard function ---
-    /*
-    private fun snapToNearestCard() {
-        // ... logic removed ...
-    }
-    */
 
     // --- NEW Helper function to scroll to a specific card index ---
     private fun scrollToCard(index: Int) {

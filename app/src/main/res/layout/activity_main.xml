@@ -181,24 +181,26 @@
 
             <Button
                 android:id="@+id/btn_edit_data"
-                android:layout_width="wrap_content"
+                style="@style/Widget.App.Button.SquareRounded"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="Edit Your Information"
-                android:textSize="13dp"
+                android:text="Edit Resume"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@id/btn_change_template"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/btn_change_template"
+                style="@style/Widget.App.Button.SquareRounded"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="Change Template"
-                android:textSize="13dp"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_edit_data" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -210,7 +212,7 @@
     <!-- Navigation Drawer (Side Menu) -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="150dp"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         app:menu="@menu/toolbar_menu" />

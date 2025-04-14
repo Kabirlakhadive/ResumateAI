@@ -29,14 +29,13 @@ class TemplateActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         super.onCreate(savedInstanceState)
         binding = ActivityTemplateBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        binding.btnGenerateResume.isEnabled =false
         Log.d("PDFGenerator", "Activity created, initializing views.")
 
         binding.rvTemplates.layoutManager = GridLayoutManager(this, 2)
         adapter = TemplateAdapter(templateList) { selectedItem, cardView ->
             selectedTemplate = selectedItem
-            Toast.makeText(this, "Selected: ${selectedItem.imageName}", Toast.LENGTH_SHORT).show()
-            Log.d("PDFGenerator", "Template selected: ${selectedItem.imageName}")
+            binding.btnGenerateResume.isEnabled = true
         }
         binding.rvTemplates.adapter = adapter
 
@@ -57,7 +56,7 @@ class TemplateActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         Log.d("PDFGenerator", "Loading templates...")
 
         val images = listOf(
-            "a1.png", "a2.png", "c1.png", "b1.png", "b2.png", "d1.png"
+            "a1.png", "a2.png", "c1.png", "b1.png", "b2.png", "d1.png", "e1.png" ,"f1.png","g1.png", "h1.png" , "c2.png" ,"d2.png","e2.png","f2.png"
         )
 
         for (image in images) {
@@ -70,7 +69,6 @@ class TemplateActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     }
 
     private suspend fun generateResume(templateName: String) {
-        Log.d("PDFGenerator", "Generating resume for template: $templateName")
 
         val jsonFileName = "templateJson/${templateName.replace(".png", ".json")}" // JSON filename
         val jsonObject = loadJsonFromAssets(jsonFileName)

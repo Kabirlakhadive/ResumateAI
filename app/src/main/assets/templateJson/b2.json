@@ -5,17 +5,17 @@
   "leftRatio": "1f",
   "rightRatio": "2f",
   "sectionLeftOrder": [
-    "name",
-    "contact",
-    "summary",
-    "experience",
-    "projects"
-  ],
-  "sectionRightOrder": [
     "education",
     "certifications",
     "skills",
-    "achievements"
+    "achievements",
+    "contact"
+  ],
+  "sectionRightOrder": [
+    "name",
+    "summary",
+    "experience",
+    "projects"
   ],
   "page": {
     "imageBackground": true,

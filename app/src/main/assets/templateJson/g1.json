@@ -1,0 +1,93 @@
+{
+  "templateName": "single_col_modern_blue",
+  "sectionsOrder": [
+    "name",
+    "contact", // Contact might be top-right
+    "objective",
+    "experience",
+    "education",
+    "projects",
+    "skills",
+    "certifications",
+    "achievements"
+  ],
+  "page": {
+    "imageBackground": false,
+    "backgroundImage": null,
+    "background": "#FFFFFF", // White background
+    "borderRadius": 0,
+    "padding": 45,
+    "verticalLine": false,
+    "footer": false
+  },
+  "margin": {
+    "topMargin": 45,
+    "rightMargin": 45,
+    "bottomMargin": 45,
+    "leftMargin": 45
+  },
+  "dateFormat": "MMMM dd, yyyy",
+  "objective": {
+    "heading": true // Minimalist heading style
+  },
+  "name": {
+    "font": "Montserrat-Bold.ttf", // Modern sans-serif bold
+    "size": 30,
+    "alignment": "left",
+    "color": "#2196F3", // Blue color
+    "marginBottom": 3,
+    "marginTop": 5,
+    "background": "#FFFFFF",
+    "line": true // Subtle line below name/title section
+  },
+  "contact": {
+    "separator": "\n", // New line for each contact detail
+    "backgroundColor": false,
+    "background": "#FFFFFF",
+    "borderRadius": 0,
+    "paddingVertical": 0,
+    "paddingHorizontal": 0,
+    "alignment": "right", // Aligned to the right
+    "font": "Montserrat-Regular.ttf", // Modern sans-serif
+    "size": 9, // Smaller contact info
+    "color": "#444444"
+  },
+  "headings": {
+    "font": "Montserrat-SemiBold.ttf", // Slightly less bold heading
+    "size": 13,
+    "color": "#111111",
+    "background": "#FFFFFF",
+    "backgroundFullLine": false,
+    "allCaps": false, // Sentence case
+    "paddingHorizontal": 0,
+    "borderRadius": 0,
+    "marginBottom": 6, // More space after heading
+    "line": false // No lines under headings
+  },
+  "text": {
+    "font": "Montserrat-Regular.ttf",
+    "size": 10, // Smaller body text
+    "spacing": 1,
+    "verticalMargin": 3,
+    "color": "#333333"
+  },
+  "skills": {
+    "font": "Montserrat-Medium.ttf",
+    "size": 10,
+    "alignment": "left",
+    "color": "#333333",
+    "background": "#FFFFFF",
+    "borderRadius": 5, // Slightly rounded skill 'tags' if background used
+    "paddingVertical": 3,
+    "paddingHorizontal": 6,
+    "spacing": 4,
+    "columns": 2 // Or 3 columns
+  },
+  "line": { // For the line under the name section
+    "line": true,
+    "width": 1.0,
+    "color": "#E0E0E0", // Light gray line
+    "marginTop": 8, // Space after contact info before line
+    "marginBottom": 15 // Space after line before first section
+  }
+}

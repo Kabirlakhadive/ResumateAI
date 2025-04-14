@@ -1,0 +1,92 @@
+{
+  "templateName": "two_col_classic_warm",
+  "nameAtTop": true, // Name is in right column per order
+  "contactAtTop": false, // Contact is in left column per order
+  "leftRatio": "0.9f",
+  "rightRatio": "2.2f", // Right slightly wider
+  "sectionLeftOrder": [
+    "contact", // Moved contact here
+    "education",
+    "skills"
+    // "interests" section not in base JSON, omitting
+  ],
+  "sectionRightOrder": [
+    "summary",
+    "experience",
+    "projects",
+    "certifications",
+    "achievements"
+  ],
+  "page": {
+    "imageBackground": false,
+    "backgroundImage": null,
+    "background": "#F5F0E6", // Warm Beige
+    "borderRadius": 0,
+    "padding": 40,
+    "verticalLine": false, // No line between columns shown
+    "footer": false,
+    "sectionLeftTopMargin": 0 // Align tops unless specified otherwise
+  },
+  "objective": {
+    "heading": true // Use as "PROFILE" heading
+  },
+  "name": {
+    "font": "Lato-Bold.ttf", // Clean sans-serif
+    "size": 54,
+    "alignment": "left", // Left align within right column
+    "color": "#4A3F35", // Dark Brown
+    "marginBottom": 3, // More space after name
+    "marginTop": 3,
+    "backgroundColor": false,
+    "background": "#F5F0E6",
+    "line": false
+    // Could add subtitle styling if the generator supports it, but can't add properties
+  },
+  "contact": {
+    "separator": "\n", // Each on new line
+    "background": "#F5F0E6",
+    "borderRadius": 0,
+    "paddingVertical": 0,
+    "paddingHorizontal": 0,
+    "alignment": "left",
+    "font": "Lato-Regular.ttf",
+    "size": 10,
+    "color": "#4A3F35" // Dark Brown
+  },
+  "headings": {
+    "font": "Lato-Bold.ttf",
+    "size": 16, // Slightly smaller headings
+    "color": "#4A3F35", // Dark Brown
+    "backgroundColor": false,
+    "background": "#F5F0E6",
+    "backgroundFullLine": false,
+    "allCaps": true,
+    "paddingHorizontal": 0,
+    "borderRadius": 0,
+    "marginBottom": 5
+  },
+  "text": {
+    "font": "Lato-Regular.ttf",
+    "size": 14, // Smaller text typical in denser layouts
+    "spacing": 5,
+    "verticalMargin": 7,
+    "color": "#4A3F35" // Dark Brown
+  },
+  "skills": {
+    "font": "Lato-Regular.ttf",
+    "size": 10,
+    "alignment": "left",
+    "color": "#4A3F35",
+    "background": "#F5F0E6",
+    "borderRadius": 0,
+    "paddingVertical": 1,
+    "paddingHorizontal": 0,
+    "spacing": 3,
+    "columns": 1 // Often single column in narrow sidebars
+  },
+  "line": {
+    "line": false, // No prominent lines used
+    "width": 1.0,
+    "color": "#000000"
+  }
+}

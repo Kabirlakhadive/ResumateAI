@@ -1,0 +1,92 @@
+{
+  "templateName": "single_col_traditional",
+  "sectionsOrder": [
+    "name",
+    "contact",
+    "objective",
+    "experience",
+    "education",
+    "projects",
+    "skills",
+    "certifications",
+    "achievements"
+  ],
+  "page": {
+    "imageBackground": false,
+    "backgroundImage": null,
+    "background": "#FFFFFF",
+    "borderRadius": 0,
+    "padding": 40,
+    "verticalLine": false,
+    "footer": false
+  },
+  "margin": {
+    "topMargin": 40,
+    "rightMargin": 40,
+    "bottomMargin": 40,
+    "leftMargin": 40
+  },
+  "dateFormat": "MMM yyyy",
+  "objective": {
+    "heading": true
+  },
+  "name": {
+    "font": "TimesNewRoman.ttf", // Serif Font
+    "size": 28,
+    "alignment": "center",
+    "color": "#111111",
+    "marginBottom": 2,
+    "marginTop": 10,
+    "background": "#FFFFFF",
+    "line": false
+  },
+  "contact": {
+    "separator": "  •  ", // Dot separator
+    "backgroundColor": false,
+    "background": "#FFFFFF",
+    "borderRadius": 0,
+    "paddingVertical": 2,
+    "paddingHorizontal": 0,
+    "alignment": "center",
+    "font": "Calibri.ttf", // Standard sans-serif
+    "size": 10,
+    "color": "#333333"
+  },
+  "headings": {
+    "font": "Calibri-Bold.ttf", // Standard bold sans-serif
+    "size": 14,
+    "color": "#000000",
+    "background": "#FFFFFF",
+    "backgroundFullLine": false, // Line only under text
+    "allCaps": true,
+    "paddingHorizontal": 0,
+    "borderRadius": 0,
+    "marginBottom": 4, // Space after heading line
+    "line": true // Add line below heading text
+  },
+  "text": {
+    "font": "Calibri.ttf", // Standard sans-serif
+    "size": 11,
+    "spacing": 1.4,
+    "verticalMargin": 3,
+    "color": "#222222"
+  },
+  "skills": {
+    "font": "Calibri.ttf",
+    "size": 10,
+    "alignment": "left",
+    "color": "#222222",
+    "background": "#FFFFFF",
+    "borderRadius": 0,
+    "paddingVertical": 2,
+    "paddingHorizontal": 0, // No background box needed
+    "spacing": 5, // Space between skill items
+    "columns": 3 // Multiple columns for skills often used
+  },
+  "line": { // Defines the line used under headings
+    "line": true,
+    "width": 0.8,
+    "color": "#555555",
+    "marginTop": 2 // Space between heading text and line
+  }
+}

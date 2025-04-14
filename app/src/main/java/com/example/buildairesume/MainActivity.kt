@@ -13,6 +13,7 @@ import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import android.widget.Toast
@@ -23,6 +24,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.marginRight
 import androidx.lifecycle.lifecycleScope
 import com.example.buildairesume.databinding.ActivityMainBinding
 import com.example.buildairesume.models.UserProfile
@@ -67,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         navigation_view.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_about -> {
-                    // Handle home navigation
+
                     true
                 }
 
@@ -109,16 +111,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupActivity() {
         val welcomeMessages = listOf(
-            "Hi there! I'm ResuMate, ready to guide you through the resume-building process. Tap on 'Edit Resume Information' to get started with AI assistance. Need help? Tap on me anytime!",
-            "Welcome! I'm ResuMate, your AI-powered resume assistant. Let's build your personalized resume—tap on 'Edit Resume Information' to begin! If you're stuck, tap on my icon for a hint.",
-            "Hello! I'm ResuMate, here to make resume creation simple. Tap 'Edit Resume Information' to start crafting your perfect resume with AI. Lost? Just tap on me!",
-            "Hey! I'm ResuMate, your AI resume helper. Let's get started—tap on 'Edit Resume Information' and begin building your resume! If you need guidance, tap my icon anytime.",
-            "Greetings! I'm ResuMate, your AI assistant for resumes. Tap 'Edit Resume Information' to create a professional resume effortlessly. Need a hint? Just tap on my icon!",
-            "Welcome! ResuMate here, ready to assist you in building a great resume. Just tap 'Edit Resume Information' to begin! If you ever feel lost, tap on me for help.",
-            "Hi! I'm ResuMate, and I'm here to simplify your resume-building journey. Tap on 'Edit Resume Information' to get started! Not sure what to do next? Just tap my icon.",
-            "Hello there! ResuMate at your service. Let's create an amazing resume together—tap 'Edit Resume Information' to begin. Stuck? Tap on me for a helpful hint!",
-            "Hey! Need a resume? I'm ResuMate, your AI-powered assistant. Tap 'Edit Resume Information' to start building yours today! If you need a nudge, just tap my icon.",
-            "Welcome to ResuMate! I'm here to help you craft a standout resume. Tap on 'Edit Resume Information' to begin the process. If you're ever unsure, tap on me for guidance!"
+            "Hi there! I'm ResuMate, ready to guide you through the resume-building process. Tap on 'Start' to get started with AI assistance. Need help? Tap on me anytime!",
+            "Welcome! I'm ResuMate, your AI-powered resume assistant. Let's build your personalized resume—tap on ‘Start’ to begin! If you're stuck, tap on my icon for a hint.",
+            "Hello! I'm ResuMate, here to make resume creation simple. Tap ‘Start’ to start crafting your perfect resume with AI. Lost? Just tap on me!",
+            "Hey! I'm ResuMate, your AI resume helper. Let's get started—tap on ‘Start’ and begin building your resume! If you need guidance, tap my icon anytime.",
+            "Greetings! I'm ResuMate, your AI assistant for resumes. Tap ‘Start’ to create a professional resume effortlessly. Need a hint? Just tap on my icon!",
+            "Welcome! ResuMate here, ready to assist you in building a great resume. Just tap ‘Start’ to begin! If you ever feel lost, tap on me for help.",
+            "Hi! I'm ResuMate, and I'm here to simplify your resume-building journey. Tap on ‘Start’ to get started! Not sure what to do next? Just tap my icon.",
+            "Hello there! ResuMate at your service. Let's create an amazing resume together—tap ‘Start’ to begin. Stuck? Tap on me for a helpful hint!",
+            "Hey! Need a resume? I'm ResuMate, your AI-powered assistant. Tap ‘Start’ to start building yours today! If you need a nudge, just tap my icon.",
+            "Welcome to ResuMate! I'm here to help you craft a standout resume. Tap on ‘Start’ to begin the process. If you're ever unsure, tap on me for guidance!"
+
         )
         val welcomeBackMessages = listOf(
             "Welcome back! Here’s the resume you created earlier.",
@@ -156,6 +159,19 @@ class MainActivity : AppCompatActivity() {
             binding.welcomeText.height = 600
             binding.btnChangeTemplate.visibility = View.GONE
             binding.startTitle.visibility = View.VISIBLE
+            binding.btnEditData.text = "Start"
+            val marginInDp = 10f
+            val marginInPx = (marginInDp * resources.displayMetrics.density).toInt()
+            val button = binding.btnEditData
+            val layoutParams = button.layoutParams // Get current params
+            if (layoutParams is ViewGroup.MarginLayoutParams) { // Check if it supports margins
+                // Convert 10dp to pixels
+                val marginInDp = 10f
+                val marginInPx = (marginInDp * resources.displayMetrics.density).toInt()
+
+                layoutParams.rightMargin = marginInPx // Set the right margin in pixels
+                button.layoutParams = layoutParams // Apply the updated params
+            }
             Log.d("MainActivity", "Starting typewriter effect")
             startTypewriterEffect(textView, welcomeText, delayMillis)
         } else {

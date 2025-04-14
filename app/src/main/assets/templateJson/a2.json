@@ -5,16 +5,16 @@
   "leftRatio": "1f",
   "rightRatio": "2f",
   "sectionLeftOrder": [
-    "summary",
-    "experience",
-    "projects"
-  ],
-  "sectionRightOrder": [
     "contact",
     "education",
     "certifications",
     "skills",
     "achievements"
+  ],
+  "sectionRightOrder": [
+    "summary",
+    "experience",
+    "projects"
   ],
   "page": {
     "imageBackground": false,
@@ -28,7 +28,7 @@
   },
   "name": {
     "font": "Poppins-Bold.ttf",
-    "size": 12,
+    "size": 42,
     "alignment": "center",
     "color": "#6F4B8F",
     "marginBottom": 1,

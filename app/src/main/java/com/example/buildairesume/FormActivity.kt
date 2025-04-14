@@ -480,15 +480,15 @@ class FormActivity : AppCompatActivity() {
                 "Got formal recognition? Add 1-2 certifications or honors.",
                 "List 1-2 key credentials or major accomplishments.",
                 "Add 1-2 notable certifications or significant achievements.",
-                "Highlight 1-2 ways you've been recognized (certs, awards).",
+                "Highlight 1-2 ways you've been recognized (certificated, awards).",
                 "Mention 1-2 important certifications or personal achievements.",
-                "Showcase specialized knowledge with 1-2 certs or awards.",
+                "Showcase specialized knowledge with 1-2 certificates or awards.",
                 "List 1-2 of your proudest achievements or certifications.",
                 "Time to add 1-2 key qualifications, like certifications or honors.",
-                "Include 1-2 items that validate your skills (certs/achievements).",
+                "Include 1-2 items that validate your skills (certificate/achievements).",
                 "Did you earn a certification or award? Add 1-2.",
                 "Add 1-2 extra credentials or significant accomplishments here.",
-                "Round out your profile with 1-2 certs or key achievements.",
+                "Round out your profile with 1-2 certificates or key achievements.",
                 "Show extra qualifications: Add 1-2 certifications or awards.",
                 "Highlight 1-2 key accomplishments or certifications."
             )
@@ -552,7 +552,7 @@ class FormActivity : AppCompatActivity() {
     private fun startTypewriterEffect(
         textView: TextView,
         fullText: String,
-        delayMillis: Long = 50
+        delayMillis: Long = 5
     ) {
         typewriterJob?.cancel()
         textView.text = "" // Clear text initially
@@ -564,7 +564,7 @@ class FormActivity : AppCompatActivity() {
 
         typewriterJob = lifecycleScope.launch {
             while (currentIndex < fullText.length) {
-                val nextStep = if (Random.nextBoolean()) 1 else Random.nextInt(2, 5)
+                val nextStep = if (Random.nextBoolean()) 1 else Random.nextInt(2, 3)
                 val endIndex = (currentIndex + nextStep).coerceAtMost(fullText.length)
 
                 textView.text = fullText.substring(0, endIndex)

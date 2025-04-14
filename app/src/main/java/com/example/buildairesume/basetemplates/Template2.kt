@@ -47,7 +47,7 @@ class Template2 {
 
             do {
                 val scaleFactor = max(0.5f, (1 - adjustValue * 0.1f)) // Ensures minimum 50% scaling
-                val textScaleFactor = 1 - (1 - scaleFactor) / 4
+                val textScaleFactor = 1 - (1 - scaleFactor) / 2
 
                 Log.d("PDFGenerator", "ScaleFactor : $scaleFactor")
 
@@ -203,7 +203,7 @@ class Template2 {
                         .setFontSize(textSize - 2f)
                         .setTextAlignment(nameAlignment)
                         .setBackgroundColor(getColorFromHex(contactJson.getString("background")))
-                        .setPadding(contactJson.getDouble("paddingVertical").toFloat())
+                        .setPadding(contactJson.getDouble("paddingVertical").toFloat()*scaleFactor)
                         .setMarginBottom(nameMarginBottom)
 
                     document.add(contactParagraph)
@@ -377,6 +377,7 @@ class Template2 {
                             .setFontColor(headingColor)
                             .setBackgroundColor(headingBackground)
                             .setMarginBottom(textMargin)
+
                     } else {
                         Paragraph(text)
                             .setFont(headerFont)
@@ -415,29 +416,29 @@ class Template2 {
                                 div.add(
                                     Paragraph("${userProfile?.phoneNumber}")
                                         .setFont(normalFont)
-                                        .setFontSize(textSize - 2f)
-                                        .setTextAlignment(TextAlignment.LEFT)
+                                        .setFontSize(textSize)
+                                        .setMarginTop(textMargin)
                                         .setMarginBottom(textMargin)
                                 )
                                 div.add(
                                     Paragraph("${userProfile?.email}")
                                         .setFont(normalFont)
-                                        .setFontSize(12f)
-                                        .setTextAlignment(TextAlignment.LEFT)
+                                        .setFontSize(textSize)
+                                        .setMarginTop(textMargin)
                                         .setMarginBottom(textMargin)
                                 )
                                 div.add(
                                     Paragraph("${userProfile?.website}")
                                         .setFont(normalFont)
-                                        .setFontSize(12f)
-                                        .setTextAlignment(TextAlignment.LEFT)
+                                        .setFontSize(textSize)
+                                        .setMarginTop(textMargin)
                                         .setMarginBottom(textMargin)
                                 )
                                 div.add(
                                     Paragraph("${userProfile?.address}")
                                         .setFont(normalFont)
-                                        .setFontSize(12f)
-                                        .setTextAlignment(TextAlignment.LEFT)
+                                        .setFontSize(textSize)
+                                        .setMarginTop(textMargin)
                                         .setMarginBottom(textMargin)
                                 )
                             }
@@ -445,6 +446,15 @@ class Template2 {
 
                         "summary" -> {
                             div.add(createHeading("Summary"))
+                            div.add(
+                                Paragraph(userProfile?.objective ?: "No Summary Provided")
+                                    .setFontSize(textSize)
+                                    .setFontColor(textColor)
+                            )
+                        }
+
+                        "objective" -> {
+                            div.add(createHeading("Objective"))
                             div.add(
                                 Paragraph(userProfile?.objective ?: "No Summary Provided")
                                     .setFontSize(textSize)
@@ -556,7 +566,7 @@ class Template2 {
                                 }
 
                                 // Add spacing between entries
-                                div.add(Paragraph("\n"))
+//                                div.add(Paragraph("\n"))
                             }
                         }
 
@@ -570,13 +580,24 @@ class Template2 {
                                         .setFontColor(textColor)
                                         .setTextAlignment(TextAlignment.LEFT)
                                 )
-//                            div.add(
-//                                Paragraph(it.year)
-//                                    .setFontSize(textSize)
-//                                    .setFontColor(textColor)
-//                                    .setTextAlignment(TextAlignment.RIGHT)
-//                            )
                             }
+                        }
+
+                        "achievements" -> {
+                            if (achievements.isNotEmpty()) {
+                                div.add(createHeading("Achievements"))
+                                achievements.forEach {
+                                    div.add(
+                                        Paragraph("${it.title}       (${it.date})")
+                                            .setFontSize(textSize)
+                                            .setTextAlignment(TextAlignment.LEFT)
+                                            .setMarginTop(textMargin)
+                                            .setMarginBottom(textMargin)
+                                    )
+
+                                }
+                            }
+
                         }
 
                         "projects" -> {
@@ -600,41 +621,19 @@ class Template2 {
                             }
                         }
 
-                        "achievements" -> {
-                            if (achievements.isNotEmpty()) {
-                                div.add(createHeading("Achievements"))
-                                achievements.forEach {
-                                    div.add(
-                                        Paragraph(it.title)
-                                            .setFontSize(textSize)
-                                            .setTextAlignment(TextAlignment.LEFT)
-                                            .setMarginTop(textMargin)
-                                            .setMarginBottom(textMargin)
-                                    )
-                                    div.add(
-                                        Paragraph(it.date)
-                                            .setFontSize(textSize)
-                                            .setTextAlignment(TextAlignment.RIGHT)
-                                            .setMarginTop(textMargin)
-                                            .setMarginBottom(textMargin)
-                                    )
 
-                                }
-                            }
-
-                        }
                     }
                 }
 
 // Dynamically populate left and right sections based on the order from JSON
                 val sectionLeftOrder = jsonObject.getJSONArray("sectionLeftOrder")
                 for (i in 0 until sectionLeftOrder.length()) {
-                    addSectionContent(sectionLeftOrder.getString(i), rightColumn)
+                    addSectionContent(sectionLeftOrder.getString(i), leftColumn)
                 }
 
                 val sectionRightOrder = jsonObject.getJSONArray("sectionRightOrder")
                 for (i in 0 until sectionRightOrder.length()) {
-                    addSectionContent(sectionRightOrder.getString(i), leftColumn)
+                    addSectionContent(sectionRightOrder.getString(i), rightColumn)
                 }
 
 

@@ -69,10 +69,9 @@
 
     <!-- _____________________________________________________Button Styles__________________________________________________-->
 
-    <style name="Button.Style" parent="ThemeOverlay.Material3.Button">
-
+    <style name="Widget.App.Button.SquareRounded" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">12dp</item>
     </style>
-
 
     <!-- _____________________________________________________Text Styles__________________________________________________-->
 
@@ -92,7 +91,17 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="OutputCardItemHeading" parent="Widget.AppCompat.TextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="CardItemSubheading" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="OutputCardItemSubheading" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">12sp</item>
     </style>
 

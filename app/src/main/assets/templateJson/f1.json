@@ -1,0 +1,94 @@
+{
+  "templateName": "single_col_elegant",
+  "sectionsOrder": [
+    "name", // Name often prominent
+    "contact",
+    "objective", // Objective might act like letter body start
+    "experience",
+    "education",
+    "projects",
+    "skills",
+    "certifications",
+    "achievements"
+  ],
+  "page": {
+    "imageBackground": false,
+    "backgroundImage": null,
+    "background": "#FAF8F0", // Creamy background
+    "borderRadius": 0,
+    "padding": 50,
+    "verticalLine": true, // Add vertical line
+    "verticalLineColor": "#B08D57", // Gold/brown color
+    "verticalLineWidth": 1.5,
+    "verticalLineMargin": 25, // Space between line and text
+    "footer": false
+  },
+  "margin": {
+    "topMargin": 50,
+    "rightMargin": 50,
+    "bottomMargin": 50,
+    "leftMargin": 50
+  },
+  "dateFormat": "dd MMMM yyyy", // Full date format often in letters
+  "objective": {
+    "heading": false // Often no explicit heading in letter style
+  },
+  "name": {
+    "font": "PlayfairDisplay-Bold.ttf", // Decorative Serif
+    "size": 36,
+    "alignment": "right", // Right aligned like example
+    "color": "#B08D57", // Gold/brown color
+    "marginBottom": 20,
+    "marginTop": 10,
+    "background": "#FAF8F0", // Match page
+    "line": false
+  },
+  "contact": {
+    "separator": "\n", // Each contact on a new line
+    "backgroundColor": false,
+    "background": "#FAF8F0",
+    "borderRadius": 0,
+    "paddingVertical": 0,
+    "paddingHorizontal": 0,
+    "alignment": "left", // Left block
+    "font": "Lato-Regular.ttf", // Clean sans-serif
+    "size": 10,
+    "color": "#333333"
+  },
+  "headings": {
+    "font": "Lato-Bold.ttf", // Clean sans-serif bold
+    "size": 15,
+    "color": "#4A3F35", // Darker brown
+    "background": "#FAF8F0",
+    "backgroundFullLine": false,
+    "allCaps": false, // Often sentence case
+    "paddingHorizontal": 0,
+    "borderRadius": 0,
+    "marginBottom": 5,
+    "line": false // No lines usually
+  },
+  "text": {
+    "font": "Lato-Regular.ttf",
+    "size": 11,
+    "spacing": 1.6, // Slightly more spacing for readability
+    "verticalMargin": 4,
+    "color": "#111111"
+  },
+  "skills": {
+    "font": "Lato-Regular.ttf",
+    "size": 10,
+    "alignment": "left",
+    "color": "#333333",
+    "background": "#FAF8F0",
+    "borderRadius": 0,
+    "paddingVertical": 1,
+    "paddingHorizontal": 0,
+    "spacing": 4,
+    "columns": 1 // Single column list often
+  },
+  "line": { // Not used for headings here
+    "line": false,
+    "width": 1.0,
+    "color": "#000000"
+  }
+}

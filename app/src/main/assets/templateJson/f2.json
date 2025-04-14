@@ -1,0 +1,91 @@
+{
+  "templateName": "two_col_elegant_dark",
+  "nameAtTop": false,
+  "contactAtTop": false,
+  "leftRatio": "1f", // Alta's ratio
+  "rightRatio": "2f",
+  "sectionLeftOrder": [
+    "contact",
+    "education",
+    "skills",
+    "certifications",
+    "achievements"
+  ],
+  "sectionRightOrder": [
+    "name",
+    "objective",
+    "experience",
+    "projects"
+  ],
+  "page": {
+    "imageBackground": false,
+    "backgroundImage": null,
+    "background": "#FFFFFF", // Dark Brown Background
+    "borderRadius": 0,
+    "padding": 45,
+    "verticalLine": false,
+    "footer": false,
+    "sectionLeftTopMargin": 10
+  },
+  "objective": {
+    "heading": true
+  },
+  "name": {
+    "font": "PlayfairDisplay-Bold.ttf", // Dylan's Font
+    "size": 34,
+    "alignment": "left",
+    "color": "#4A3F35", // Cream Color Text
+    "marginBottom": 15,
+    "marginTop": 10,
+    "backgroundColor": false,
+    "background": "#4A3F35",
+    "line": false
+  },
+  "contact": {
+    "separator": "\n",
+    "background": "#4A3F35",
+    "borderRadius": 0,
+    "paddingVertical": 0,
+    "paddingHorizontal": 0,
+    "alignment": "left",
+    "font": "Lato-Regular.ttf", // Dylan's Font
+    "size": 10,
+    "color": "#E0D8C8" // Lighter Cream/Beige for contrast
+  },
+  "headings": {
+    "font": "Lato-Bold.ttf", // Dylan's Font
+    "size": 15,
+    "color": "#4A3F35", // Cream Color Headings
+    "backgroundColor": true,
+    "background": "#FAF8F0",
+    "backgroundFullLine": true,
+    "allCaps": true, // Caps like Alta
+    "paddingHorizontal": 0,
+    "borderRadius": 0,
+    "marginBottom": 5
+  },
+  "text": {
+    "font": "Lato-Regular.ttf", // Dylan's Font
+    "size": 11,
+    "spacing": 1.5,
+    "verticalMargin": 3,
+    "color": "#000000" // Lighter Cream/Beige text
+  },
+  "skills": {
+    "font": "Lato-Regular.ttf",
+    "size": 10,
+    "alignment": "left",
+    "color": "#E0D8C8",
+    "background": "#4A3F35",
+    "borderRadius": 0,
+    "paddingVertical": 1,
+    "paddingHorizontal": 0,
+    "spacing": 4,
+    "columns": 1
+  },
+  "line": {
+    "line": false,
+    "width": 1.0,
+    "color": "#FAF8F0" // Cream lines if used
+  }
+}

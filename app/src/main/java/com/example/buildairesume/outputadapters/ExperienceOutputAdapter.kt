@@ -101,7 +101,7 @@ class ExperienceOutputAdapter(
             val apiKey = BuildConfig.GEMINI_API_KEY
             val model = BuildConfig.GEMINI_MODEL
             val generativeModel = GenerativeModel(model, apiKey)
-            val numOfLines = if (itemCount > 2) "1" else "1-2"
+            val numOfLines = if (itemCount > 2) "1" else "2-3"
 
             Log.d("PDFGeneration", "Item count: $itemCount")
             Log.d("PDFGeneration", "Number of lines in experience output: $numOfLines")
@@ -153,7 +153,7 @@ class ExperienceOutputAdapter(
                             TAG,
                             "[ExperienceAdapter] Setting UI text for pos $position: $outputText"
                         ) // <-- Log UI set
-                        binding.etExperienceDescription.setText(outputText)
+                        binding.etExperienceDescription.setText(outputText.trim())
 //                        binding.etExperienceDescription.visibility = View.VISIBLE
                         binding.etExperienceOutputCard.visibility = View.VISIBLE
                         binding.lottieAnim.visibility = View.GONE

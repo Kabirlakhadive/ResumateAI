@@ -1,0 +1,90 @@
+{
+  "templateName": "two_col_modern_blue",
+  "nameAtTop": true,
+  "contactAtTop": false,
+  "leftRatio": "1.2f", // Left slightly wider
+  "rightRatio": "1.8f",
+  "sectionLeftOrder": [
+    "contact",
+    "skills",
+    "certifications",
+    "education",
+    "achievements"
+  ],
+  "sectionRightOrder": [
+    "objective", // Summary/Objective
+    "experience",
+    "projects"
+  ],
+  "page": {
+    "imageBackground": false,
+    "backgroundImage": null,
+    "background": "#FFFFFF", // White
+    "borderRadius": 0,
+    "padding": 40,
+    "verticalLine": false,
+    "footer": false,
+    "sectionLeftTopMargin": 0
+  },
+  "objective": {
+    "heading": true
+  },
+  "name": {
+    "font": "Montserrat-Bold.ttf",
+    "size": 54,
+    "alignment": "left",
+    "color": "#2196F3", // Blue
+    "marginBottom": 2,
+    "marginTop": 3,
+    "backgroundColor": false,
+    "background": "#FFFFFF",
+    "line": false // Maybe a subtle line below contact instead
+  },
+  "contact": {
+    "separator": " | ",
+    "background": "#FFFFFF",
+    "borderRadius": 0,
+    "paddingVertical": 2,
+    "paddingHorizontal": 0,
+    "alignment": "left",
+    "font": "Montserrat-Regular.ttf",
+    "size": 9,
+    "color": "#444444"
+  },
+  "headings": {
+    "font": "Montserrat-SemiBold.ttf",
+    "size": 14,
+    "color": "#2196F3", // Blue headings
+    "backgroundColor": false,
+    "background": "#FFFFFF",
+    "backgroundFullLine": false,
+    "allCaps": false, // Sentence case
+    "paddingHorizontal": 0,
+    "borderRadius": 0,
+    "marginBottom": 5
+  },
+  "text": {
+    "font": "Montserrat-Regular.ttf",
+    "size": 10,
+    "spacing": 1.5,
+    "verticalMargin": 3,
+    "color": "#333333"
+  },
+  "skills": {
+    "font": "Montserrat-Medium.ttf",
+    "size": 10,
+    "alignment": "left",
+    "color": "#333333",
+    "background": "#E3F2FD", // Light blue background for skills
+    "borderRadius": 4,
+    "paddingVertical": 3,
+    "paddingHorizontal": 6,
+    "spacing": 4,
+    "columns": 1 // Single column in left sidebar
+  },
+  "line": {
+    "line": false, // No lines
+    "width": 1.0,
+    "color": "#000000"
+  }
+}

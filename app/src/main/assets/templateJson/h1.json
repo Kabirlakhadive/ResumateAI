@@ -1,0 +1,92 @@
+{
+  "templateName": "single_col_hybrid_elegant",
+  "sectionsOrder": [
+    "name",
+    "contact",
+    "objective",
+    "experience",
+    "education",
+    "projects",
+    "skills",
+    "certifications",
+    "achievements"
+  ],
+  "page": {
+    "imageBackground": false,
+    "backgroundImage": null,
+    "background": "#FAF8F0", // Dylan's Cream background
+    "borderRadius": 0,
+    "padding": 40,
+    "verticalLine": false, // Janna's lack of vertical line
+    "footer": false
+  },
+  "margin": {
+    "topMargin": 40,
+    "rightMargin": 40,
+    "bottomMargin": 40,
+    "leftMargin": 40
+  },
+  "dateFormat": "MMM yyyy", // Janna's format
+  "objective": {
+    "heading": true // Janna's heading
+  },
+  "name": {
+    "font": "PlayfairDisplay-Bold.ttf", // Dylan's Font
+    "size": 34, // Slightly larger
+    "alignment": "center", // Janna's alignment
+    "color": "#B08D57", // Dylan's Color
+    "marginBottom": 3,
+    "marginTop": 10,
+    "background": "#FAF8F0",
+    "line": false
+  },
+  "contact": {
+    "separator": "  •  ", // Janna's separator
+    "backgroundColor": false,
+    "background": "#FAF8F0",
+    "borderRadius": 0,
+    "paddingVertical": 2,
+    "paddingHorizontal": 0,
+    "alignment": "center", // Janna's alignment
+    "font": "Lato-Regular.ttf", // Dylan's Font
+    "size": 10,
+    "color": "#4A3F35" // Darker Brown
+  },
+  "headings": {
+    "font": "Lato-Bold.ttf", // Dylan's Font
+    "size": 14,
+    "color": "#4A3F35", // Darker Brown
+    "background": "#FAF8F0",
+    "backgroundFullLine": false,
+    "allCaps": true, // Janna's caps
+    "paddingHorizontal": 0,
+    "borderRadius": 0,
+    "marginBottom": 4,
+    "line": true // Janna's line
+  },
+  "text": {
+    "font": "Lato-Regular.ttf", // Dylan's Font
+    "size": 11,
+    "spacing": 1.5, // Increased spacing
+    "verticalMargin": 3,
+    "color": "#333333" // Standard dark text
+  },
+  "skills": {
+    "font": "Lato-Regular.ttf",
+    "size": 10,
+    "alignment": "left",
+    "color": "#4A3F35",
+    "background": "#FAF8F0",
+    "borderRadius": 0,
+    "paddingVertical": 2,
+    "paddingHorizontal": 0,
+    "spacing": 5,
+    "columns": 2 // Two columns
+  },
+  "line": { // Janna's line style
+    "line": true,
+    "width": 0.8,
+    "color": "#B08D57", // Dylan's Color
+    "marginTop": 2
+  }
+}

@@ -96,7 +96,7 @@ class ProjectOutputAdapter(
 
             val prompt = """
         Rewrite the following project description in a concise and professional tone suitable for a resume.
-        Keep it clear, impactful, and formatted as exactly two bullet points, each of $numOfLines line.
+        Keep it clear, impactful, and formatted as exactly two bullet points, each of $numOfLines line(s).
         Ensure there are no extra line breaks between bullet points.
         
         - Project Title: ${project.title}
@@ -139,7 +139,7 @@ class ProjectOutputAdapter(
                             TAG,
                             "[ProjectAdapter] Setting UI text for pos $position: $outputText"
                         ) // <-- Log UI set
-                        binding.etProjectDescription.setText(outputText)
+                        binding.etProjectDescription.setText(outputText.trim())
                         binding.projectOutputCard.visibility = View.VISIBLE
                         binding.lottieAnim.visibility = View.GONE
                         binding.ivEdit.isEnabled = true
