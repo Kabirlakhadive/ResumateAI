@@ -1,22 +1,22 @@
 {
-  "templateName": "b1",
+  "templateName": "1c",
   "sectionsOrder": [
     "name",
     "contact",
     "objective",
-    "education - experience",
+    "education",
+    "experience",
     "projects",
-    "certifications",
-    "achievements",
-    "skills"
+    "skills",
+    "certification",
+    "achievement"
   ],
   "page": {
-    "imageBackground": true,
-    "backgroundImage": "templateBackground/b1_bg.png",
-    "background": "#CCCCCC",
+    "imageBackground": false,
+    "background": "#FFFFFF",
     "borderRadius": 0,
-    "padding": 50,
-    "verticalLine": true,
+    "padding": 25,
+    "verticalLine": false,
     "footer": false
   },
   "margin": {
@@ -25,63 +25,61 @@
     "bottomMargin": 30,
     "leftMargin": 30
   },
-  "dateFormat": "MMM yyyy",
   "objective": {
     "heading": true
   },
   "name": {
-    "font": "FunnelDisplay-Bold.ttf",
-    "size": 32,
+    "font": "TimesNewRoman-Bold.ttf",
+    "size": 44,
     "alignment": "left",
-    "color": "#000000",
-    "marginBottom": 5,
-    "marginTop": 5,
+    "color": "#1C5D99",
+    "marginBottom": 0.08,
+    "marginTop": 0.08,
     "background": "#FFFFFF",
     "line": false
   },
+  "dateFormat": "MMM yyyy",
   "contact": {
     "separator": "  |  ",
-    "backgroundColor": true,
-    "background": "#CACCD0",
+    "backgroundColor": false,
+    "background": "#EEEEEE",
     "borderRadius": 0,
-    "paddingVertical": 10,
-    "paddingHorizontal": 0,
+    "paddingVertical": 5,
+    "paddingHorizontal": 8,
     "alignment": "left",
-    "font": "FunnelDisplay-Regular.ttf",
-    "color": "#000000"
+    "font": "TimesNewRoman-Regular.ttf",
+    "size": 11,
+    "color": "#222222"
   },
   "headings": {
-    "font": "FunnelDisplay-Bold.ttf",
-    "size": 18,
-    "color": "#000000",
+    "font": "TimesNewRoman-Bold.ttf",
+    "size": 20,
+    "color": "#1C5D99",
     "background": "#FFFFFF",
-    "backgroundFullLine": true,
+    "backgroundFullLine": false,
     "allCaps": true,
-    "paddingHorizontal": 0,
+    "paddingHorizontal": 4,
     "borderRadius": 0
   },
   "text": {
-    "font": "FunnelDisplay-Regular.ttf",
-    "size": 12,
-    "spacing": 1.5,
-    "verticalMargin": 2,
-    "color": "#000000"
+    "font": "TimesNewRoman-Regular.ttf",
+    "size": 18,
+    "spacing": 1,
+    "verticalMargin": 1,
+    "color": "#222222"
   },
   "skills": {
-    "font": "FunnelDisplay-Bold.ttf",
-    "size": 12,
-    "alignment": "left",
-    "color": "#000000",
+    "font": "TimesNewRoman-Bold.ttf",
+    "color": "#1C5D99",
     "background": "#FFFFFF",
     "borderRadius": 0,
     "paddingVertical": 4,
     "paddingHorizontal": 8,
-    "spacing": 3,
-    "columns": 2
+    "spacing": 3
   },
   "line": {
     "line": true,
-    "width": 1.2,
-    "color": "#000000"
+    "width": 1,
+    "color": "#AAAAAA"
   }
 }

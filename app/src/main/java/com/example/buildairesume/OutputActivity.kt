@@ -229,6 +229,15 @@ class OutputActivity : AppCompatActivity() {
         binding.fabNext.setOnClickListener {
             scrollToNextCard()
         }
+        // --- ADD REFRESH FAB LISTENER ---
+        binding.fabRefresh.setOnClickListener {
+            Log.d(TAG, "Refresh FAB clicked. Reloading Activity.")
+            val intent = Intent(this, OutputActivity::class.java)
+            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            // Finish the current instance
+            finish()
+        }
 
         setupNavigationRail() // Setup NavRail listeners
 
@@ -395,7 +404,7 @@ class OutputActivity : AppCompatActivity() {
 
             val prompt = """
             Write a professional **objective section** for a resume in 4-5 lines, ensuring it is in **third-person** and **omits any headings**.
-           
+            Don't use the words male or female.
             The objective should concisely summarize the candidate’s background, skills, and career aspirations based on the following details:
 
             - **Name**: ${userProfile.fullName}
