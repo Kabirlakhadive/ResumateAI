@@ -11,11 +11,11 @@ plugins {
 
 
 android {
-    namespace = "com.example.buildairesume"
+    namespace = "com.codeNext.resumateAI"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.buildairesume"
+        applicationId = "com.codeNext.resumateAI"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
