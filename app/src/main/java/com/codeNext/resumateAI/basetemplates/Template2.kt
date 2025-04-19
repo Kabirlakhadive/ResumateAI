@@ -571,15 +571,17 @@ class Template2 {
                         }
 
                         "certifications" -> {
-                            div.add(createHeading("Certifications"))
-                            certifications.forEach {
-                                div.add(
-                                    Paragraph("${it.name}            (${it.year})")
-                                        .setFontSize(textSize)
-                                        .setFont(boldFont)
-                                        .setFontColor(textColor)
-                                        .setTextAlignment(TextAlignment.LEFT)
-                                )
+                            if(certifications.isNotEmpty()){
+                                div.add(createHeading("Certifications"))
+                                certifications.forEach {
+                                    div.add(
+                                        Paragraph("${it.name}            (${it.year})")
+                                            .setFontSize(textSize)
+                                            .setFont(boldFont)
+                                            .setFontColor(textColor)
+                                            .setTextAlignment(TextAlignment.LEFT)
+                                    )
+                                }
                             }
                         }
 
