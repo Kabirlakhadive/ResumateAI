@@ -13,6 +13,8 @@ import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
@@ -78,8 +80,10 @@ class FormActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
         database = UserData.getInstance(this)
         chatText = binding.formActivityChat
 
@@ -115,8 +119,9 @@ class FormActivity : AppCompatActivity() {
         binding.btnSubmit.setOnClickListener {
             Log.d("SubmitClick", "Submit button clicked. Performing validation.")
 
+            var message = "Are you sure you want to submit? \nThis will cost you 1 token."
             // 1. Check Basic Personal Info Fields First
-            if (!areAllFieldsFilled()) {
+            if (binding.etName.text.isNullOrEmpty()) {
                 Log.d("SubmitValidation", "Failed: Basic personal info missing.")
                 // Use your existing typewriter effect or a simple Toast
                 startTypewriterEffect(
@@ -124,6 +129,7 @@ class FormActivity : AppCompatActivity() {
                     "Please fill in your Name, Email, and Phone Number.", // More specific message
                     30
                 )
+
                 binding.mainScrollView.smoothScrollTo(0, binding.cvPersonalInformation.top - 20)
                 binding.mainScrollView.postDelayed({ updateUiForCard(PERSONAL_INFO_INDEX) }, 150)
 
@@ -131,45 +137,54 @@ class FormActivity : AppCompatActivity() {
                 // Toast.makeText(this, "Please fill in Name, Email, and Phone Number.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener // Stop validation here
             }
+            if(binding.etEmail.text.isNullOrEmpty()){
+                message = "You have not filled your email.\n$message"
+            }
+            if(binding.etPhone.text.isNullOrEmpty()){
+                message = "You have not filled your phone number.\n$message"
+            }
 
             val MINIMUM_SKILLS = 5 // Example minimum
             if (selectedSkills.size < MINIMUM_SKILLS) {
-                Log.d("SubmitValidation", "Failed: Not enough skills added.")
-//                Toast.makeText(this, "Please add at least $MINIMUM_SKILLS skills.", Toast.LENGTH_LONG).show()
-                startTypewriterEffect(chatText, "Please add at least $MINIMUM_SKILLS skills.", 30)
-                // Optional: Scroll to Skills
-                binding.mainScrollView.smoothScrollTo(0, binding.cvSkills.top - 20)
-                binding.mainScrollView.postDelayed({ updateUiForCard(SKILLS_INDEX) }, 150)
-                return@setOnClickListener
+//                Log.d("SubmitValidation", "Failed: Not enough skills added.")
+////                Toast.makeText(this, "Please add at least $MINIMUM_SKILLS skills.", Toast.LENGTH_LONG).show()
+//                startTypewriterEffect(chatText, "Please add at least $MINIMUM_SKILLS skills.", 30)
+//                // Optional: Scroll to Skills
+//                binding.mainScrollView.smoothScrollTo(0, binding.cvSkills.top - 20)
+//                binding.mainScrollView.postDelayed({ updateUiForCard(SKILLS_INDEX) }, 150)
+//                return@setOnClickListener
+                message = "You have not selected at least 5 skills.\n$message"
             }
 
-            // 2. Check Experience
+//            // 2. Check Experience
             if (experienceAdapter.itemCount == 0) {
-                Log.d("SubmitValidation", "Failed: No experience added.")
-//                Toast.makeText(this, "Please add at least one work experience.", Toast.LENGTH_LONG).show()
-                startTypewriterEffect(chatText, "Please add at least one work experience.", 30)
-                // Optional: Scroll to the Experience section
-                binding.mainScrollView.smoothScrollTo(0, binding.cvExperience.top - 20)
-                binding.mainScrollView.postDelayed({ updateUiForCard(EXPERIENCE_INDEX) }, 150)
-                return@setOnClickListener // Stop validation here
+//                Log.d("SubmitValidation", "Failed: No experience added.")
+////                Toast.makeText(this, "Please add at least one work experience.", Toast.LENGTH_LONG).show()
+//                startTypewriterEffect(chatText, "Please add at least one work experience.", 30)
+//                // Optional: Scroll to the Experience section
+//                binding.mainScrollView.smoothScrollTo(0, binding.cvExperience.top - 20)
+//                binding.mainScrollView.postDelayed({ updateUiForCard(EXPERIENCE_INDEX) }, 150)
+//                return@setOnClickListener // Stop validation here
+                message = "You have not added any work experience.\n$message"
             }
 
             // 3. Check Projects
             if (projectAdapter.itemCount == 0) {
-                Log.d("SubmitValidation", "Failed: No projects added.")
-//                Toast.makeText(this, "Please add at least one project.", Toast.LENGTH_LONG).show()
-                startTypewriterEffect(chatText, "Please add at least one project.", 30)
-                // Optional: Scroll to the Projects section
-                binding.mainScrollView.smoothScrollTo(0, binding.cvProjects.top - 20)
-                binding.mainScrollView.postDelayed({ updateUiForCard(PROJECTS_INDEX) }, 150)
-                return@setOnClickListener // Stop validation here
+//                Log.d("SubmitValidation", "Failed: No projects added.")
+////                Toast.makeText(this, "Please add at least one project.", Toast.LENGTH_LONG).show()
+//                startTypewriterEffect(chatText, "Please add at least one project.", 30)
+//                // Optional: Scroll to the Projects section
+//                binding.mainScrollView.smoothScrollTo(0, binding.cvProjects.top - 20)
+//                binding.mainScrollView.postDelayed({ updateUiForCard(PROJECTS_INDEX) }, 150)
+//                return@setOnClickListener // Stop validation here
+                message = "You have not added any projects. \n$message"
             }
 
             // 4. Check Education
             if (educationAdapter.itemCount == 0) {
                 Log.d("SubmitValidation", "Failed: No education added.")
 //                Toast.makeText(this, "Please add at least one education entry.", Toast.LENGTH_LONG).show()
-                startTypewriterEffect(chatText, "Please add at least one education entry.", 30)
+                Toast.makeText(this, "Please add at least one education entry.", Toast.LENGTH_SHORT).show()
                 // Optional: Scroll to the Education section
                 binding.mainScrollView.smoothScrollTo(0, binding.cvEducation.top - 20)
                 binding.mainScrollView.postDelayed({ updateUiForCard(EDUCATION_INDEX) }, 150)
@@ -177,23 +192,29 @@ class FormActivity : AppCompatActivity() {
             }
 
             // 5. Check Skills
-//            // You might want a minimum number, but checking for at least one is common.
-//            if (selectedSkills.isEmpty()) {
+            // You might want a minimum number, but checking for at least one is common.
+            if (selectedSkills.isEmpty()) {
 //                Log.d("SubmitValidation", "Failed: No skills added.")
 //                Toast.makeText(this, "Please add at least one skill.", Toast.LENGTH_LONG).show()
 //                // Optional: Scroll to the Skills section
 //                binding.mainScrollView?.smoothScrollTo(0, binding.cvSkills.top - 20)
 //                binding.mainScrollView?.postDelayed({ updateUiForCard(SKILLS_INDEX) }, 150)
 //                return@setOnClickListener // Stop validation here
-//            }
+                message = "You have not added any skills.\n$message"
+            }
 //            // --- Add minimum skills check example (optional) ---
 
 
-            // 6. If all checks pass, proceed with saving and navigating
+            // Check Education
+            if (educationAdapter.itemCount == 0) {
+                Log.d("SubmitValidation", "Failed: No education added.")
+                message = "You have not added any education field.\n$message"
+            }
+
+            // 7. If all checks pass, proceed with saving and navigating
             Log.d("SubmitValidation", "All checks passed. Saving data and starting OutputActivity.")
-            saveResumeData()
-            val intent = Intent(this, OutputActivity::class.java)
-            startActivity(intent)
+            showConfirmationDialog(message)
+
         }
 
         binding.fabNext.setOnClickListener {
@@ -222,6 +243,19 @@ class FormActivity : AppCompatActivity() {
 
         // REMOVED: setOnTouchListener for mainScrollView - Disables manual scrolling and snapping
         // binding.mainScrollView?.setOnTouchListener { _, event -> ... }
+    }
+
+    private fun showConfirmationDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Yes") { _, _ ->
+                saveResumeData()
+                val intent = Intent(this, OutputActivity::class.java)
+                startActivity(intent) }
+            .setNegativeButton("No", null) // Simpler way to dismiss
+
+            .show()
     }
 
 
@@ -265,7 +299,6 @@ class FormActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             delay(4000) // Wait for 4 seconds before fading out
-
             withContext(Dispatchers.Main) {
                 chatCard.animate()
                     .alpha(0f) // Fade out
@@ -586,14 +619,14 @@ class FormActivity : AppCompatActivity() {
         }
     }
 
-    private fun areAllFieldsFilled(): Boolean {
-        // Add more checks here for minimum requirements if needed
-        return !binding.etName.text.isNullOrEmpty() &&
-                !binding.etEmail.text.isNullOrEmpty() &&
-                !binding.etPhone.text.isNullOrEmpty()
-        // Example: && selectedSkills.size >= 10
-        // Example: && experienceAdapter.itemCount >= 2
-    }
+//    private fun areAllFieldsFilled(): Boolean {
+//        // Add more checks here for minimum requirements if needed
+//        return !binding.etName.text.isNullOrEmpty() &&
+//                !binding.etEmail.text.isNullOrEmpty() &&
+//                !binding.etPhone.text.isNullOrEmpty()
+//        // Example: && selectedSkills.size >= 10
+//        // Example: && experienceAdapter.itemCount >= 2
+//    }
 
     private fun scrollToNextCard() {
         Log.d("kabir", "scrollToNextCard called, current index: $currentVisibleCardIndex")
@@ -642,6 +675,7 @@ class FormActivity : AppCompatActivity() {
         // Update FAB Visibility
         val isLastCard = (index == TOTAL_CARDS - 1) // Check against total cards
         binding.fabNext.visibility = if (isLastCard) View.GONE else View.VISIBLE
+        binding.btnSubmit.visibility = if (isLastCard) View.VISIBLE else View.GONE
         Log.d("UpdateUI", "FAB visibility set to: ${binding.fabNext.visibility}")
     }
 
@@ -713,6 +747,7 @@ class FormActivity : AppCompatActivity() {
                 com.codeNext.resumateAI.R.id.nav_education -> { // Corrected mapping
                     targetView = binding.cvEducation
                     sectionIndex = EDUCATION_INDEX
+
                     unfocus()
                 }
 
@@ -917,7 +952,6 @@ class FormActivity : AppCompatActivity() {
         // Add chips for the loaded skills. The 'selectedSkills' list is already updated.
         skills.forEach { addChip(it) }
     }
-
     private fun setupSpinner() {
         val spinner = binding.spinnerJobProfile
         val adapter = ArrayAdapter(this, R.layout.simple_dropdown_item_1line, JobList.jobList)
@@ -948,6 +982,7 @@ class FormActivity : AppCompatActivity() {
             )
         }
         binding.btnAddProject.setOnClickListener {
+
             openDialog(
                 AddProjectFragment(
                     onAdd = { project -> addProjectToList(project) },

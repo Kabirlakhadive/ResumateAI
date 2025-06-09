@@ -59,6 +59,21 @@
         <!-- <item name="boxStrokeWidthFocused">2dp</item> -->
     </style>
 
+    <style name="ShapeAppearance.App.Dialog.Rounded" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <!-- Adjust corner size as desired -->
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Rounded" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <!-- Apply the custom shape appearance -->
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.Dialog.Rounded</item>
+        <!-- If inheriting from a theme using LargeComponent for dialogs, use this instead/also -->
+        <!-- <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.App.Dialog.Rounded</item> -->
+        <!-- Material 3 uses shapeAppearanceOverlay more often for dialogs -->
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.Dialog.Rounded</item>
+    </style>
+
 
     <style name="ShapeAppearanceOverlay.MyApp.Fab.Circle" parent="">
         <item name="cornerFamily">rounded</item>

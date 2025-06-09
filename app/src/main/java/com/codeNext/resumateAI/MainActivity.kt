@@ -18,7 +18,9 @@ import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
@@ -68,7 +70,8 @@ class MainActivity : AppCompatActivity() {
         navigation_view.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_about -> {
-
+                    val intent = Intent(this, AboutMeActivity::class.java)
+                    startActivity(intent)
                     true
                 }
 
@@ -150,6 +153,18 @@ class MainActivity : AppCompatActivity() {
         val delayMillis = 10L
 
         if (!doesFileExists(this)) {
+
+            AlertDialog.Builder(this)
+                .setTitle("Daily Limit Disclaimer")
+                .setMessage("Due to usage restrictions, you can only generate content 3 times per day.")
+                .setPositiveButton("OK") { dialog,_ ->
+                    dialog.dismiss()
+                }
+                .setCancelable(false)
+                .show()
+
+
+
             binding.resumePreviewContainer.visibility = View.GONE
             binding.chatBot.visibility = View.GONE
             binding.welcomeText.visibility = View.VISIBLE

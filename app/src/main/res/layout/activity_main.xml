@@ -32,7 +32,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="260dp"
             android:elevation="30dp"
-            android:text="Welcome to Resumate AI, tap on 'Edit Your Information' to begin."
+            android:text="Welcome to Resumate AI, tap on 'Start' to begin."
             android:textAlignment="center"
             android:textSize="40sp"
             android:textStyle="bold"
@@ -119,21 +119,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
-                app:cardBackgroundColor="@color/colorSurfaceVariant"
+                app:cardBackgroundColor="@color/colorOnSurfaceVariant"
                 app:cardCornerRadius="15dp">
-
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    app:cardCornerRadius="13dp"
+                    android:elevation="0dp"
+                    app:cardBackgroundColor="@color/colorOnSurface">
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fillViewport="true">
-
+                    android:fillViewport="true"
+                    android:elevation="0dp"
+                    android:outlineAmbientShadowColor="@color/transparent">
                     <com.github.barteksc.pdfviewer.PDFView
                         android:id="@+id/pdfView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="12dp"
                         android:background="@color/colorSurfaceVariant" />
                 </ScrollView>
+                </androidx.cardview.widget.CardView>
             </androidx.cardview.widget.CardView>
 
             <com.airbnb.lottie.LottieAnimationView
@@ -215,5 +222,6 @@
         android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:paddingVertical="50dp"
         app:menu="@menu/toolbar_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

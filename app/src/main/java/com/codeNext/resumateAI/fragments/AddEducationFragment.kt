@@ -190,6 +190,12 @@ class AddEducationFragment(
         val adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, items)
         view.setAdapter(adapter)
+        val displayMetrics = resources.displayMetrics
+        val screenHeight = displayMetrics.heightPixels
+        val desiredPercentage = 0.25f
+        val calculatedHeight = (screenHeight * desiredPercentage).toInt()
+        view.dropDownHeight = calculatedHeight
+
         view.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) view.showDropDown() }
         view.setOnClickListener { view.showDropDown() }
     }

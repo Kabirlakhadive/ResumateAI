@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.codeNext.resumateAI.adapters.TemplateAdapter
@@ -29,7 +30,9 @@ class TemplateActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         super.onCreate(savedInstanceState)
         binding = ActivityTemplateBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
         binding.btnGenerateResume.isEnabled =false
+
         Log.d("PDFGenerator", "Activity created, initializing views.")
 
         binding.rvTemplates.layoutManager = GridLayoutManager(this, 2)

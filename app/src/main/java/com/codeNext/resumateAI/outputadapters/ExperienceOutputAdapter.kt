@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.codeNext.resumateAI.BuildConfig
+import com.codeNext.resumateAI.DailyUsageManager
 import com.codeNext.resumateAI.R
 import com.codeNext.resumateAI.databinding.ItemExperienceOutputBinding
 import com.codeNext.resumateAI.models.Experience
@@ -88,11 +89,18 @@ class ExperienceOutputAdapter(
 
             // Call AI Model if teh internet is available
             if (isInternetAvailable(context)) {
-                modelCall(experience, binding)
+                Log.d("DailyUsageManager","${DailyUsageManager.getRemainingGenerations(context)}")
+                if(DailyUsageManager.getRemainingGenerations(context)>0) {
+                    modelCall(experience, binding)
+                }
+                else{
+                    binding.etExperienceDescription.apply {
+                        setText("Daily AI generation limit reached. Please check back tomorrow for more.")
+                    }
+                }
             } else {
                 binding.etExperienceDescription.apply {
                     setText("AI generation Failed, Check Internet Connection")
-                    setTextColor(Color.RED)
                 }
             }
         }

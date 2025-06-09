@@ -458,7 +458,6 @@ class Template1 {
 
                         "education" -> {
                             addHeading("Education")
-
                             education.forEach {
                                 val score = when (it.gradingSystem) {
                                     "Percentage" -> "${it.score}%"
@@ -481,11 +480,14 @@ class Template1 {
                         }
 
                         "skills" -> {
-                            addHeading("Technical Skills")
-                            addText(allSkills)
+                            if(skills.isNotEmpty()) {
+                                addHeading("Technical Skills")
+                                addText(allSkills)
+                            }
                         }
 
                         "experience" -> {
+                            if (experiences.isEmpty()) continue
                             addHeading("Experience")
                             experiences.forEach {
                                 addTable(
@@ -505,6 +507,7 @@ class Template1 {
                         }
 
                         "projects" -> {
+                            if (projects.isEmpty()) continue
                             addHeading("Projects")
                             projects.forEach {
                                 addTable(it.title, " ")
@@ -531,6 +534,7 @@ class Template1 {
                         }
 
                         "experience-projects" -> {
+
                             val experienceDiv = Div()
                             val projectDiv = Div()
 
@@ -539,51 +543,54 @@ class Template1 {
                             projectDiv.add(createHeading("Projects"))
 
                             // Add experiences dynamically
-                            experiences.forEach {
-                                experienceDiv.add(
-                                    Paragraph("${it.position} at ${it.companyName}")
-                                        .setFontSize(textSize)
-                                        .setFont(boldFont)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                )
+                            if(experiences.isNotEmpty())
+                            {
+                                experiences.forEach {
+                                    experienceDiv.add(
+                                        Paragraph("${it.position} at ${it.companyName}")
+                                            .setFontSize(textSize)
+                                            .setFont(boldFont)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                    )
 
-                                experienceDiv.add(
-                                    Paragraph("${it.startDate} - ${it.endDate}")
-                                        .setFont(normalFont)
-                                        .setFontSize(textSize)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                )
+                                    experienceDiv.add(
+                                        Paragraph("${it.startDate} - ${it.endDate}")
+                                            .setFont(normalFont)
+                                            .setFontSize(textSize)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                    )
 
-                                experienceDiv.add(
-                                    Paragraph(it.output)
-                                        .setFont(normalFont)
-                                        .setFontSize(textSize)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                )
-                            }
-
+                                    experienceDiv.add(
+                                        Paragraph(it.output)
+                                            .setFont(normalFont)
+                                            .setFontSize(textSize)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                    )
+                                }
+                        }
                             // Add projects dynamically
-                            projects.forEach {
-                                projectDiv.add(
-                                    Paragraph(it.title)
-                                        .setFontSize(textSize)
-                                        .setFont(boldFont)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                )
+                            if(projects.isNotEmpty()) {
+                                projects.forEach {
+                                    projectDiv.add(
+                                        Paragraph(it.title)
+                                            .setFontSize(textSize)
+                                            .setFont(boldFont)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                    )
 
-                                projectDiv.add(
-                                    Paragraph(it.output)
-                                        .setFont(normalFont)
-                                        .setFontSize(textSize)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                )
+                                    projectDiv.add(
+                                        Paragraph(it.output)
+                                            .setFont(normalFont)
+                                            .setFontSize(textSize)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                    )
+                                }
                             }
-
                             // Create a table to hold both sections side by side
                             val table = Table(floatArrayOf(1f, 1f))
                             table
@@ -608,70 +615,75 @@ class Template1 {
                         "education - experience" -> {
                             val educationDiv = Div()
                             val experienceDiv = Div()
-                            educationDiv.add(createHeading("Education"))
-                            experienceDiv.add(createHeading("Experience"))
-                            education.forEach {
-                                educationDiv.add(
-                                    Paragraph("${it.school}, ${it.year}")
-                                        .setFont(normalFont)
-                                        .setFontSize(textSize)
-                                        .setFont(boldFont)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                )
 
-                                educationDiv.add(
-                                    Paragraph(
-                                        it.degree + if (!it.isBranchEmpty()) " in ${it.branch}" else "" +
-                                                if (!it.isSpecializationEmpty()) " with ${it.specialization}" else "" +
-                                                        " (${
-                                                            when (it.gradingSystem) {
-                                                                "Percentage" -> "${it.score}%"
-                                                                "CGPA" -> "${it.score} CGPA"
-                                                                else -> "${it.score} Percentile"
-                                                            }
-                                                        })"
-                                    )
-                                        .setFont(normalFont)
-                                        .setFontSize(textSize)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                )
-
-                                if (it.board.isNotEmpty()) {
+                            if(education.isNotEmpty()){
+                                educationDiv.add(createHeading("Education"))
+                                education.forEach {
                                     educationDiv.add(
-                                        Paragraph(it.board)
+                                        Paragraph("${it.school}, ${it.year}")
+                                            .setFont(normalFont)
+                                            .setFontSize(textSize)
+                                            .setFont(boldFont)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                    )
+
+                                    educationDiv.add(
+                                        Paragraph(
+                                            it.degree + if (!it.isBranchEmpty()) " in ${it.branch}" else "" +
+                                                    if (!it.isSpecializationEmpty()) " with ${it.specialization}" else "" +
+                                                            " (${
+                                                                when (it.gradingSystem) {
+                                                                    "Percentage" -> "${it.score}%"
+                                                                    "CGPA" -> "${it.score} CGPA"
+                                                                    else -> "${it.score} Percentile"
+                                                                }
+                                                            })"
+                                        )
+                                            .setFont(normalFont)
+                                            .setFontSize(textSize)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                    )
+
+                                    if (it.board.isNotEmpty()) {
+                                        educationDiv.add(
+                                            Paragraph(it.board)
+                                                .setFont(normalFont)
+                                                .setFontSize(textSize)
+                                                .setFontColor(textColor)
+                                                .setMarginBottom(textMargin)
+                                        )
+                                    }
+                                }
+                            }
+                            if(experiences.isNotEmpty()){
+                                experienceDiv.add(createHeading("Experience"))
+                                experiences.forEach {
+                                    experienceDiv.add(
+                                        Paragraph("${it.position} at ${it.companyName}")
+                                            .setFontSize(textSize)
+                                            .setFont(boldFont)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                    )
+
+                                    experienceDiv.add(
+                                        Paragraph("${it.startDate} - ${it.endDate}")
+                                            .setFont(normalFont)
+                                            .setFontSize(textSize)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                    )
+
+                                    experienceDiv.add(
+                                        Paragraph(it.output)
                                             .setFont(normalFont)
                                             .setFontSize(textSize)
                                             .setFontColor(textColor)
                                             .setMarginBottom(textMargin)
                                     )
                                 }
-                            }
-                            experiences.forEach {
-                                experienceDiv.add(
-                                    Paragraph("${it.position} at ${it.companyName}")
-                                        .setFontSize(textSize)
-                                        .setFont(boldFont)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                )
-
-                                experienceDiv.add(
-                                    Paragraph("${it.startDate} - ${it.endDate}")
-                                        .setFont(normalFont)
-                                        .setFontSize(textSize)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                )
-
-                                experienceDiv.add(
-                                    Paragraph(it.output)
-                                        .setFont(normalFont)
-                                        .setFontSize(textSize)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                )
                             }
 
                             val table = Table(floatArrayOf(1f, 1f))

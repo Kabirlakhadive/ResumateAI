@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.codeNext.resumateAI.BuildConfig
+import com.codeNext.resumateAI.DailyUsageManager
 import com.codeNext.resumateAI.R
 import com.codeNext.resumateAI.databinding.ItemProjectOutputBinding
 import com.codeNext.resumateAI.models.Project
@@ -75,7 +76,13 @@ class ProjectOutputAdapter(
 
             // Call AI model only if the internet is available
             if (isInternetAvailable(context)) {
-                modelCall(project, binding)
+                if (DailyUsageManager.getRemainingGenerations(context) > 0) {
+                    modelCall(project, binding)
+                } else {
+                    binding.etProjectDescription.apply {
+                        setText("Daily AI generation limit reached. Please check back tomorrow for more.")
+                    }
+                }
             } else {
                 binding.etProjectDescription.apply {
                     setText("AI generation Failed, Check Internet Connection")

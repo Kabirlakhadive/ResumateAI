@@ -1,110 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="16dp">
 
-    <TextView
-        style="@style/AddCardTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add New Experience" />
+    >
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/CardAddItemEditText"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Company Name">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etCompanyName"
+        <TextView
+            style="@style/AddCardTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Experience" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/CardAddItemEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapWords" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:hint="Company Name">
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/CardAddItemEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Start Date">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCompanyName"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:inputType="textCapWords" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_start_date"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CardAddItemEditText"
+                android:id="@+id/start_date_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Start Date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="2.5dp"
+                app:layout_constraintEnd_toStartOf="@id/end_date_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_start_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:drawableEnd="@drawable/icon_menu_calendar"
+                    android:focusable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CardAddItemEditText"
+                android:layout_width="0dp"
+                android:layout_marginStart="2.5dp"
+                android:id="@+id/end_date_layout"
+                android:layout_height="wrap_content"
+                android:hint="End Date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/start_date_layout"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:drawableEnd="@drawable/icon_menu_calendar"
+                    android:focusable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/CardAddItemEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/icon_menu_calendar"
-            android:focusable="false" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:hint="Position">
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/CardAddItemEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="End Date">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_position"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:inputType="textCapWords" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_end_date"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/CardAddItemEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/icon_menu_calendar"
-            android:focusable="false" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:hint="Describe your experience"
+            app:counterEnabled="true"
+            app:counterMaxLength="150">
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/CardAddItemEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Position">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_description"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:maxLength="200"
+                android:maxLines="7"
+                android:minLines="2" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_position"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapWords" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/CardAddItemEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Describe your experience"
-        app:counterEnabled="true"
-        app:counterMaxLength="100">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="7"
-            android:minLines="2"
-            android:maxLength="150" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                style="@style/Widget.App.Button.SquareRounded"
+                android:text="Cancel" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                style="@style/Widget.App.Button.SquareRounded"
+                android:text="Add" />
 
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Add"
-            android:layout_marginEnd="4dp" />
-
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Cancel"
-            android:layout_marginStart="4dp" />
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

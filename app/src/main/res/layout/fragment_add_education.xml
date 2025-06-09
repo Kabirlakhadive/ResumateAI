@@ -3,7 +3,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -14,182 +13,201 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/AddCardTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="New Qualification"
-            style="@style/AddCardTitle" />
+            android:text="New Qualification" />
         <!-- Qualification Selector (Spinner or Button) -->
-        <com.google.android.material.textfield.TextInputLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/spinner_qualification"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="200dp"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/spinner_qualification"
+                    style="@style/CardAddItemEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:completionThreshold="1"
+                    android:hint="Qualification"
+                    android:inputType="text"
+                    android:paddingHorizontal="10dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="62dp"
-                android:completionThreshold="1"
-                android:paddingHorizontal="10dp"
-                android:inputType="text"
-                style="@style/CardAddItemEditText"
-                android:hint="Qualification" />
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                >
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_year_graduation"
+                    style="@style/CardAddItemEditText"
+                    android:hint="Year"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:completionThreshold="1"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <!-- Job Profile Selector (Spinner or Button) -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
             android:id="@+id/f_school"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:hint="School/College">
+            android:hint="School/College"
+            android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_school"
+                style="@style/CardAddItemEditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:completionThreshold="1"
-                android:inputType="text"
-                style="@style/CardAddItemEditText" />
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/f_board"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Board/University"
-            android:id="@+id/f_board"
             android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_board"
+                style="@style/CardAddItemEditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:completionThreshold="1"
-                android:inputType="text"
-                style="@style/CardAddItemEditText" />
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/f_degree"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Degree"
-            android:id="@+id/f_degree"
             android:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/et_degree"
+                style="@style/CardAddItemEditSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="62dp"
+                android:layout_height="55dp"
                 android:completionThreshold="1"
-                android:paddingHorizontal="10dp"
                 android:inputType="text"
-                style="@style/CardAddItemEditSpinner" />
+                android:paddingHorizontal="10dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/f_branch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Branch"
-            android:id="@+id/f_branch"
             android:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/et_branch"
+                style="@style/CardAddItemEditSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="62dp"
+                android:layout_height="55dp"
                 android:completionThreshold="1"
-                android:paddingHorizontal="10dp"
                 android:inputType="text"
-                style="@style/CardAddItemEditSpinner" />
+                android:paddingHorizontal="10dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/f_specialization"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Specialization"
-            android:id="@+id/f_specialization"
             android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_specialization"
+                style="@style/CardAddItemEditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:completionThreshold="1"
-                android:inputType="text"
-                style="@style/CardAddItemEditText" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Grading System">
-
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/spinner_grading_system"
-                android:layout_width="match_parent"
-                android:layout_height="62dp"
-                android:completionThreshold="1"
-                android:paddingHorizontal="10dp"
-                android:inputType="text"
-                style="@style/CardAddItemEditSpinner" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="Final Score">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_score"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:completionThreshold="1"
-                android:inputType="numberDecimal"
-                style="@style/CardAddItemEditSpinner" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Year of Graduation">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_year_graduation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:completionThreshold="1"
-                android:inputType="number"
-                style="@style/CardAddItemEditText" />
-
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnAdd"
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="150dp"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/spinner_grading_system"
+                    style="@style/CardAddItemEditSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:completionThreshold="1"
+                    android:hint="Grading System"
+                    android:inputType="text"
+                    android:paddingHorizontal="10dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Add"
-                android:layout_marginEnd="4dp" />
+                android:hint="Final Score"
+                android:paddingLeft="5dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_score"
+                    style="@style/CardAddItemEditSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:completionThreshold="1"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
 
             <Button
                 android:id="@+id/btnCancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                android:text="Cancel"
-                android:layout_marginStart="4dp" />
+                style="@style/Widget.App.Button.SquareRounded"
+                android:text="Cancel" />
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                style="@style/Widget.App.Button.SquareRounded"
+                android:layout_weight="1"
+                android:text="Add" />
+
 
         </LinearLayout>
 

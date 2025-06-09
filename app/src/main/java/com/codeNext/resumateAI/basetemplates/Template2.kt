@@ -21,9 +21,14 @@ import com.itextpdf.kernel.pdf.annot.PdfLinkAnnotation
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas
 import com.itextpdf.kernel.pdf.canvas.draw.SolidLine
 import com.itextpdf.layout.Document
-import com.itextpdf.layout.borders.Border.*
+import com.itextpdf.layout.borders.Border.NO_BORDER
 import com.itextpdf.layout.borders.SolidBorder
-import com.itextpdf.layout.element.*
+import com.itextpdf.layout.element.Cell
+import com.itextpdf.layout.element.Div
+import com.itextpdf.layout.element.LineSeparator
+import com.itextpdf.layout.element.Paragraph
+import com.itextpdf.layout.element.Table
+import com.itextpdf.layout.element.Text
 import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.UnitValue
 import kotlinx.coroutines.Dispatchers
@@ -203,7 +208,9 @@ class Template2 {
                         .setFontSize(textSize - 2f)
                         .setTextAlignment(nameAlignment)
                         .setBackgroundColor(getColorFromHex(contactJson.getString("background")))
-                        .setPadding(contactJson.getDouble("paddingVertical").toFloat()*scaleFactor)
+                        .setPadding(
+                            contactJson.getDouble("paddingVertical").toFloat() * scaleFactor
+                        )
                         .setMarginBottom(nameMarginBottom)
 
                     document.add(contactParagraph)
@@ -473,30 +480,32 @@ class Template2 {
                         }
 
                         "experience" -> {
-                            div.add(createHeading("Experience"))
-                            experiences.forEach {
-                                div.add(
-                                    Paragraph("${it.position} at ${it.companyName}")
-                                        .setFontSize(textSize)
-                                        .setFont(boldFont)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                        .setMarginTop(textMargin)
-                                )
-                                div.add(
-                                    Paragraph("${it.startDate} - ${it.endDate}")
-                                        .setFontSize(textSize)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                        .setMarginTop(textMargin)
-                                )
-                                div.add(
-                                    Paragraph(it.output)
-                                        .setFontSize(textSize)
-                                        .setFontColor(textColor)
-                                        .setMarginBottom(textMargin)
-                                        .setMarginTop(textMargin)
-                                )
+                            if (experiences.isNotEmpty()) {
+                                div.add(createHeading("Experience"))
+                                experiences.forEach {
+                                    div.add(
+                                        Paragraph("${it.position} at ${it.companyName}")
+                                            .setFontSize(textSize)
+                                            .setFont(boldFont)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                            .setMarginTop(textMargin)
+                                    )
+                                    div.add(
+                                        Paragraph("${it.startDate} - ${it.endDate}")
+                                            .setFontSize(textSize)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                            .setMarginTop(textMargin)
+                                    )
+                                    div.add(
+                                        Paragraph(it.output)
+                                            .setFontSize(textSize)
+                                            .setFontColor(textColor)
+                                            .setMarginBottom(textMargin)
+                                            .setMarginTop(textMargin)
+                                    )
+                                }
                             }
                         }
 
@@ -571,7 +580,7 @@ class Template2 {
                         }
 
                         "certifications" -> {
-                            if(certifications.isNotEmpty()){
+                            if (certifications.isNotEmpty()) {
                                 div.add(createHeading("Certifications"))
                                 certifications.forEach {
                                     div.add(
@@ -603,26 +612,27 @@ class Template2 {
                         }
 
                         "projects" -> {
-                            div.add(createHeading("Projects"))
-                            projects.forEach {
-                                div.add(
-                                    Paragraph(it.title)
-                                        .setFontSize(textSize)
-                                        .setFont(boldFont)
-                                        .setFontColor(textColor)
-                                        .setMarginTop(textMargin)
-                                        .setMarginBottom(textMargin)
-                                )
-                                div.add(
-                                    Paragraph(it.output)
-                                        .setFontSize(textSize)
-                                        .setFontColor(textColor)
-                                        .setMarginTop(textMargin)
-                                        .setMarginBottom(textMargin)
-                                )
+                            if (projects.isNotEmpty()) {
+                                div.add(createHeading("Projects"))
+                                projects.forEach {
+                                    div.add(
+                                        Paragraph(it.title)
+                                            .setFontSize(textSize)
+                                            .setFont(boldFont)
+                                            .setFontColor(textColor)
+                                            .setMarginTop(textMargin)
+                                            .setMarginBottom(textMargin)
+                                    )
+                                    div.add(
+                                        Paragraph(it.output)
+                                            .setFontSize(textSize)
+                                            .setFontColor(textColor)
+                                            .setMarginTop(textMargin)
+                                            .setMarginBottom(textMargin)
+                                    )
+                                }
                             }
                         }
-
 
                     }
                 }

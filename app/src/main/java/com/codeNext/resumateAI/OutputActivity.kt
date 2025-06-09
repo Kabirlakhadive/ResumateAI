@@ -15,6 +15,7 @@ import android.view.animation.LinearInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.codeNext.resumateAI.dao.ExperienceDao
@@ -46,16 +47,13 @@ class OutputActivity : AppCompatActivity() {
     private lateinit var projectDao: ProjectDao
     private lateinit var userProfileDao: UserProfileDao
     private lateinit var experienceDao: ExperienceDao
-    private lateinit var userProfile: UserProfile // Consider making nullable if it might not exist
+    private lateinit var userProfile: UserProfile
     private lateinit var binding: ActivityOutputBinding
     private lateinit var projectAdapter: ProjectOutputAdapter
     private lateinit var experienceAdapter: ExperienceOutputAdapter
     private lateinit var skillsDao: SkillsDao
-    // private lateinit var experience: Experience // These seem unused, can be removed if so
-    // private lateinit var project: Project // These seem unused, can be removed if so
     private lateinit var database: UserData
     private val TAG = "AISaveDebug"
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     // --- State variable to track the current card ---
     private var currentCardIndex = 0
@@ -74,10 +72,10 @@ class OutputActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityOutputBinding.inflate(layoutInflater)
         setContentView(binding.root)
         database = UserData.getInstance(this)
-
         // --- Initialize the list of card views ---
         cardViews = listOf(
             binding.cvObjectiveOutput,
@@ -90,7 +88,6 @@ class OutputActivity : AppCompatActivity() {
         experienceDao = db.experienceDao()
         userProfileDao = db.userProfileDao()
         skillsDao = db.skillsDao()
-
         lifecycleScope.launch {
             val fetchedUserProfile = userProfileDao.getUser() // Fetch and assign
             // Assign to class member if needed elsewhere, handle null appropriately
@@ -122,7 +119,8 @@ class OutputActivity : AppCompatActivity() {
                 TAG,
                 "[OutputActivity] Fetched ${projects.size} projects, ${experiences.size} experiences."
             )
-
+            var remainingGenerations = DailyUsageManager.getRemainingGenerations(this@OutputActivity)
+            binding.remainingGenerations.text = "${maxOf(remainingGenerations-1,0)}/3"
             binding.rvProjects.adapter = projectAdapter
             binding.rvExperiences.adapter = experienceAdapter
             // No need for notifyDataSetChanged here, adapter is initialized with data
@@ -132,30 +130,58 @@ class OutputActivity : AppCompatActivity() {
 
 
             // Call AI Model after fetching all data
-            if (isInternetAvailable(this@OutputActivity)) {
-                // Pass the non-null userProfile
-                modelCall(
-                    binding,
-                    userProfile, // Now guaranteed non-null if reached here
-                    experiences,
-                    projects,
-                    education,
-                    achievements,
-                    certifications,
-                    skills
-                )
-            } else {
-                binding.etObjective.apply {
-                    setText("AI generation Failed, Check Internet Connection")
-                    setTextColor(Color.RED)
+            // V V V V V V V V V V V V V  INTEGRATION POINT V V V V V V V V V V V V V
+            if (DailyUsageManager.canGenerateAndIncrement(this@OutputActivity)) {
+                // User has remaining generations
+                Log.i(TAG, "Generation allowed. Proceeding with API call.")
+                if (isInternetAvailable(this@OutputActivity)) {
+                    modelCall(
+                        binding,
+                        userProfile,
+                        experiences,
+                        projects,
+                        education,
+                        achievements,
+                        certifications,
+                        skills
+                    )
+                } else {
+                    binding.etObjective.apply {
+                        setText("AI generation Failed, Check Internet Connection")
+                        setTextColor(Color.RED)
+                        visibility = View.VISIBLE // Ensure it's visible
+                    }
+                    startTypewriterEffect(binding.outputActivityChat,"Uh Oh! Looks like you dont have an Internet Connection." ,30)
+                    binding.loadingAnim.visibility = View.GONE // Hide loading if it was shown
+                    binding.btnSave.isEnabled = true // Ensure save is enabled
                 }
+            } else {
+                // User has reached the daily limit
+                val remaining = DailyUsageManager.getRemainingGenerations(this@OutputActivity) // Should be 0
+                Log.w(TAG, "Daily generation limit reached. Remaining: $remaining")
+                Toast.makeText(this@OutputActivity, "You've used all 3 AI generations for today. Please try again tomorrow.", Toast.LENGTH_LONG).show()
+
+                binding.etObjective.apply {
+                    setText("Daily AI generation limit reached. Please check back tomorrow for more.")
+                    visibility = View.VISIBLE // Make sure it's visible
+                }
+                startTypewriterEffect(binding.outputActivityChat,"You've reached your daily generation limit. Try again tomorrow!", 30)
+
+                // Ensure UI is in a sensible state if generation is skipped
+                binding.loadingAnim.visibility = View.GONE
+                binding.btnSave.isEnabled = true // User might still want to save existing edits
+            }
+            if (projects.isEmpty()){
+                binding.tvNoProject.visibility = View.VISIBLE
+            }
+            if (experiences.isEmpty()){
+                binding.tvNoExperience.visibility = View.VISIBLE
             }
         }
 
         binding.btnSave.setOnClickListener {
             // Show loading/progress indicator
-            binding.progressBarSaving.visibility =
-                View.VISIBLE // Add a ProgressBar with id progressBarSaving to your layout
+
             binding.btnSave.isEnabled = false // Disable button during save
 
             val updatedProjects = projectAdapter.getUpdatedProjects()
@@ -217,7 +243,6 @@ class OutputActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG // Longer duration for error
                     ).show()
                 } finally {
-                    binding.progressBarSaving.visibility = View.GONE // Hide loading
                     binding.btnSave.isEnabled = true // Re-enable button
                 }
             }
@@ -260,7 +285,6 @@ class OutputActivity : AppCompatActivity() {
             "Find below your AI-powered resume content. Modify it using the pencil icon.",
             "Your AI-enhanced resume content is ready for review. Edit it by tapping the pencil icon."
         )
-
 
         var isEditing = false
 
@@ -500,6 +524,7 @@ class OutputActivity : AppCompatActivity() {
         // Update FAB Visibility
         val isLastCard = (index == TOTAL_CARDS - 1) // Check against total cards
         binding.fabNext.visibility = if (isLastCard) View.GONE else View.VISIBLE
+        binding.btnSave.visibility = if (isLastCard) View.VISIBLE else View.GONE
         Log.d("UpdateUI", "FAB visibility set to: ${binding.fabNext.visibility}")
     }
 

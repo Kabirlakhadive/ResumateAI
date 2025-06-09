@@ -4,6 +4,7 @@
 
 
         <item name="textInputStyle">@style/Widget.App.TextInputLayout.OutlinedBox.Rounded</item>
+        <item name="alertDialogTheme">@style/AppTheme.Dialog.Rounded</item>
 
         <!-- ================================================== -->
         <!-- LIGHT THEME COLORS (Using Indigo Muted - USER HIERARCHY P > PV > S > SV) -->

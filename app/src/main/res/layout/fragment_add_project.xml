@@ -31,13 +31,13 @@
         android:layout_height="wrap_content"
         android:hint="Description"
         app:counterEnabled="true"
-        app:counterMaxLength="100">
+        app:counterMaxLength="150">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLength="150" />
+            android:maxLength="200" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -60,19 +60,21 @@
         android:layout_marginTop="10dp">
 
         <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Add"
-            android:layout_marginEnd="4dp" />
-
-        <Button
             android:id="@+id/btnCancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cancel"
+            style="@style/Widget.App.Button.SquareRounded"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add"
+            style="@style/Widget.App.Button.SquareRounded"
             android:layout_marginStart="4dp" />
 
     </LinearLayout>
