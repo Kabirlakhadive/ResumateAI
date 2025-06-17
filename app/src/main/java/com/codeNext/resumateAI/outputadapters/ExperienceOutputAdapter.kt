@@ -12,10 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.codeNext.resumateAI.BuildConfig
-import com.codeNext.resumateAI.DailyUsageManager
+
 import com.codeNext.resumateAI.R
 import com.codeNext.resumateAI.databinding.ItemExperienceOutputBinding
 import com.codeNext.resumateAI.models.Experience
+import com.codeNext.resumateAI.utils.FirebaseUsageManager
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +29,8 @@ import java.util.Locale
 
 class ExperienceOutputAdapter(
     private val experiences: List<Experience>,
-    private val context: Context
+    private val context: Context,
+    private val canGenerate: Boolean,
 ) : RecyclerView.Adapter<ExperienceOutputAdapter.ExperienceViewHolder>() {
     private val TAG = "AISaveDebug"
     private val updatedDescriptions = MutableList(experiences.size) { experiences[it].output ?: "" }
@@ -87,10 +89,12 @@ class ExperienceOutputAdapter(
 
             })
 
+
+
             // Call AI Model if teh internet is available
             if (isInternetAvailable(context)) {
-                Log.d("DailyUsageManager","${DailyUsageManager.getRemainingGenerations(context)}")
-                if(DailyUsageManager.getRemainingGenerations(context)>0) {
+
+                if(canGenerate) {
                     modelCall(experience, binding)
                 }
                 else{
@@ -136,6 +140,7 @@ class ExperienceOutputAdapter(
             coroutineScope.launch {
                 val outputText = generateAIResponse(generativeModel, prompt)
                 val position = absoluteAdapterPosition // Get position safely
+
 
                 // --- FIX: Update the adapter's data source ---
                 if (position != RecyclerView.NO_POSITION) {

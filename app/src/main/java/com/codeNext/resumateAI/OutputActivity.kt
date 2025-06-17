@@ -32,6 +32,7 @@ import com.codeNext.resumateAI.models.Skills
 import com.codeNext.resumateAI.models.UserProfile
 import com.codeNext.resumateAI.outputadapters.ExperienceOutputAdapter
 import com.codeNext.resumateAI.outputadapters.ProjectOutputAdapter
+import com.codeNext.resumateAI.utils.FirebaseUsageManager
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,12 +66,14 @@ class OutputActivity : AppCompatActivity() {
         private const val PROJECTS_INDEX = 1
         private const val EXPERIENCE_INDEX = 2
         private const val TOTAL_CARDS = 3 // Update if you add more cards
+        private var MAX_GENERATIONS_PER_DAY = 3;
     }
     // --- ---
 
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("ActivityLifecycle", "OutputActivity --- onCreate STARTED ---")
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityOutputBinding.inflate(layoutInflater)
@@ -108,32 +111,24 @@ class OutputActivity : AppCompatActivity() {
             val certifications = database.certificationDao().getAllCertifications()
             val skills = skillsDao.getAllSkills()
 
-            // Check if adapters need data - if lists are empty, handle gracefully
-            if (projects.isEmpty()) Log.w(TAG, "No projects found to display.")
-            if (experiences.isEmpty()) Log.w(TAG, "No experiences found to display.")
+            var remainingGenerations = withContext(Dispatchers.IO) {
+                FirebaseUsageManager.getRemainingGenerations(this@OutputActivity)
+            }
+            binding.remainingGenerations.text = "${remainingGenerations-1}/$MAX_GENERATIONS_PER_DAY" // Assuming you have MAX_GENERATIONS_PER_DAY in your activity or manager
 
+// Now, check if a generation is allowed AND record it if it is.
+            val canGenerate = withContext(Dispatchers.IO) {
+                FirebaseUsageManager.canGenerateAndIncrement(this@OutputActivity)
+            }
 
-            projectAdapter = ProjectOutputAdapter(projects, this@OutputActivity)
-            experienceAdapter = ExperienceOutputAdapter(experiences, this@OutputActivity)
-            Log.d(
-                TAG,
-                "[OutputActivity] Fetched ${projects.size} projects, ${experiences.size} experiences."
-            )
-            var remainingGenerations = DailyUsageManager.getRemainingGenerations(this@OutputActivity)
-            binding.remainingGenerations.text = "${maxOf(remainingGenerations-1,0)}/3"
-            binding.rvProjects.adapter = projectAdapter
-            binding.rvExperiences.adapter = experienceAdapter
-            // No need for notifyDataSetChanged here, adapter is initialized with data
-
-            // Set initial state (select first item in NavRail)
-            updateUiForCard(OBJECTIVE_INDEX) // Set initial selection, FAB visibility
-
-
-            // Call AI Model after fetching all data
-            // V V V V V V V V V V V V V  INTEGRATION POINT V V V V V V V V V V V V V
-            if (DailyUsageManager.canGenerateAndIncrement(this@OutputActivity)) {
-                // User has remaining generations
+            if (canGenerate) {
+                // User has remaining generations, and one has just been recorded
                 Log.i(TAG, "Generation allowed. Proceeding with API call.")
+
+                // Update the UI text immediately after successful check
+//                remainingGenerations = remainingGenerations.coerceAtLeast(1) - 1
+//                binding.remainingGenerations.text = "$remainingGenerations/3"
+
                 if (isInternetAvailable(this@OutputActivity)) {
                     modelCall(
                         binding,
@@ -149,28 +144,90 @@ class OutputActivity : AppCompatActivity() {
                     binding.etObjective.apply {
                         setText("AI generation Failed, Check Internet Connection")
                         setTextColor(Color.RED)
-                        visibility = View.VISIBLE // Ensure it's visible
+                        visibility = View.VISIBLE
                     }
                     startTypewriterEffect(binding.outputActivityChat,"Uh Oh! Looks like you dont have an Internet Connection." ,30)
-                    binding.loadingAnim.visibility = View.GONE // Hide loading if it was shown
-                    binding.btnSave.isEnabled = true // Ensure save is enabled
+                    binding.loadingAnim.visibility = View.GONE
+                    binding.btnSave.isEnabled = true
                 }
             } else {
                 // User has reached the daily limit
-                val remaining = DailyUsageManager.getRemainingGenerations(this@OutputActivity) // Should be 0
-                Log.w(TAG, "Daily generation limit reached. Remaining: $remaining")
+                Log.w(TAG, "Daily generation limit reached via Firebase.")
                 Toast.makeText(this@OutputActivity, "You've used all 3 AI generations for today. Please try again tomorrow.", Toast.LENGTH_LONG).show()
 
                 binding.etObjective.apply {
                     setText("Daily AI generation limit reached. Please check back tomorrow for more.")
-                    visibility = View.VISIBLE // Make sure it's visible
+                    visibility = View.VISIBLE
                 }
                 startTypewriterEffect(binding.outputActivityChat,"You've reached your daily generation limit. Try again tomorrow!", 30)
 
                 // Ensure UI is in a sensible state if generation is skipped
                 binding.loadingAnim.visibility = View.GONE
-                binding.btnSave.isEnabled = true // User might still want to save existing edits
+                binding.btnSave.isEnabled = true
             }
+            // Check if adapters need data - if lists are empty, handle gracefully
+            if (projects.isEmpty()) Log.w(TAG, "No projects found to display.")
+            if (experiences.isEmpty()) Log.w(TAG, "No experiences found to display.")
+
+
+            projectAdapter = ProjectOutputAdapter(projects, this@OutputActivity,canGenerate)
+            experienceAdapter = ExperienceOutputAdapter(experiences, this@OutputActivity,canGenerate)
+            Log.d(
+                TAG,
+                "[OutputActivity] Fetched ${projects.size} projects, ${experiences.size} experiences."
+            )
+//            var remainingGenerations = DailyUsageManager.getRemainingGenerations(this@OutputActivity)
+//            binding.remainingGenerations.text = "${maxOf(remainingGenerations-1,0)}/3"
+            binding.rvProjects.adapter = projectAdapter
+            binding.rvExperiences.adapter = experienceAdapter
+            // No need for notifyDataSetChanged here, adapter is initialized with data
+
+            // Set initial state (select first item in NavRail)
+            updateUiForCard(OBJECTIVE_INDEX) // Set initial selection, FAB visibility
+
+
+            // Call AI Model after fetching all data
+            // V V V V V V V V V V V V V  INTEGRATION POINT V V V V V V V V V V V V V
+//            if (canGenerate) {
+//                // User has remaining generations
+//                Log.i(TAG, "Generation allowed. Proceeding with API call.")
+//                if (isInternetAvailable(this@OutputActivity)) {
+//                    modelCall(
+//                        binding,
+//                        userProfile,
+//                        experiences,
+//                        projects,
+//                        education,
+//                        achievements,
+//                        certifications,
+//                        skills
+//                    )
+//                } else {
+//                    binding.etObjective.apply {
+//                        setText("AI generation Failed, Check Internet Connection")
+//                        setTextColor(Color.RED)
+//                        visibility = View.VISIBLE // Ensure it's visible
+//                    }
+//                    startTypewriterEffect(binding.outputActivityChat,"Uh Oh! Looks like you dont have an Internet Connection." ,30)
+//                    binding.loadingAnim.visibility = View.GONE // Hide loading if it was shown
+//                    binding.btnSave.isEnabled = true // Ensure save is enabled
+//                }
+//            } else {
+//                // User has reached the daily limit
+//                val remaining = remainingGenerations // Should be 0
+//                Log.w(TAG, "Daily generation limit reached. Remaining: $remaining")
+//                Toast.makeText(this@OutputActivity, "You've used all 3 AI generations for today. Please try again tomorrow.", Toast.LENGTH_LONG).show()
+//
+//                binding.etObjective.apply {
+//                    setText("Daily AI generation limit reached. Please check back tomorrow for more.")
+//                    visibility = View.VISIBLE // Make sure it's visible
+//                }
+//                startTypewriterEffect(binding.outputActivityChat,"You've reached your daily generation limit. Try again tomorrow!", 30)
+//
+//                // Ensure UI is in a sensible state if generation is skipped
+//                binding.loadingAnim.visibility = View.GONE
+//                binding.btnSave.isEnabled = true // User might still want to save existing edits
+//            }
             if (projects.isEmpty()){
                 binding.tvNoProject.visibility = View.VISIBLE
             }

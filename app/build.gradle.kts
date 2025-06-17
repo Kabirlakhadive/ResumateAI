@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 
@@ -18,7 +19,7 @@ android {
         applicationId = "com.codeNext.resumateAI"
         minSdk = 24
         targetSdk = 35
-        versionCode = 11
+        versionCode = 14
         versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -76,6 +77,19 @@ dependencies {
     implementation("com.google.code.gson:gson:2.12.1")
     implementation( "com.google.ai.client.generativeai:generativeai:0.9.0" )
 
+    // Firebase BOM (Bill of Materials) - recommended
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0")) // Check for latest version
+
+    // Add the dependency for Firebase Firestore KTX
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-installations-ktx")
+    // For analytics (optional but good for tracking)
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-database-ktx")
+
+
     implementation("com.itextpdf.android:kernel-android:7.2.5")
     implementation("com.itextpdf.android:layout-android:7.2.5")
     implementation ("com.github.barteksc:AndroidPdfViewerV1:1.5.0")
@@ -108,6 +122,7 @@ dependencies {
     // No additional plugins are necessary
     annotationProcessor("androidx.room:room-compiler:$room_version")
     implementation("androidx.core:core-splashscreen:1.0.0")
+
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")

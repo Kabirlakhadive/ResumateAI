@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.codeNext.resumateAI.BuildConfig
-import com.codeNext.resumateAI.DailyUsageManager
+
 import com.codeNext.resumateAI.R
 import com.codeNext.resumateAI.databinding.ItemProjectOutputBinding
 import com.codeNext.resumateAI.models.Project
@@ -25,7 +25,8 @@ import kotlinx.coroutines.withContext
 
 class ProjectOutputAdapter(
     private val projects: List<Project>,
-    private val context: Context // Added context for connectivity check
+    private val context: Context,
+    private val canGenerate : Boolean// Added context for connectivity check
 ) : RecyclerView.Adapter<ProjectOutputAdapter.ProjectViewHolder>() {
     private val TAG = "AISaveDebug"
     private val totalTokensConsumed: Int = 0
@@ -76,7 +77,7 @@ class ProjectOutputAdapter(
 
             // Call AI model only if the internet is available
             if (isInternetAvailable(context)) {
-                if (DailyUsageManager.getRemainingGenerations(context) > 0) {
+                if (canGenerate) {
                     modelCall(project, binding)
                 } else {
                     binding.etProjectDescription.apply {

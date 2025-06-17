@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "410228423507",
+    "project_id": "android-app-595a5",
+    "storage_bucket": "android-app-595a5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410228423507:android:c7a9da65592882f4f0ffa6",
+        "android_client_info": {
+          "package_name": "com.codeNext.resumateAI"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnnarRA31dykpMK8K8ExJKDLhDrfuk-Tk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
